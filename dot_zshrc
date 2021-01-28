@@ -1,0 +1,93 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# iterm2 integration
+source $HOME/.iterm2_shell_integration.zsh
+
+# enable Antigen
+source $(brew --prefix)/share/antigen/antigen.zsh
+
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
+
+## oh-my-zsh Extensions
+antigen bundle command-not-found
+antigen bundle git
+antigen bundle heroku
+antigen bundle autojump
+antigen bundle Composer
+antigen bundle npm
+antigen bundle laravel5
+antigen bundle osx
+
+# Third Party Extensions
+# antigen bundle zsh-users/zsh-autosuggestions
+# antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-completions
+
+# Load the theme.
+# antigen theme lachieh/hellotimber-theme
+antigen theme romkatv/powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Tell Antigen that you're done.
+antigen apply
+
+# Aliases
+alias cat='bat'
+# alias vsc="vscodium"
+# alias code="vscodium"
+alias ping='prettyping --nolegend'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'" # add support for ctrl+o to open selected file in VS Code
+alias top="sudo htop" # alias top and fix high sierra bug
+alias du="ncdu --color dark -e -rr -x --exclude .git --exclude node_modules"
+alias gitclean="echo 'Checking for branches removed from remote...' && git fetch -p && git branch -vv | cut -c 3- | awk '/gone/ { print $1 }' && echo 'Done. Use \"gitcleanreal\" to delete the branches'"
+alias gitcleanreal="git fetch -p && git branch -vv | cut -c 3- | awk '/gone/ { print $1 }' | xargs -n1 git branch -d"
+
+# History Config
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+
+# NVM
+export NVM_DIR="$HOME/.nvm" # Set NVM Config Path
+export NVM_HOMEBREW_DIR="/usr/local/opt/nvm" # Set nvm program path
+[ -s "$NVM_HOMEBREW_DIR/nvm.sh" ] && . "$NVM_HOMEBREW_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_HOMEBREW_DIR/etc/bash_completion" ] && . "$NVM_HOMEBREW_DIR/etc/bash_completion"  # This loads nvm bash_completion
+[ -x "$(command -v npm)" ] && export NODE_PATH=`npm root -g` # sets global node path
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="/usr/local/sbin:$PATH"
+
+# Set GPG TTY
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Set up fuzzy find
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# MySQL
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+
+# Angular Completions
+complete -W "add build config doc e2e generate help lint new run serve test update version xi18n" ng
+complete -W "appShell application class component directive enum guard interceptor interface library module pipe service serviceWorker webWorker" "ng generate"
