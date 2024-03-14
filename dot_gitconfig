@@ -1,0 +1,20 @@
+[user]
+	email = lachieh@users.noreply.github.com
+	name = Lachlan Heywood
+	signingkey = 47A3DD1092383DC9
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
+[gpg]
+	program = /usr/local/MacGPG2/bin/gpg2
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
+
+[includeIf "gitdir:~/Projects/wasmCloud/"]
+	path = "~/Projects/wasmCloud/.gitconfig-include"
+
+[includeIf "gitdir:~/Projects/Cosmonic/"]
+	path = "~/Projects/Cosmonic/.gitconfig-include"

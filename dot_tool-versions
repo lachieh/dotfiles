@@ -1,0 +1,9 @@
+bun 1.0.3
+deno 1.37.1
+direnv 2.32.3
+elixir 1.15.6-otp-26
+erlang 26.1
+python 3.11.5
+rust 1.72.0
+golang 1.21.1
+nodejs 18.17.1

@@ -1,0 +1,79 @@
+#!/bin/bash
+{{ if eq .chezmoi.os "darwin" -}}
+
+set -eufo pipefail
+
+casks=(
+  1password
+  1password-cli
+  aerial
+  alfred
+  affinity-designer
+  affinity-photo
+  affinity-publisher
+  bartender
+  bettertouchtool
+  chromium
+  discord
+  firefox
+  gpg-suite
+  iina
+  istat-menus
+  iterm2
+  kap
+  keka
+  keycastr
+  loopback
+  microsoft-auto-update
+  microsoft-edge
+  monitorcontrol
+  notion
+  obs
+  obsidian
+  postico
+  rectangle
+  session-manager-plugin
+  sequel-ace
+  slack
+  soundsource
+  spotify
+  tailscale
+  telegram
+  visual-studio-code
+  zoom
+)
+
+# Make sure we're using the latest Homebrew.
+brew update
+
+# Upgrade any already-installed formulae.
+brew upgrade
+
+# Install casks one at a time because there is no `--skip-installed` flag
+# https://github.com/Homebrew/brew/issues/12361
+for cask in ${casks[@]}; do
+  echo "Installing ${cask}"
+  brew install --cask $cask --quiet 2> 1
+done
+
+# cosmonic requirements
+brew tap hashicorp/tap
+
+brew install hashicorp/tap/terraform
+terraform -install-autocomplete
+
+brew install hashicorp/tap/nomad
+nomad -autocomplete-install
+
+brew install hashicorp/tap/vault
+vault -autocomplete-install
+
+brew install hashicorp/tap/packer
+packer -autocomplete-install
+
+brew install hashicorp/tap/consul
+consul -autocomplete-install
+
+brew cleanup
+
+{{ end -}}

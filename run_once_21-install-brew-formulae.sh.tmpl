@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+formulae=(
+  asdf
+  antidote
+  autojump
+  awscli
+  azure-cli
+  bat
+  chezmoi
+  direnv
+  fzf
+  gh
+  htop
+{{ if eq .chezmoi.os "darwin" -}}
+  coreutils
+  gpg-suite
+  pinentry-mac
+  moreutils
+  ruby-install
+  tmux
+{{ end -}}
+)
+
+# Make sure we're using the latest Homebrew.
+brew update
+
+# Upgrade any already-installed formulae.
+brew upgrade
+
+# Install listed formulae
+brew install ${formulae[@]} --quiet
+
+brew cleanup
+

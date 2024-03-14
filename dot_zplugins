@@ -1,0 +1,18 @@
+# Plugins
+ohmyzsh/ohmyzsh
+ohmyzsh/ohmyzsh path:plugins/asdf
+ohmyzsh/ohmyzsh path:plugins/command-not-found
+ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/autojump
+ohmyzsh/ohmyzsh path:plugins/keychain
+zsh-users/zsh-syntax-highlighting
+lukechilds/zsh-better-npm-completion
+
+g-plane/zsh-yarn-autocompletions
+
+# Themes
+# lachieh/hellotimber-theme
+# romkatv/powerlevel10k
+spaceship-prompt/spaceship-prompt
+
+zsh-users/zsh-completions

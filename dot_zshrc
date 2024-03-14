@@ -1,0 +1,152 @@
+# iterm2 integration
+if [ -e "$HOME/.iterm2_shell_integration" ]; then
+  source "$HOME"/.iterm2_shell_integration.zsh
+fi
+
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
+# Antidote
+ANTIDOTE="$(brew --prefix)/share/antidote"
+if [ -d "$ANTIDOTE" ]; then
+  source "$ANTIDOTE/antidote.zsh"
+  # - load plugins
+  source "${HOME}/.zplugins.sh"
+  # - run zupdate when changing .zplugins
+  alias zupdate="antidote bundle < ~/.zplugins > ~/.zplugins.sh"
+fi
+
+# Aliases
+if [ -x "$(command -v bat)" ]; then
+  alias cat='bat'
+fi
+
+if [ -x "$(command -v ncdu)" ]; then
+  alias du="ncdu --color dark -e -rr -x --exclude .git --exclude node_modules"
+fi
+
+if [ -x "$(command -v gh)" ]; then
+  alias ghcpub="gh create --confirm --public"
+  alias ghcprv="gh create --confirm --private"
+  alias gho="gh repo view -w"
+fi
+
+if [ -x "$(command -v exa)" ]; then
+  alias ls="exa"
+  alias ll="exa -al"
+fi
+
+alias chez="chezmoi"
+
+# git aliases
+alias gfom="git fetch origin main"
+alias nah="git reset --hard HEAD"
+alias yolo='git add -A && git commit -m "$(curl -s https://api.kanye.rest/ | jq '.quote')"'
+
+# History Config
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=1000000
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+
+# Set up fuzzy find
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'" # add support for ctrl+o to open selected file in VS Code
+[ -f ~/.fzf.zsh ] && source "${HOME}/.fzf.zsh"
+
+# Set GPG TTY
+export GPG_TTY=$TTY
+
+# # Load Angular CLI autocompletion.
+# source <(ng completion script)
+
+# 1password completion
+if [ -x "$(command -v op)" ]; then
+  eval "$(op completion zsh)"; compdef _op op
+  # 1Password Agent Symlink
+  if [ ! -e ~/.1password/agent.sock ] && [ "$(uname)" == "Darwin" ]; then
+    # create symlink to 1password agent
+    mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
+  fi
+fi
+
+# pyenv config
+if [ -x "$(command -v pyenv)" ]; then
+eval "$(pyenv init -)"
+fi
+
+# direnv
+if [ -x "$(command -v direnv)" ]; then
+if [ -x "$(command -v asdf)" ]; then
+eval "$(asdf exec direnv hook zsh)"
+fi
+fi
+
+export PNPM_HOME="${HOME}/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+if [ -x "$(command -v go)" ]; then
+GOPATH="$(go env GOPATH)"
+export PATH="$GOPATH:$PATH"
+fi
+
+if [ -e "$HOME/.cosmo/bin" ]; then
+export PATH="${PATH}:${HOME}/.cosmo/bin"
+fi
+
+# multiverse completions
+if [ -x "$(command -v multiverse)" ]; then
+eval "$(multiverse completion zsh)"
+alias mvup='cd ~/Projects/Cosmonic/multiverse && gh release download -D multiverse/tmp -p "*arm64" --clobber && mv multiverse/tmp/multiverse-darwin-arm64 multiverse && chmod a+x multiverse/multiverse|| cd "$(pwd)"'
+alias mvconf="code ~/.multiverse"
+alias mvs="multiverse"
+alias mvsp="multiverse populate"
+alias mvsb="multiverse branch"
+alias mvsr="mvs ct --impatient-shutdown && sleep 5 && mvs b --skip-ui --skip-api && sleep 5 && mvs p"
+alias mvsui="mvb --skip-ui && mvsp"
+alias mvsapi="mvb --skip-api && mvsp"
+alias mvsboth="mvb --skip-ui --skip-api && mvsp"
+alias mvr="mvs ct --impatient-shutdown || mvb --skip-ui && mvsp --use-canary-tags"
+fi
+
+# wash completions
+if [ -x "$(command -v wash)" ]; then
+wash completions -d /tmp/ zsh >/dev/null
+eval "$(/bin/cat /tmp/_wash)"
+rm /tmp/_wash
+fi
+
+# bun completions
+[ -s "/usr/local/share/zsh/site-functions/_bun" ] && source "/usr/local/share/zsh/site-functions/_bun"
+
+# export secret env variables from ~/.secrets
+set -o allexport
+if [ -f ~/.secrets ]; then source "${HOME}/.secrets"; fi
+set +o allexport
+
+# Load completion for brew installed apps
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C "$(which terraform)" terraform
+complete -o nospace -C "$(which nomad)" nomad
+complete -o nospace -C "$(which vault)" vault
+complete -o nospace -C "$(which packer)" packer
+complete -o nospace -C "$(which consul)" consul
+
+# Load Nix profile
+if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+fi
