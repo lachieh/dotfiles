@@ -44,6 +44,7 @@ alias chez="chezmoi"
 
 # git aliases
 alias gfom="git fetch origin main"
+alias gswm="git switch main"
 alias nah="git reset --hard HEAD"
 alias yolo='git add -A && git commit -m "$(curl -s https://api.kanye.rest/ | jq '.quote')"'
 
@@ -70,9 +71,6 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'" # add support f
 
 # Set GPG TTY
 export GPG_TTY=$TTY
-
-# # Load Angular CLI autocompletion.
-# source <(ng completion script)
 
 # 1password completion
 if [ -x "$(command -v op)" ]; then
