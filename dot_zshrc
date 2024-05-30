@@ -144,6 +144,12 @@ complete -o nospace -C "$(which vault)" vault
 complete -o nospace -C "$(which packer)" packer
 complete -o nospace -C "$(which consul)" consul
 
+# Load completions for google cloud sdk
+if [ -x "$(command -v gcloud)" ]; then
+  source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+fi
+
 # Load Nix profile
 if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
   source "$HOME/.nix-profile/etc/profile.d/nix.sh"
