@@ -35,9 +35,9 @@ if [ -x "$(command -v gh)" ]; then
   alias gho="gh repo view -w"
 fi
 
-if [ -x "$(command -v exa)" ]; then
-  alias ls="exa"
-  alias ll="exa -al"
+if [ -x "$(command -v eza)" ]; then
+  alias ls="eza"
+  alias ll="eza -al"
 fi
 
 alias chez="chezmoi"
