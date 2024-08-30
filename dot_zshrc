@@ -88,9 +88,10 @@ if [ -x "$(command -v pyenv)" ]; then
 eval "$(pyenv init -)"
 fi
 
-# direnv
-if [ -x "$(command -v direnv)" ]; then
+# asdf + direnv
 if [ -x "$(command -v asdf)" ]; then
+if [ -x "$(command -v direnv)" ]; then
+export ASDF_NODEJS_AUTO_ENABLE_COREPACK=true
 eval "$(asdf exec direnv hook zsh)"
 fi
 fi
@@ -111,9 +112,6 @@ wash completions -d /tmp/ zsh >/dev/null
 eval "$(/bin/cat /tmp/_wash)"
 rm /tmp/_wash
 fi
-
-# bun completions
-[ -s "/usr/local/share/zsh/site-functions/_bun" ] && source "/usr/local/share/zsh/site-functions/_bun"
 
 # export secret env variables from ~/.secrets
 set -o allexport

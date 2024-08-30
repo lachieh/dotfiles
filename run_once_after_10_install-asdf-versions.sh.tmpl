@@ -1,32 +1,13 @@
 {{ if (eq .install_asdf "true") -}}
 #!/bin/bash
 
-versions=(
-  "deno,latest,https://github.com/asdf-community/asdf-deno.git"
-  "bun,latest,https://github.com/cometkim/asdf-bun.git"
-  "elixir,latest,https://github.com/asdf-vm/asdf-elixir.git"
-  "erlang,latest,https://github.com/asdf-vm/asdf-erlang.git"
-  "golang,latest,https://github.com/kennyp/asdf-golang.git"
-  "nodejs,lts,https://github.com/asdf-vm/asdf-nodejs.git"
-  "python,latest,https://github.com/danhper/asdf-python.git"
-  "rust,latest,https://github.com/code-lever/asdf-rust.git"
-  "direnv,latest,https://github.com/asdf-community/asdf-direnv.git"
-)
-
-for appObj in "${versions[@]}"; do
-    IFS="," read -r -a arr <<< "${appObj}"
-
-    app="${arr[0]}"
-    version="${arr[1]}"
-    repo="${arr[2]}"
-
-    asdf plugin-add "$app" "$repo"
-    asdf install "$app" "$version"
-    asdf global "$app" "$version"
-done
+{{ range .asdf -}}
+asdf plugin-add {{ .lang | quote }} {{ .repo | quote }}
+asdf install {{ .lang | quote }} {{ .version | quote }}
+asdf global {{ .lang | quote }} {{ .version }}
+{{ end -}}
 
 asdf plugin-add direnv
 asdf direnv setup --shell zsh --version latest
 
-# exit 0
 {{ end -}}
