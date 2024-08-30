@@ -1,7 +1,3 @@
-#!/bin/bash
-{{- if eq .chezmoi.os "darwin" -}}
-
-brew bundle --no-lock --file=/dev/stdin <<EOF
 
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -22,14 +18,10 @@ brew "dnsmasq"
 brew "findutils"
 brew "fzf"
 brew "gh"
-brew "git"
-brew "gitu"
 brew "git-filter-repo"
 brew "gnutls"
 brew "gnupg"
-brew "handbrake"
 brew "helm"
-brew "hey"
 brew "htop"
 brew "httpd"
 brew "ios-sim"
@@ -83,8 +75,3 @@ cask "telegram"
 cask "visual-studio-code"
 cask "vlc"
 cask "zoom"
-EOF
-
-brew cleanup
-
-{{ end -}}
