@@ -1,5 +1,5 @@
 #!/bin/bash
-{{- if eq .chezmoi.os "darwin" -}}
+{{- if (eq .chezmoi.os "darwin") -}}
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 
@@ -87,4 +87,4 @@ EOF
 
 brew cleanup
 
-{{ end -}}
+{{- end -}}
