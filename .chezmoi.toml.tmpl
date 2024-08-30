@@ -1,12 +1,12 @@
 {{/* config */}}
 {{- $computer_name := promptString "Device Name" "" -}}
 {{- $install_asdf := promptBool "Install ASDF" false -}}
-{{- $install_antidote := promptBool "Install Anitdote ZSH Plugin" false -}}
+{{- $install_antigen := promptBool "Install Anitgen ZSH Plugin" false -}}
 
 [data]
   computer_name = "{{ $computer_name }}"
   install_asdf = "{{ $install_asdf }}"
-  install_antidote = "{{ $install_antidote }}"
+  install_antigen = "{{ $install_antigen }}"
 [git]
   autoCommit = true
   autoPush = true

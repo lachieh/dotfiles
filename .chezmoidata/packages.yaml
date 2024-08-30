@@ -1,0 +1,103 @@
+packages:
+  darwin:
+    brews:
+      # Shell Utils
+      - antigen
+      - coreutils
+      - asdf
+      - autojump
+      - bat
+      - chezmoi
+      - curl
+      - gd
+      - findutils
+      - fzf
+      - htop
+      - jq
+      - moreutils
+      - ncdu
+      - tmux
+      - topgrade
+
+      # Dev Tools
+      - awscli
+      - azure-cli
+      - gh
+      - git
+      - gitu
+      - git-filter-repo
+      - gnutls
+      - gnupg
+      - handbrake
+      - ios-sim
+
+      # Kubernetes
+      - helm
+
+      # Networking
+      - dnsmasq
+      - hey
+      - httpd
+      - wget
+
+    casks:
+      # Security
+      - 1password
+      - 1password-cli
+
+      # Design
+      - affinity-designer
+      - affinity-photo
+      - affinity-publisher
+
+      # macOS Utils
+      - balenaetcher
+      - bettertouchtool
+      - istat-menus
+      - jordanbaird-ice
+      - keka
+      - keycastr
+      - monitorcontrol
+      - rectangle
+
+      # Media
+      - iina
+      - loopback
+      - soundsource
+      - spotify
+      - vlc
+
+      # Communication
+      - discord
+      - slack
+      - telegram
+      - zoom
+      - notion
+      - obsidian
+
+      # Dev Tooling
+      - iterm2
+      - qlmarkdown
+      - syntax-highlight
+      - visual-studio-code
+      
+      # Kubernetes
+      - headlamp
+
+      # Browsers
+      - arc
+      - microsoft-edge
+      - firefox
+      - chromium
+
+    taps:
+      - tap: yt-dlp/taps
+        brews:
+          - yt-dlp
+      - tap: hashicorp/tap
+        brews:
+          - hashicorp/tap/consul
+          - hashicorp/tap/nomad
+          - hashicorp/tap/packer
+          - hashicorp/tap/terraform
+          - hashicorp/tap/vault
