@@ -6,13 +6,14 @@ ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/autojump
 ohmyzsh/ohmyzsh path:plugins/keychain
 zsh-users/zsh-syntax-highlighting
-lukechilds/zsh-better-npm-completion
 
+# completions
+lukechilds/zsh-better-npm-completion
 g-plane/zsh-yarn-autocompletions
+g-plane/pnpm-shell-completion
+zsh-users/zsh-completions
 
 # Themes
 # lachieh/hellotimber-theme
 # romkatv/powerlevel10k
 spaceship-prompt/spaceship-prompt
-
-zsh-users/zsh-completions

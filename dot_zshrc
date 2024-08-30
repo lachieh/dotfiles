@@ -3,6 +3,7 @@ if [ -e "$HOME/.iterm2_shell_integration" ]; then
   source "$HOME"/.iterm2_shell_integration.zsh
 fi
 
+# Homebrew completions
 if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
@@ -94,31 +95,14 @@ eval "$(asdf exec direnv hook zsh)"
 fi
 fi
 
+# pnpm
 export PNPM_HOME="${HOME}/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
+# go
 if [ -x "$(command -v go)" ]; then
 GOPATH="$(go env GOPATH)"
 export PATH="$GOPATH:$PATH"
-fi
-
-if [ -e "$HOME/.cosmo/bin" ]; then
-export PATH="${PATH}:${HOME}/.cosmo/bin"
-fi
-
-# multiverse completions
-if [ -x "$(command -v multiverse)" ]; then
-eval "$(multiverse completion zsh)"
-alias mvup='cd ~/Projects/Cosmonic/multiverse && gh release download -D multiverse/tmp -p "*arm64" --clobber && mv multiverse/tmp/multiverse-darwin-arm64 multiverse && chmod a+x multiverse/multiverse|| cd "$(pwd)"'
-alias mvconf="code ~/.multiverse"
-alias mvs="multiverse"
-alias mvsp="multiverse populate"
-alias mvsb="multiverse branch"
-alias mvsr="mvs ct --impatient-shutdown && sleep 5 && mvs b --skip-ui --skip-api && sleep 5 && mvs p"
-alias mvsui="mvb --skip-ui && mvsp"
-alias mvsapi="mvb --skip-api && mvsp"
-alias mvsboth="mvb --skip-ui --skip-api && mvsp"
-alias mvr="mvs ct --impatient-shutdown || mvb --skip-ui && mvsp --use-canary-tags"
 fi
 
 # wash completions
