@@ -57,10 +57,10 @@ packages:
       - jordanbaird-ice
       - keka
       - keycastr
-      - monitorcontrol
-      - monarch
-      - rectangle
       - localsend
+      - monitorcontrol
+      # - monarch -- disabling until md5 fix
+      - rectangle
 
       # Media
       - iina
@@ -104,6 +104,3 @@ packages:
           - hashicorp/tap/packer
           - hashicorp/tap/terraform
           - hashicorp/tap/vault
-      - tap: localsend/localsend
-        brews:
-          - localsend
