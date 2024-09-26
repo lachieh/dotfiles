@@ -44,10 +44,19 @@ fi
 alias chez="chezmoi"
 
 # git aliases
+aliasmsg() {
+  # $
+  if [ -n "$2" ]; then
+    echo "$2"
+  fi
+  echo "$1"
+  eval "$1"
+}
+
 alias gfom="git fetch origin main"
 alias gswm="git switch main"
-alias nah="git reset --hard HEAD"
-alias yolo='git add -A && git commit -m "$(curl -s https://api.kanye.rest/ | jq '.quote')"'
+alias nah='aliasmsg "git reset --hard HEAD" "yeah, nah. ditch all that"'
+alias yolo='aliasmsg "git add -A && git commit -m \"$(curl -s https://api.kanye.rest/ | jq '.quote')\" "yolo commiting"'
 
 # History Config
 HISTFILE="$HOME/.zsh_history"
@@ -78,11 +87,11 @@ if [ -x "$(command -v op)" ]; then
   eval "$(op completion zsh)"; compdef _op op
   # 1Password Agent Symlink on macOS
   if [[ "$(uname)" == "Darwin" ]]; then
-    # check if link has not been created and make sure that agent is enabled
-    if [ ! -L ~/.1password/agent.sock ] && [ -e "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]; then
-      # create symlink to 1password agent
-      mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
-    fi
+  # check if link has not been created and make sure that agent is enabled
+  if [ ! -L ~/.1password/agent.sock ] && [ -e "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]; then
+    # create symlink to 1password agent
+    mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
+  fi
   fi
 fi
 

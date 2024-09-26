@@ -58,7 +58,9 @@ packages:
       - keka
       - keycastr
       - monitorcontrol
+      - monarch
       - rectangle
+      - localsend
 
       # Media
       - iina
@@ -83,6 +85,7 @@ packages:
       
       # Kubernetes
       - headlamp
+      - lens
 
       # Browsers
       - arc
@@ -101,3 +104,6 @@ packages:
           - hashicorp/tap/packer
           - hashicorp/tap/terraform
           - hashicorp/tap/vault
+      - tap: localsend/localsend
+        brews:
+          - localsend
