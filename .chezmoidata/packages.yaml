@@ -30,6 +30,7 @@ packages:
       - gnupg
       - handbrake
       - ios-sim
+      - wasmcloud/wasmcloud/wash
 
       # Kubernetes
       - helm
