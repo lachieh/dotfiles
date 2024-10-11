@@ -124,6 +124,11 @@ eval "$(/bin/cat /tmp/_wash)"
 rm /tmp/_wash
 fi
 
+# wkg config
+# remove once https://github.com/bytecodealliance/wasm-pkg-tools/issues/111 is resolved
+export WKG_CONFIG_FILE=${HOME}/.config/wasm-pkg/config.toml
+export WKG_CACHE_DIR=${HOME}/.cache/wkg
+
 # export secret env variables from ~/.secrets
 set -o allexport
 if [ -f ~/.secrets ]; then source "${HOME}/.secrets"; fi
