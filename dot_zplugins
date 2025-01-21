@@ -1,5 +1,5 @@
 # Plugins
-ohmyzsh/ohmyzsh
+getantidote/use-omz
 ohmyzsh/ohmyzsh path:plugins/asdf
 ohmyzsh/ohmyzsh path:plugins/command-not-found
 ohmyzsh/ohmyzsh path:plugins/git
@@ -10,7 +10,7 @@ zsh-users/zsh-syntax-highlighting
 # completions
 lukechilds/zsh-better-npm-completion
 g-plane/zsh-yarn-autocompletions
-g-plane/pnpm-shell-completion
+g-plane/pnpm-shell-completion path:pnpm-shell-completion.plugin.zsh
 zsh-users/zsh-completions
 
 # Themes
