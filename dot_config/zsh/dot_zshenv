@@ -6,4 +6,4 @@
 export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
 
 # vscode integration
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh"
