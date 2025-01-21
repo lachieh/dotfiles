@@ -12,4 +12,5 @@ fi
 # rust
 if [ -x "$(command -v rustup)" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
+  source "$HOME/.cargo/env"
 fi
