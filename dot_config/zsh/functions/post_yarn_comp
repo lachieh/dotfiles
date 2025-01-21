@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+# https://github.com/g-plane/zsh-yarn-autocompletions
+
+local FUNC="zsh-yarn-autocompletions"
+local PLUGIN=$(antidote path g-plane/$FUNC)
+
+if [[ ! -e $PLUGIN/$FUNC ]]; then
+  cd $PLUGIN
+  cp ./$FUNC.plugin.zsh ./$FUNC
+  chmod +x ./$FUNC
+fi

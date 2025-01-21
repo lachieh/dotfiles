@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+# https://github.com/g-plane/pnpm-shell-completion
+
+local FUNC="pnpm-shell-completion"
+local PLUGIN=$(antidote path g-plane/$FUNC)
+
+if [[ ! -e $PLUGIN/$FUNC ]]; then
+  cd $PLUGIN
+  cp ./$FUNC.plugin.zsh ./$FUNC
+  chmod +x ./$FUNC
+fi
