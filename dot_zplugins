@@ -1,3 +1,5 @@
+#!
+
 # Plugins
 getantidote/use-omz
 ohmyzsh/ohmyzsh path:plugins/asdf
