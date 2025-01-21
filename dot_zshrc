@@ -3,8 +3,6 @@ if [ -e "$HOME/.iterm2_shell_integration" ]; then
   source "$HOME"/.iterm2_shell_integration.zsh
 fi
 
-export ZSH_CUSTOM=$HOME/.zsh_custom
-
 # Homebrew completions
 if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -22,6 +20,8 @@ if [ -d "$ANTIDOTE" ]; then
   # - run zupdate when changing .zplugins
   alias zupdate="antidote bundle < ~/.zplugins > ~/.zplugins.sh"
 fi
+
+export ZSH_CUSTOM=$HOME/.zsh_custom
 
 # Aliases
 if [ -x "$(command -v bat)" ]; then
