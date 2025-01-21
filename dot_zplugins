@@ -1,5 +1,10 @@
 #!
 
+# initial helper plugins
+mattmc3/zephyr path:plugins/environment
+mattmc3/zephyr path:plugins/homebrew
+mattmc3/zephyr path:plugins/zfunctions
+
 # Plugins
 getantidote/use-omz
 ohmyzsh/ohmyzsh path:plugins/asdf
@@ -10,13 +15,13 @@ ohmyzsh/ohmyzsh path:plugins/keychain
 zsh-users/zsh-syntax-highlighting
 
 # completions
+mattmc3/ez-compinit
+zsh-users/zsh-completions kind:fpath path:src
 lukechilds/zsh-better-npm-completion
-"$ZSH_CUSTOM/plugins/g-plane__pnpm-shell-completion/postinstall.plugin.zsh"
-g-plane/zsh-yarn-autocompletions post:pnpm_verify_install
-g-plane/pnpm-shell-completion
-zsh-users/zsh-completions
+g-plane/zsh-yarn-autocompletions post:yarn_comp_postinstall
+g-plane/pnpm-shell-completion post:pnpm_comp_postinstall
 
-# Themes
+# Theme
+spaceship-prompt/spaceship-prompt
 # lachieh/hellotimber-theme
 # romkatv/powerlevel10k
-spaceship-prompt/spaceship-prompt
