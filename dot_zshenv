@@ -1,7 +1,13 @@
 #!/bin/zsh
 
+echo "Loading zshenv: $ZDOTDIR"
+
 # disable vscode integration for now
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  echo "USER_ZDOTDIR: $USER_ZDOTDIR"
+  echo "VSCOD_ZDOTDIR: $VSCODE_ZDOTDIR"
+  echo "VSCODE_INJECTION: $VSCODE_INJECTION"
+  echo "VSCODE_SHELL_INTEGRATION: $VSCODE_SHELL_INTEGRATION"
   export VSCODE_INJECTION=0
 fi
 
