@@ -2,7 +2,7 @@
 
 # vscode integration must be handled first
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  ZDOTDIR=$HOME/.config/zsh
+  USER_ZDOTDIR=$HOME/.config/zsh
   . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 fi
 
