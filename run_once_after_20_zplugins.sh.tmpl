@@ -1,5 +1,5 @@
 {{ if (eq .install_antidote "true") -}}
-#!/bin/sh
+#!/bin/zsh
 
 # dconf.ini hash: {{ include "dot_zplugins" | sha256sum }}
 echo "Updating .zplugins.sh"
