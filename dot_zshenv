@@ -4,6 +4,6 @@ export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
 # vscode integration
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  export USER_ZDOTDIR=$ZDOTDIR
+  ZDOTDIR=$HOME/.config/zsh
   . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 fi
