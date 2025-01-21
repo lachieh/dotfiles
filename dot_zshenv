@@ -1,9 +1,8 @@
 #!/bin/zsh
 
-# vscode integration must be handled first
+# disable vscode integration for now
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  USER_ZDOTDIR=$HOME/.config/zsh
-  . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
+  export VSCODE_SHELL_INTEGRATION=1
 fi
 
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
