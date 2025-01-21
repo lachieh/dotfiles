@@ -1,12 +1,13 @@
 #!
 
 # initial helper plugins
+getantidote/use-omz
 mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew
 mattmc3/zephyr path:plugins/zfunctions
 
 # Plugins
-getantidote/use-omz
+ohmyzsh/ohmyzsh path:lib
 ohmyzsh/ohmyzsh path:plugins/asdf
 ohmyzsh/ohmyzsh path:plugins/command-not-found
 ohmyzsh/ohmyzsh path:plugins/git

@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+## with_msg "command" "message"
+if [ -n "$2" ]; then echo "$2"; fi
+echo "➜ $1"
+eval "$1"

@@ -1,0 +1,20 @@
+#!/bin/zsh
+# shellcheck disable=SC1071
+
+# Setup
+source "${ZDOTDIR:-$HOME}/lib/setup.zsh"
+
+# Aliases
+source "${ZDOTDIR:-$HOME}/lib/aliases.zsh"
+
+# Config
+source "${ZDOTDIR:-$HOME}/lib/config.zsh"
+
+# Languages
+source "${ZDOTDIR:-$HOME}/lib/languages.zsh"
+
+# Completions
+source "${ZDOTDIR:-$HOME}/lib/completions.zsh"
+
+# Secrets
+source "${ZDOTDIR:-$HOME}/lib/secrets.zsh"
