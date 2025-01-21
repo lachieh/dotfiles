@@ -8,5 +8,5 @@ echo "path: $ZDOTDIR"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   unset $VSCODE_SHELL_INTEGRATION
-. "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
+  . "/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-rc.zsh"
 fi

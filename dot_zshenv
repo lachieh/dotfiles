@@ -2,7 +2,7 @@
 
 # disable vscode integration for now
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  export VSCODE_SHELL_INTEGRATION=1
+  export VSCODE_INJECTION=0
 fi
 
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"

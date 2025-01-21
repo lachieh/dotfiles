@@ -1,5 +1,5 @@
 # History Config
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
 HISTSIZE=1000000
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
