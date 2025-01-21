@@ -10,7 +10,7 @@ zsh-users/zsh-syntax-highlighting
 # completions
 lukechilds/zsh-better-npm-completion
 g-plane/zsh-yarn-autocompletions
-g-plane/pnpm-shell-completion path:pnpm-shell-completion.plugin.zsh
+g-plane/pnpm-shell-completion
 zsh-users/zsh-completions
 
 # Themes

@@ -1,5 +1,8 @@
 {{ if eq .chezmoi.os "darwin" -}}
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"-
+
+# Load orbstack
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
 {{- end }}
 
 {{ if eq .chezmoi.os "linux" -}}
