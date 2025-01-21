@@ -11,7 +11,8 @@ zsh-users/zsh-syntax-highlighting
 
 # completions
 lukechilds/zsh-better-npm-completion
-g-plane/zsh-yarn-autocompletions
+"$ZSH_CUSTOM/plugins/g-plane__pnpm-shell-completion/postinstall.plugin.zsh"
+g-plane/zsh-yarn-autocompletions post:pnpm_verify_install
 g-plane/pnpm-shell-completion
 zsh-users/zsh-completions
 
