@@ -23,4 +23,4 @@ alias nah='_with_msg "git reset --hard HEAD" "yeah, nah. ditch all that"'
 alias yolo='_with_msg "git add -A && git commit -m \"$(curl -s https://api.kanye.rest/ | jq '\''.quote'\'')\" "yolo commiting"'
 
 # antidote
-alias zupdate="antidote bundle < $ZDOTDIR/.config/zsh/.zplugins > $ZDOTDIR/.config/zsh/.zplugins.zsh"
+alias zupdate="antidote bundle < $ZDOTDIR/.zplugins > $ZDOTDIR/.zplugins.zsh"
