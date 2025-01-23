@@ -10,7 +10,5 @@ if [ -x "$(command -v go)" ]; then
 fi
 
 # rust
-if [ -x "$(command -v rustup)" ]; then
-  export PATH="$HOME/.cargo/bin:$PATH"
-  source "$HOME/.cargo/env"
-fi
+[[ -r $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
+[ -x "$(command -v rustup)" ] && export PATH="$HOME/.cargo/bin:$PATH"
