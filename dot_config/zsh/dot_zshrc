@@ -9,6 +9,9 @@ source "${ZDOTDIR:-$HOME}/lib/antidot.zsh"
 ## Setup
 source "${ZDOTDIR:-$HOME}/lib/setup.zsh"
 
+## Plugins (pre)
+source "${ZDOTDIR:-$HOME}/lib/plugins-pre.zsh"
+
 ## Config
 source "${ZDOTDIR:-$HOME}/lib/config.zsh"
 
@@ -23,3 +26,6 @@ source "${ZDOTDIR:-$HOME}/lib/completions.zsh"
 
 ## Secrets
 source "${ZDOTDIR:-$HOME}/lib/secrets.zsh"
+
+## Plugins (post)
+source "${ZDOTDIR:-$HOME}/lib/plugins-post.zsh"

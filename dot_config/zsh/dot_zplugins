@@ -1,7 +1,6 @@
 #!/usr/bin/env getantidote
 
 # initial helper plugins
-getantidote/use-omz
 mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew
 mattmc3/zephyr path:plugins/zfunctions
@@ -13,14 +12,8 @@ ohmyzsh/ohmyzsh path:plugins/command-not-found
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/autojump
 ohmyzsh/ohmyzsh path:plugins/keychain
-zsh-users/zsh-syntax-highlighting
 
 # completions
-mattmc3/ez-compinit
-zsh-users/zsh-completions
-lukechilds/zsh-better-npm-completion
-g-plane/zsh-yarn-autocompletions
-g-plane/pnpm-shell-completion
 
 # Theme
 spaceship-prompt/spaceship-prompt
