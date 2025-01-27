@@ -3,7 +3,7 @@
 # https://github.com/g-plane/zsh-yarn-autocompletions
 
 local FUNC="yarn-autocompletions"
-local PLUGIN=$(antidote path g-plane/$FUNC)
+local PLUGIN=$(antidote path g-plane/zsh-yarn-autocompletions)
 
 if [[ ! -e $PLUGIN/$FUNC ]]; then
   cd $PLUGIN

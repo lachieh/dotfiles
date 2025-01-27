@@ -1,6 +1,10 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
 
+echo "Loading zsh configuration..."
+echo $ZSH
+echo "---"
+
 ## Setup
 # These are the first things that should be loaded. This is where we set up the
 # environment and load anything that is likely to be needed by other modules.

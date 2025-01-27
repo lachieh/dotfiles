@@ -6,8 +6,6 @@ mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew
 mattmc3/zephyr path:plugins/zfunctions
 "$ZSH_CUSTOM"/plugins/xdg
-atuinsh/atuin branch:main
-"$ZSH_CUSTOM"/plugins/atuin
 
 # config
 mattmc3/zephyr path:plugins/color
@@ -21,10 +19,6 @@ ajeetdsouza/zoxide
 g-plane/zsh-yarn-autocompletions post:post_pnpm_comp
 g-plane/pnpm-shell-completion post:post_yarn_comp
 
-# custom plugins
-"$ZSH_CUSTOM"/plugins/eza
-"$ZSH_CUSTOM"/plugins/atuin
-
 # macos
 mattmc3/zephyr path:plugins/macos conditional:is-macos
 ohmyzsh/ohmyzsh path:plugins/iterm2 conditional:is-macos
@@ -37,9 +31,13 @@ zsh-users/zsh-completions
 # omz plugins
 getantidote/use-omz
 ohmyzsh/ohmyzsh path:lib
+ohmyzsh/ohmyzsh path:plugins/asdf
 ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/eza
 ohmyzsh/ohmyzsh path:plugins/sudo
 ohmyzsh/ohmyzsh path:plugins/encode64
 ohmyzsh/ohmyzsh path:plugins/extract
 ohmyzsh/ohmyzsh path:plugins/command-not-found
 
+# atuin
+"$ZSH_CUSTOM"/plugins/atuin

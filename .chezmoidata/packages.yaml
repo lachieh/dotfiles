@@ -18,6 +18,7 @@ packages:
       - jq
       - moreutils
       - ncdu
+      - starship
       - tealdeer
       - tmux
       - topgrade
