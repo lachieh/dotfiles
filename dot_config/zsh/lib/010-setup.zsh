@@ -1,19 +1,10 @@
-# zi
-typeset -A ZI
-ZI[HOME_DIR]="${HOME}/.zi"
-ZI[BIN_DIR]="${HOME}/.zi/bin"
-if [ ! -d $ZI[HOME_DIR] ]; then
-  mkdir -p "$ZI[HOME_DIR]"
-  compaudit | xargs chown -R "$(whoami)" "$ZI[HOME_DIR]"
-  compaudit | xargs chmod -R go-w "$ZI[HOME_DIR]"
-  if [ ! -d $ZI[BIN_DIR] ]; then
-    mkdir -p "$ZI[BIN_DIR]"
-    git clone https://github.com/z-shell/zi.git "$ZI[BIN_DIR]"
-  fi
-fi
-source "${ZI[BIN_DIR]}/zi.zsh"
-autoload -Uz _zi
-(( ${+_comps} )) && _comps[zi]=_zi
+# zinit
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # compinit initialization
 autoload -Uz compinit
