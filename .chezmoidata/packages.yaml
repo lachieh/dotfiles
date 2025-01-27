@@ -4,15 +4,11 @@ packages:
       # Shell Utils
       - coreutils
       - asdf
-      - autojump
-      - bat
       - chezmoi
       - curl
       - gd
       - findutils
-      - fzf
       - htop
-      - jq
       - moreutils
       - ncdu
       - tmux
@@ -91,9 +87,6 @@ packages:
       - chromium
 
     taps:
-      - tap: yt-dlp/taps
-        brews:
-          - yt-dlp
       - tap: hashicorp/tap
         brews:
           - hashicorp/tap/consul

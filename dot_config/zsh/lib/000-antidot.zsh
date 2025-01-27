@@ -1,5 +1,3 @@
-export XDG_RUNTIME_DIR="/run/user/$UID"
-
 export ASDF_DATA_DIR="$XDG_DATA_HOME"/asdf
 
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
