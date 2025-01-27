@@ -1,5 +1,5 @@
-direnv 2.34.0
-python 3.12.6
+direnv 2.35.0
+python 3.13.1t
 rust 1.80.1
-golang 1.23.1
+golang 1.23.5
 nodejs 22.11.0
