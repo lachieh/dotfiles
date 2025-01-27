@@ -17,12 +17,10 @@ zsh-users/zsh-syntax-highlighting
 
 # completions
 mattmc3/ez-compinit
-zsh-users/zsh-completions kind:fpath path:src
+zsh-users/zsh-completions
 lukechilds/zsh-better-npm-completion
-g-plane/zsh-yarn-autocompletions post:yarn_comp_postinstall
-g-plane/pnpm-shell-completion post:pnpm_comp_postinstall
+g-plane/zsh-yarn-autocompletions
+g-plane/pnpm-shell-completion
 
 # Theme
 spaceship-prompt/spaceship-prompt
-# lachieh/hellotimber-theme
-# romkatv/powerlevel10k

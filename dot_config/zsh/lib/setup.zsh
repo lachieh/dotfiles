@@ -1,10 +1,9 @@
+# zinit
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
 
-# Antidote
-ANTIDOTE="$(brew --prefix)/share/antidote"
-if [ -d "$ANTIDOTE" ]; then
-  source "$ANTIDOTE/antidote.zsh"
-  local SRC="${ZDOTDIR:-$HOME}/.zplugins"
-  local DST="${ZDOTDIR:-$HOME}/.zplugins.zsh"
-  if [ ! -f $DST ]; then antidote bundle < $SRC > $DST; fi
-  source $DST
-fi
+# compinit initialization
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit

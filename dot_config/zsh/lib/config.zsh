@@ -17,4 +17,11 @@ setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 # Set up fuzzy find
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'" # add support for ctrl+o to open selected file in VS Code
-[ -f ~/.fzf.zsh ] && source "${HOME}/.fzf.zsh"
+[ -f ~/.fzf.zsh ] && source "${XDG_CONFIG_HOME}/fzf/plugin.zsh"
+
+# VSCode
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  export ZDOTDIR="${HOME}/.config/zsh"
+  export VSCODE_SUGGEST=1
+  . "$(code --locate-shell-integration-path zsh)"
+fi

@@ -2,7 +2,6 @@ packages:
   darwin:
     brews:
       # Shell Utils
-      - antidote
       - coreutils
       - asdf
       - autojump
@@ -52,7 +51,6 @@ packages:
       - affinity-publisher
 
       # macOS Utils
-      - balenaetcher
       - bettertouchtool
       - istat-menus
       - jordanbaird-ice
@@ -60,7 +58,6 @@ packages:
       - keycastr
       - localsend
       - monitorcontrol
-      # - monarch -- disabling until md5 fix
       - rectangle
 
       # Media
@@ -68,7 +65,6 @@ packages:
       - loopback
       - soundsource
       - spotify
-      - vlc
 
       # Communication
       - discord

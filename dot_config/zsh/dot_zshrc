@@ -1,20 +1,25 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
 
-# Setup
+## Anti-dot
+# This comes at the start so that all the other scripts that might depend on
+# them are configured first.
+source "${ZDOTDIR:-$HOME}/lib/antidot.zsh"
+
+## Setup
 source "${ZDOTDIR:-$HOME}/lib/setup.zsh"
 
-# Aliases
-source "${ZDOTDIR:-$HOME}/lib/aliases.zsh"
-
-# Config
+## Config
 source "${ZDOTDIR:-$HOME}/lib/config.zsh"
 
-# Languages
+## Aliases
+source "${ZDOTDIR:-$HOME}/lib/aliases.zsh"
+
+## Languages
 source "${ZDOTDIR:-$HOME}/lib/languages.zsh"
 
-# Completions
+## Completions
 source "${ZDOTDIR:-$HOME}/lib/completions.zsh"
 
-# Secrets
+## Secrets
 source "${ZDOTDIR:-$HOME}/lib/secrets.zsh"
