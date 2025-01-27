@@ -2,17 +2,29 @@ packages:
   darwin:
     brews:
       # Shell Utils
-      - coreutils
       - asdf
+      - atuin
+      - bat
       - chezmoi
+      - coreutils
       - curl
-      - gd
+      - direnv
+      - eza
+      - fd
       - findutils
+      - fzf
+      - gd
       - htop
+      - jq
       - moreutils
       - ncdu
+      - tealdeer
       - tmux
       - topgrade
+      - tree
+      - yt-dlp
+      - yq
+      - zoxide
 
       # Dev Tools
       - awscli
@@ -21,8 +33,6 @@ packages:
       - git
       - gitu
       - git-filter-repo
-      - gnutls
-      - gnupg
       - handbrake
       - ios-sim
       - wasmcloud/wasmcloud/wash
@@ -89,8 +99,12 @@ packages:
     taps:
       - tap: hashicorp/tap
         brews:
-          - hashicorp/tap/consul
+          - hashicorp/tap/consul``
           - hashicorp/tap/nomad
           - hashicorp/tap/packer
           - hashicorp/tap/terraform
           - hashicorp/tap/vault
+
+      - tap: wasmcloud/wasmcloud
+        brews:
+          - wasmcloud/wasmcloud/wash

@@ -1,0 +1,3 @@
+# Chezmoi
+
+alias chez="chezmoi"

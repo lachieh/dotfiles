@@ -10,18 +10,3 @@ if [ -x "$(command -v op)" ]; then
   fi
   fi
 fi
-
-# wash completions
-if [ -x "$(command -v wash)" ]; then
-  wash completions -d /tmp/ zsh >/dev/null
-  eval "$(/bin/cat /tmp/_wash)"
-  rm /tmp/_wash
-fi
-
-# asdf + direnv
-if [ -x "$(command -v asdf)" ]; then
-  if [ -x "$(command -v direnv)" ]; then
-    export ASDF_NODEJS_AUTO_ENABLE_COREPACK=true
-    eval "$(asdf exec direnv hook zsh)"
-  fi
-fi

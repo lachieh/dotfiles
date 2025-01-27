@@ -1,31 +1,19 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
 
-## Anti-dot
-# This comes at the start so that all the other scripts that might depend on
-# them are configured first.
-source "${ZDOTDIR:-$HOME}/lib/000-antidot.zsh"
-
 ## Setup
-source "${ZDOTDIR:-$HOME}/lib/010-setup.zsh"
+# These are the first things that should be loaded. This is where we set up the
+# environment and load anything that is likely to be needed by other modules.
+source "${ZDOTDIR}/lib/100-setup.zsh"
 
-## Plugins (pre)
-source "${ZDOTDIR:-$HOME}/lib/050-plugins-pre.zsh"
+## Modules
+# This isn't really a module system, but rather a way to load different parts of
+# the configuration in a more organized way.
+# It loads each *.zsh file in the `zmodules` directory in order.
+source "${ZDOTDIR}/lib/500-modules.zsh"
 
-## Config
-source "${ZDOTDIR:-$HOME}/lib/200-config.zsh"
-
-## Aliases
-source "${ZDOTDIR:-$HOME}/lib/210-aliases.zsh"
-
-## Languages
-source "${ZDOTDIR:-$HOME}/lib/220-languages.zsh"
-
-## Completions
-source "${ZDOTDIR:-$HOME}/lib/500-completions.zsh"
-
-## Secrets
-source "${ZDOTDIR:-$HOME}/lib/700-secrets.zsh"
-
-## Plugins (post)
-source "${ZDOTDIR:-$HOME}/lib/900-plugins-post.zsh"
+## Post config setup
+# Anything that must be loaded after the modules are loaded should be loaded
+# here. Useful for stuff that might happen in the background and shouldn't block
+# the shell from starting.
+source "${ZDOTDIR}/lib/900-post.zsh"
