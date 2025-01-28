@@ -1,12 +1,7 @@
 #!/bin/zsh
+# shellcheck disable=SC1071
 
-# https://github.com/g-plane/zsh-yarn-autocompletions
+# http://github.com/g-plane/zsh-yarn-autocompletions
 
-local FUNC="yarn-autocompletions"
 local PLUGIN=$(antidote path g-plane/zsh-yarn-autocompletions)
-
-if [[ ! -e $PLUGIN/$FUNC ]]; then
-  cd $PLUGIN
-  cp ./$FUNC.plugin.zsh ./$FUNC
-  chmod +x ./$FUNC
-fi
+[[ ! -e $PLUGIN/yarn-autocompletions ]] && zsh -c "cd $PLUGIN && $PLUGIN/zplug.zsh"

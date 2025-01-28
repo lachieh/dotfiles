@@ -1,3 +1,7 @@
+# xdg init
+export XDG_CONFIG_HOME=~/.config
+export XDG_CACHE_HOME=~/.cache
+export XDG_DATA_HOME=~/.local/share
 
 # Antidote
 export ZSH_CUSTOM=${ZSH_CUSTOM:-$ZDOTDIR}
