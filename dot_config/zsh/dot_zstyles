@@ -1,0 +1,18 @@
+#!/bin/zsh
+# shellcheck disable=SC1071
+
+# Antidote settings
+: ${ANTIDOTE_HOME:=${XDG_CACHE_HOME:-~/.cache}/repos}
+antidote_repo=$ANTIDOTE_HOME/mattmc3/antidote
+
+zstyle ':antidote:home' path $ANTIDOTE_HOME
+zstyle ':antidote:repo' path $antidote_repo
+zstyle ':antidote:bundle' use-friendly-names 'yes'
+zstyle ':antidote:plugin:*' defer-options '-p'
+zstyle ':antidote:*' zcompile 'yes'
+
+# Use caching.
+# zstyle ':zephyr:plugin:*' 'use-cache' yes
+
+# Set prompt
+zstyle ':zephyr:plugin:prompt' theme starship starship

@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 # shellcheck disable=SC1071
 
 ## Setup
@@ -6,11 +6,22 @@
 # environment and load anything that is likely to be needed by other modules.
 source "${ZDOTDIR}/lib/100-setup.zsh"
 
+## Plugins
+# This is where we load all of the plugins. This is done before the modules so
+# that the modules can use the plugins.
+source "${ZDOTDIR}/lib/200-plugins.zsh"
+
 ## Modules
 # This isn't really a module system, but rather a way to load different parts of
 # the configuration in a more organized way.
 # It loads each *.zsh file in the `zmodules` directory in order.
 source "${ZDOTDIR}/lib/500-modules.zsh"
+
+## Prompt
+# This is where we set up the prompt. This is done last so that the prompt can
+# load all the plugins, etc. before the prompt is set. The transient prompt is
+# set first so that it can be used while the main prompt is being loaded.
+source "${ZDOTDIR}/lib/700-prompt.zsh"
 
 ## Post config setup
 # Anything that must be loaded after the modules are loaded should be loaded

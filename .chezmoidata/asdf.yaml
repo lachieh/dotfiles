@@ -8,9 +8,9 @@ asdf:
   - lang: nodejs
     version: lts
     repo: https://github.com/asdf-vm/asdf-nodejs.git
-  - lang: python
-    version: latest
-    repo: https://github.com/danhper/asdf-python.git
   - lang: rust
     version: latest
     repo: https://github.com/asdf-community/asdf-rust.git
+  - lang: python
+    version: latest
+    repo: https://github.com/danhper/asdf-python.git

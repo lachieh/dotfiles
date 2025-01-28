@@ -1,3 +1,9 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC1071
+
+# References:
+# - https://github.com/mattmc3/zdotdir/tree/main/plugins/xdg/xdg.plugin.zsh
+
 #
 # xdg - don't pollute home
 #
@@ -40,6 +46,13 @@ alias wget="${aliases[wget]:-wget} --hsts-file=\$XDG_CACHE_HOME/wget/wget-hsts"
 #
 # Dev tools
 #
+
+# aws
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME"/aws/credentials
+
+# docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 # gpg
 export GNUPGHOME="${GNUPGHOME:-$XDG_DATA_HOME/gnupg}"

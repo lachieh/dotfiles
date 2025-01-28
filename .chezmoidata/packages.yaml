@@ -97,7 +97,12 @@ packages:
       - firefox
       - chromium
 
+      # Fonts
+      - font-cascadia-code-nf
+
     taps:
+      - tap: homebrew/command-not-found
+        brews: []
       - tap: hashicorp/tap
         brews:
           - hashicorp/tap/consul``

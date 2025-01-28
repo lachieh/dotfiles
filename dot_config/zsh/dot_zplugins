@@ -1,43 +1,44 @@
 #!/bin/sh
 
-# init
+## init
 "$ZSH_CUSTOM"/plugins/starship-ftl
 mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew
 mattmc3/zephyr path:plugins/zfunctions
 "$ZSH_CUSTOM"/plugins/xdg
 
-# config
+# themes
+mattmc3/zephyr path:plugins/prompt
+"$ZDOTDIR"/themes kind:fpath
+
+## compinit helper
+getantidote/use-omz
+
+## config
 mattmc3/zephyr path:plugins/color
 mattmc3/zephyr path:plugins/completion
 mattmc3/zephyr path:plugins/history
 
-# completion
-mattmc3/ez-compinit
+## macos
+mattmc3/zephyr path:plugins/macos conditional:is-macos
+
+## plugins
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions kind:fpath path:src
 ajeetdsouza/zoxide
-g-plane/zsh-yarn-autocompletions post:post_pnpm_comp kind:zsh
-g-plane/pnpm-shell-completion post:post_yarn_comp kind:zsh
+g-plane/pnpm-shell-completion kind:zsh post:post_pnpm_comp
+romkatv/zsh-bench kind:path
 
-# omz plugins
-getantidote/use-omz
-ohmyzsh/ohmyzsh path:lib
+## omz plugins
 ohmyzsh/ohmyzsh path:plugins/asdf kind:zsh
-ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/eza
+ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/gitfast
 ohmyzsh/ohmyzsh path:plugins/sudo
 ohmyzsh/ohmyzsh path:plugins/encode64
 ohmyzsh/ohmyzsh path:plugins/extract
 ohmyzsh/ohmyzsh path:plugins/command-not-found
 
-# macos
-mattmc3/zephyr path:plugins/macos conditional:is-macos
-ohmyzsh/ohmyzsh path:plugins/iterm2 conditional:is-macos
-
-# fish-like helpers
-zsh-users/zsh-syntax-highlighting
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-completions
-
-# atuin
+## atuin
 "$ZSH_CUSTOM"/plugins/atuin

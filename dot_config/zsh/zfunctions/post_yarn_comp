@@ -1,7 +1,0 @@
-#!/bin/zsh
-# shellcheck disable=SC1071
-
-# http://github.com/g-plane/zsh-yarn-autocompletions
-
-local PLUGIN=$(antidote path g-plane/zsh-yarn-autocompletions)
-[[ ! -e $PLUGIN/yarn-autocompletions ]] && zsh -c "cd $PLUGIN && $PLUGIN/zplug.zsh"
