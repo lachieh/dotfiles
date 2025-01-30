@@ -1,0 +1,27 @@
+theme:
+  tokens:
+    mode: "dark" # dark | light
+    colors:
+      background: "#474056"
+      foreground: "#8a95a5"
+      primary: "#B3001B"
+      secondary: "#757083"
+      tertiary: "#8a95a5"
+      muted: "#b9c6ae"
+      highlight: "#eaf7cf"
+      error: "#ff0000"
+      success: "#00ff00"
+      warning: "#ffff00"
+      info: "#00ffff"
+  colors:
+    t1: "#84F9BD"
+    t2: "#2FC9B9"
+    t3: "#0098A7"
+    t4: "#006884"
+    t5: "#6398AC"
+    t6: "#7FFF00"
+  fonts:
+    mono: '"Cascadia Code NF", "Cascadia Code PL", "Cascadia Code", "Fira Code", "Consolas", "Monaco", "monospace"'
+    sans: '"Inter", "Arial", "sans-serif"'
+    serif: '"Merriweather", "Georgia", "serif"'
+  

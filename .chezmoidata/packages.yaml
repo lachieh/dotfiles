@@ -110,7 +110,3 @@ packages:
           - hashicorp/tap/packer
           - hashicorp/tap/terraform
           - hashicorp/tap/vault
-
-      - tap: wasmcloud/wasmcloud
-        brews:
-          - wasmcloud/wasmcloud/wash
