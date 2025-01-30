@@ -18,7 +18,7 @@ theme:
     t2: "#2FC9B9"
     t3: "#0098A7"
     t4: "#006884"
-    t5: "#6398AC"
+    t5: "#003750"
     t6: "#7FFF00"
   fonts:
     mono: '"Cascadia Code NF", "Cascadia Code PL", "Cascadia Code", "Fira Code", "Consolas", "Monaco", "monospace"'
