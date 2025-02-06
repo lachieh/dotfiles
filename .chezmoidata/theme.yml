@@ -1,18 +1,33 @@
 theme:
   tokens:
     mode: "dark" # dark | light
-    colors:
-      background: "#474056"
-      foreground: "#8a95a5"
-      primary: "#B3001B"
-      secondary: "#757083"
-      tertiary: "#8a95a5"
-      muted: "#b9c6ae"
-      highlight: "#eaf7cf"
-      error: "#ff0000"
-      success: "#00ff00"
-      warning: "#ffff00"
-      info: "#00ffff"
+    palette:
+      background: '#070b0d'
+      foreground: '#d6e0e4'
+      black:
+        normal: '#5c5855'
+        bright: '#090300'
+      red:
+        normal: '#fb4b63'
+        bright: '#681d27'
+      green:
+        normal: '#58ee85'
+        bright: '#224b31'
+      yellow:
+        normal: '#f0df7e'
+        bright: '#655913'
+      blue:
+        normal: '#379ff8'
+        bright: '#004179'
+      magenta:
+        normal: '#f498fd'
+        bright: '#4b1850'
+      cyan:
+        normal: '#86dbff'
+        bright: '#4a778a'
+      white:
+        normal: '#768f9b'
+        bright: '#152228'
   colors:
     t1: "#84F9BD"
     t2: "#2FC9B9"
@@ -21,7 +36,7 @@ theme:
     t5: "#003750"
     t6: "#7FFF00"
   fonts:
-    mono: '"Cascadia Code NF", "Cascadia Code PL", "Cascadia Code", "Fira Code", "Consolas", "Monaco", "monospace"'
+    mono: '"CaskaydiaCove Nerd Font Propo", "Cascadia Code", "Fira Code", "Consolas", "Monaco", "monospace"'
     sans: '"Inter", "Arial", "sans-serif"'
     serif: '"Merriweather", "Georgia", "serif"'
   

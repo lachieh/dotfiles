@@ -98,7 +98,8 @@ packages:
       - chromium
 
       # Fonts
-      - font-cascadia-code-nf
+      - font-cascadia-code
+      - font-caskaydia-cove-nerd-font
 
     taps:
       - tap: homebrew/command-not-found

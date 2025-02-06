@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ## init
-"$ZSH_CUSTOM"/plugins/starship-ftl
+"$ZDOTDIR"/plugins/starship-ftl
 mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew
 mattmc3/zephyr path:plugins/zfunctions
-"$ZSH_CUSTOM"/plugins/xdg
+"$ZDOTDIR"/plugins/xdg
 
 # themes
 mattmc3/zephyr path:plugins/prompt
@@ -23,6 +23,7 @@ mattmc3/zephyr path:plugins/history
 mattmc3/zephyr path:plugins/macos conditional:is-macos
 
 ## plugins
+"$ZDOTDIR"/plugins/asdf
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions kind:fpath path:src
@@ -31,7 +32,7 @@ g-plane/pnpm-shell-completion kind:zsh post:post_pnpm_comp
 romkatv/zsh-bench kind:path
 
 ## omz plugins
-ohmyzsh/ohmyzsh path:plugins/asdf kind:zsh
+ohmyzsh/ohmyzsh path:plugins/direnv
 ohmyzsh/ohmyzsh path:plugins/eza
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/gitfast
@@ -41,4 +42,4 @@ ohmyzsh/ohmyzsh path:plugins/extract
 ohmyzsh/ohmyzsh path:plugins/command-not-found
 
 ## atuin
-"$ZSH_CUSTOM"/plugins/atuin
+"$ZDOTDIR"/plugins/atuin
