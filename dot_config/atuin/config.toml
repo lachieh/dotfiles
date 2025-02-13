@@ -43,7 +43,7 @@ auto_sync = true
 ## which filter mode to use by default
 ## possible values: "global", "host", "session", "directory", "workspace"
 ## consider using search.filters to customize the enablement and order of filter modes
-# filter_mode = "global"
+# filter_mode = "session"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false).
@@ -56,7 +56,7 @@ workspaces = true
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
 ## leave unspecified to use same mode set in "filter_mode"
-# filter_mode_shell_up_key_binding = "directory"
+filter_mode_shell_up_key_binding = "session"
 
 ## which search mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "search_mode"
@@ -65,11 +65,11 @@ workspaces = true
 
 ## which style to use
 ## possible values: auto, full, compact
-# style = "auto"
+style = "auto"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-# inline_height = 0
+inline_height = 0
 
 ## Invert the UI - put the search bar at the top , Default to `false`
 # invert = false
@@ -80,7 +80,7 @@ workspaces = true
 
 ## what to do when the escape key is pressed when searching
 ## possible values: return-original, return-query
-# exit_mode = "return-original"
+exit_mode = "return-query"
 
 ## possible values: emacs, subl
 # word_jump_mode = "emacs"
@@ -125,7 +125,7 @@ workspaces = true
 ## Configure whether or not to show the help row, which includes the current Atuin
 ## version (and whether an update is available), a keymap hint, and the total
 ## amount of commands in your history.
-# show_help = true
+show_help = true
 
 ## Configure whether or not to show tabs for search and inspect
 # show_tabs = true
@@ -135,7 +135,7 @@ workspaces = true
 ## only be hidden if there are fewer than this count of lines available, and does not affect the use
 ## of keyboard shortcuts to switch tab. 0 to never auto-hide, default is 8 (lines).
 ## This is ignored except in `compact` mode.
-# auto_hide_height = 8
+auto_hide_height = 16
 
 ## Defaults to true. This matches history against a set of default regex, and will not save it if we get a match. Defaults include
 ## 1. AWS key id
@@ -200,14 +200,11 @@ common_subcommands = [
 # common_prefix = ["sudo"]
 
 ## Set commands that will be completely ignored from stats
-ignored_commands = [
-  "cd",
-  "ls"
-]
+ignored_commands = ["cd", "ls"]
 
 [keys]
 # Defaults to true. If disabled, using the up/down key won't exit the TUI when scrolled past the first/last entry.
-# scroll_exits = true
+scroll_exits = false
 
 [sync]
 # Enable sync v2 by default
@@ -243,17 +240,17 @@ records = true
 ## The port that should be used for TCP on non unix systems
 # tcp_port = 8889
 
-# [theme]
-## Color theme to use for rendering in the terminal.
-## There are some built-in themes, including the base theme ("default"),
-## "autumn" and "marine". You can add your own themes to the "./themes" subdirectory of your
-## Atuin config (or ATUIN_THEME_DIR, if provided) as TOML files whose keys should be one or
-## more of AlertInfo, AlertWarn, AlertError, Annotation, Base, Guidance, Important, and
-## the string values as lowercase entries from this list:
-##    https://ogeon.github.io/docs/palette/master/palette/named/index.html
-## If you provide a custom theme file, it should be  called "NAME.toml" and the theme below
-## should be the stem, i.e. `theme = "NAME"` for your chosen NAME.
-# name = "autumn"
+[theme]
+# Color theme to use for rendering in the terminal.
+# There are some built-in themes, including the base theme ("default"),
+# "autumn" and "marine". You can add your own themes to the "./themes" subdirectory of your
+# Atuin config (or ATUIN_THEME_DIR, if provided) as TOML files whose keys should be one or
+# more of AlertInfo, AlertWarn, AlertError, Annotation, Base, Guidance, Important, and
+# the string values as lowercase entries from this list:
+#    https://ogeon.github.io/docs/palette/master/palette/named/index.html
+# If you provide a custom theme file, it should be  called "NAME.toml" and the theme below
+# should be the stem, i.e. `theme = "NAME"` for your chosen NAME.
+name = "hellotimber"
 
 ## Whether the theme manager should output normal or extra information to help fix themes.
 ## Boolean, true or false. If unset, left up to the theme manager.
@@ -263,4 +260,4 @@ records = true
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
-filters = [ "workspace", "global", "host", "session", "directory" ]
+filters = ["workspace", "session", "directory", "global", "host"]

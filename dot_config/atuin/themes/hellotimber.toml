@@ -1,0 +1,7 @@
+[theme]
+name = "hellotimber"
+parent = "autumn"
+
+[colors]
+AlertInto = "green"
+Guidance = "#888844"
