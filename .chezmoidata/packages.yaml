@@ -46,6 +46,7 @@ packages:
       - hey
       - httpd
       - wget
+      - icann-rdap
 
     casks:
       # Security
