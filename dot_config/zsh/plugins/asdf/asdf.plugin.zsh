@@ -4,7 +4,7 @@
 # References:
 # - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/asdf/asdf.plugin.zsh
 
-export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$XDG_DATA_HOME/asdf}"
+export ASDF_DATA_DIR="${$XDG_DATA_HOME/asdf}"
 
 ASDF_DIR="${ASDF_DIR:-$ASDF_DATA_DIR}"
 ASDF_COMPLETIONS="$ASDF_DIR/completions"
