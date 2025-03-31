@@ -2,6 +2,7 @@
 # shellcheck disable=SC1090
 
 # References:
+# - https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/mise/mise.plugin.zsh
 # - https://github.com/wintermi/zsh-mise/blob/main/zsh-mise.plugin.zsh
 # - https://mise.jdx.dev/mise-cookbook/shell-tricks.html#prompt-colouring
 
@@ -17,7 +18,7 @@ source <(mise activate zsh)
 source <(mise hook-env -s zsh)
 
 # Completions directory for `mise` command
-local COMPLETIONS_DIR="${0:A:h}/completions"
+local COMPLETIONS_DIR="$ZSH_CACHE_DIR/completions"
 
 # Add completions to the FPATH
 typeset -TUx FPATH fpath
