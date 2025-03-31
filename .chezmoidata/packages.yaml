@@ -2,7 +2,6 @@ packages:
   darwin:
     brews:
       # Shell Utils
-      - asdf
       - atuin
       - bat
       - chezmoi
@@ -16,6 +15,7 @@ packages:
       - gd
       - htop
       - jq
+      - mise
       - moreutils
       - ncdu
       - starship

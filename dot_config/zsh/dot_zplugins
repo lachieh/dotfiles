@@ -23,7 +23,7 @@ mattmc3/zephyr path:plugins/history
 mattmc3/zephyr path:plugins/macos conditional:is-macos
 
 ## plugins
-"$ZDOTDIR"/plugins/asdf
+"$ZDOTDIR"/plugins/mise
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions kind:fpath path:src
