@@ -1,0 +1,5 @@
+[tools]
+go = "1.23.6"
+node = "22"
+python = "latest"
+rust = "latest"
