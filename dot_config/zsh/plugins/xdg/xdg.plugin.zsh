@@ -54,10 +54,6 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME"/aws/credentials
 # docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
-# gpg
-export GNUPGHOME="${GNUPGHOME:-$XDG_DATA_HOME/gnupg}"
-alias gpg="${aliases[gpg]:-gpg} --homedir \"\$GNUPGHOME\""
-
 # groovy
 if [[ "$OSTYPE" == darwin* ]]; then
   export GROOVY_HOME=$HOMEBREW_PREFIX/opt/groovy/libexec  # per homebrew
