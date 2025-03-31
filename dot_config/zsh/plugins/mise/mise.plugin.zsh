@@ -34,25 +34,3 @@ fi
 
 # Generate and load completion in the background
 mise completions zsh >| "$COMPLETIONS_DIR/_mise" &|
-
-# set up the completion function
-typeset -i _mise_updated
-
-# replace default mise hook
-function _mise_hook {
-  local diff=${__MISE_DIFF}
-  source <(mise hook-env -s zsh)
-  [[ ${diff} == ${__MISE_DIFF} ]]
-  _mise_updated=$?
-}
-
-_PROMPT="${PROMPT:-❱ }"
-function _prompt {
-  if (( ${_mise_updated} )); then
-    PROMPT='%F{blue}${_PROMPT}%f'
-  else
-    PROMPT='%(?.%F{green}${_PROMPT}%f.%F{red}${_PROMPT}%f)'
-  fi
-}
-
-add-zsh-hook precmd _prompt
