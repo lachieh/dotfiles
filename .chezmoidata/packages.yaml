@@ -81,6 +81,7 @@ packages:
       - zoom
       - notion
       - obsidian
+      - antinote
 
       # Dev Tooling
       - iterm2
