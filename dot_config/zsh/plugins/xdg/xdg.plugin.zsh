@@ -43,6 +43,10 @@ alias tmux="${aliases[tmux]:-tmux} -f \"\$TMUX_CONFIG\""
 export WGETRC="${WGETRC:-$XDG_CONFIG_HOME/wget/wgetrc}"
 alias wget="${aliases[wget]:-wget} --hsts-file=\$XDG_CACHE_HOME/wget/wget-hsts"
 
+# gnupg
+export GNUPGHOME="${GNUPGHOME:-$XDG_DATA_HOME/gnupg}"
+[[ -d "$GNUPGHOME" ]] || mkdir -p "$GNUPGHOME"
+
 #
 # Dev tools
 #
