@@ -7,7 +7,6 @@ packages:
       - chezmoi
       - coreutils
       - curl
-      - direnv
       - eza
       - fd
       - findutils
@@ -108,7 +107,7 @@ packages:
         brews: []
       - tap: hashicorp/tap
         brews:
-          - hashicorp/tap/consul``
+          - hashicorp/tap/consul
           - hashicorp/tap/nomad
           - hashicorp/tap/packer
           - hashicorp/tap/terraform
