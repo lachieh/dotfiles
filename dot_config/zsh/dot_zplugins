@@ -33,14 +33,13 @@ g-plane/pnpm-shell-completion kind:zsh post:post_pnpm_comp
 romkatv/zsh-bench kind:path
 
 ## omz plugins
-ohmyzsh/ohmyzsh path:plugins/direnv
 ohmyzsh/ohmyzsh path:plugins/eza
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/gitfast
 ohmyzsh/ohmyzsh path:plugins/sudo
 ohmyzsh/ohmyzsh path:plugins/encode64
 ohmyzsh/ohmyzsh path:plugins/extract
-ohmyzsh/ohmyzsh path:plugins/command-not-found
+ohmyzsh/ohmyzsh path:plugins/thefuck
 
 ## atuin
 "$ZDOTDIR"/plugins/atuin

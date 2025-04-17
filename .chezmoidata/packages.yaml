@@ -19,6 +19,7 @@ packages:
       - ncdu
       - starship
       - tealdeer
+      - thefuck
       - tmux
       - topgrade
       - tree
