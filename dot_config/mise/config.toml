@@ -1,5 +1,10 @@
 [tools]
-go = "1.23.6"
+"cargo:cargo-nextest" = "latest"
+go = "1.24.0"
 node = "22"
 python = "latest"
 rust = "latest"
+"ubi:bytecodealliance/wasm-tools" = "latest"
+
+[settings]
+experimental = true
