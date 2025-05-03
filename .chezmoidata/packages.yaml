@@ -12,6 +12,7 @@ packages:
       - findutils
       - fzf
       - gd
+      - git-delta
       - htop
       - jq
       - mise
@@ -19,7 +20,7 @@ packages:
       - ncdu
       - starship
       - tealdeer
-      - thefuck
+      - thefuck # sorry, mum
       - tmux
       - topgrade
       - tree
