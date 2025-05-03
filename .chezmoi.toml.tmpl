@@ -1,15 +1,31 @@
 {{/* config */}}
+
 {{- $computer_name := promptString "Device Name" "" -}}
-{{- $install_mise := promptBool "Install Mise" false -}}
-{{- $install_antidote := promptBool "Install Antidote ZSH Plugin" false -}}
+
+{{- $git_fname := promptString "Full Name" "Lachlan Heywood" -}}
+{{- $git_email := promptString "Git Email" "lachieh@users.noreply.github.com" -}}
+{{- $github_user := promptString "GitHub" "lachieh" -}}
+
+{{- $op_account := "YXLXGYRL3BFIBO7C6GIB7DX2VU" -}}
+{{- $op_vault := "ca24hrgc66dzwgihordsnfgs3u" -}}
+
+encryption = "age"
 
 [data]
   computer_name = "{{ $computer_name }}"
-  install_mise = "{{ $install_mise }}"
-  install_antidote = "{{ $install_antidote }}"
+
+  [data.op]
+    account = "{{ $op_account }}"
+    vault = "{{ $op_vault }}"
+
 [git]
   autoCommit = true
   autoPush = true
+
 [edit]
   command = "code"
   args = "-w"
+
+[age]
+  identity = "~/.config/age/chezmoi.key.txt"
+  recipient = "{{ (onepasswordDetailsFields "kqcpbt6rlgmz7ewz2rk3czfg6q" $op_vault $op_account).username.value }}"
