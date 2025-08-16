@@ -65,6 +65,10 @@ if [ ! -L "$HOME/claude.json" ]; then
   ln -s "$CLAUDE_DATA_DIR/claude.json" "$HOME/claude.json"
 fi
 
+if [[ ! $+commands[claude] ]]; then
+  PATH="$CLAUDE_NATIVE_BIN:$PATH"
+fi
+
 if [[ $+commands[claude] ]]; then
   # if the claude binary is installed in the data dir, run the global install
   if [ -f "$CLAUDE_CONFIG_DIR/local/claude" ]; then
