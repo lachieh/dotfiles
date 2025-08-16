@@ -7,10 +7,10 @@ CLAUDE_DATA_DIR="$XDG_DATA_HOME/claude"
 CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 
 log() {
-  echo "\033[33m[300-claude.zsh] $@\033[0m"
+  echo "\033[33m[300-claude.zsh]\033[0m LOG: $@"
 }
 err() {
-  echo "\033[31m[300-claude.zsh] Error: $@\033[0m"
+  echo "\033[31m[300-claude.zsh]\033[0m ERR: $@"
 }
 
 if [ ! -d "$CLAUDE_DATA_DIR" ]; then
@@ -23,8 +23,8 @@ if [ ! -d "$CLAUDE_CONFIG_DIR" ]; then
   mkdir -p "$CLAUDE_CONFIG_DIR"
 fi
 
-# check if the data dir exists at $HOME/.claude and link from $XDG_DATA_HOME
-if [ -d "$CLAUDE_ORIGINAL_DIR" ]; then
+# check if the data dir exists at $HOME/.claude and isn't a symlink
+if [ -d "$CLAUDE_ORIGINAL_DIR" ] && [ ! -L "$CLAUDE_ORIGINAL_DIR" ]; then
   # check for contents
   FAILED_TO_MOVE=0
   if [ "$(ls -A "$CLAUDE_ORIGINAL_DIR")" ]; then
