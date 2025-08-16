@@ -65,11 +65,16 @@ if [ ! -L "$HOME/claude.json" ]; then
   ln -s "$CLAUDE_DATA_DIR/claude.json" "$HOME/claude.json"
 fi
 
-if [[ ! $+commands[claude] ]]; then
-  PATH="$CLAUDE_NATIVE_BIN:$PATH"
+if [ -f $CLAUDE_LOCAL_BIN ]; then
+  log "Found claude binary at $CLAUDE_LOCAL_BIN. Removing."
+  rm -rf "$CLAUDE_LOCAL_BIN"
 fi
 
-if [[ $+commands[claude] ]]; then
+export PATH="$CLAUDE_NATIVE_BIN:$PATH"
+
+if [[ ! $+commands[claude] ]]; then
+  log "No binary for claude found. Install it into $CLAUDE_NATIVE_BIN"
+else
   # if the claude binary is installed in the data dir, run the global install
   if [ -f "$CLAUDE_CONFIG_DIR/local/claude" ]; then
     claude install --force stable
