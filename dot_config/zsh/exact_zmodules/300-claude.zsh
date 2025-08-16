@@ -66,4 +66,4 @@ if [[ $+commands[claude] ]]; then
   fi
 fi
 
-set -eo pipefail
+set +eo pipefail
