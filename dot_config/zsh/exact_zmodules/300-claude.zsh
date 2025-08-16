@@ -38,12 +38,12 @@ if [ -d "$CLAUDE_ORIGINAL_DIR" ] && [ ! -L "$CLAUDE_ORIGINAL_DIR" ]; then
     log "Creating backup of old data directory at $CLAUDE_ORIGINAL_DIR.bak"
     mv "$CLAUDE_ORIGINAL_DIR" "$CLAUDE_ORIGINAL_DIR.bak"
   fi
-
+  
   log "Creating symlink from $CLAUDE_CONFIG_DIR to $CLAUDE_ORIGINAL_DIR"
   ln -s "$CLAUDE_CONFIG_DIR" "$CLAUDE_ORIGINAL_DIR"
 fi
 
-if [ -f "$HOME/claude.json" ]; then
+if [ -f "$HOME/claude.json" ] && [ ! -L "$HOME/claude.json" ]; then
   log "Found claude.json at $HOME/claude.json"
   FAILED_TO_MOVE=0
   FAILED_TO_MOVE=$(cp "$HOME/claude.json" "$CLAUDE_DATA_DIR/claude.json" || echo 1)
