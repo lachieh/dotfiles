@@ -7,10 +7,10 @@ CLAUDE_DATA_DIR="$XDG_DATA_HOME/claude"
 CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 
 log() {
-  echo "\033[33m[300-claude.zsh]\033[0m LOG: $@"
+  echo "\e[33m[300-claude.zsh]\e[0m LOG: $@"
 }
 err() {
-  echo "\033[31m[300-claude.zsh]\033[0m ERR: $@"
+  echo "\e[31m[300-claude.zsh]\e[0m ERR: $@"
 }
 
 if [ ! -d "$CLAUDE_DATA_DIR" ]; then
@@ -65,3 +65,5 @@ if [[ $+commands[claude] ]]; then
     claude install --force stable
   fi
 fi
+
+set -eo pipefail
