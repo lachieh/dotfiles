@@ -56,7 +56,7 @@ workspaces = true
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
 ## leave unspecified to use same mode set in "filter_mode"
-filter_mode_shell_up_key_binding = "session"
+filter_mode_shell_up_key_binding = "workspace"
 
 ## which search mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "search_mode"
@@ -260,4 +260,5 @@ name = "hellotimber"
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
+## Options are "workspace", "session", "directory", "global", "host"
 filters = ["workspace", "session", "directory", "global", "host"]
