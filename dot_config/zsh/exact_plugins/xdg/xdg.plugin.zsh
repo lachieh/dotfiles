@@ -58,27 +58,12 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME"/aws/credentials
 # docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
-# groovy
-if [[ "$OSTYPE" == darwin* ]]; then
-  export GROOVY_HOME=$HOMEBREW_PREFIX/opt/groovy/libexec  # per homebrew
-  export GROOVY_TURN_OFF_JAVA_WARNINGS="true"
-fi
-
-# jupyter
-export JUPYTER_CONFIG_DIR="${JUPYTER_CONFIG_DIR:-$XDG_CONFIG_HOME/jupyter}"
-
 # node
 path+=(
   /{opt/homebrew,usr/local}/share/npm/bin(N)
 )
 export NPM_CONFIG_USERCONFIG="${NPM_CONFIG_USERCONFIG:-$XDG_CONFIG_HOME/npm/npmrc}"
 export NODE_REPL_HISTORY="${NODE_REPL_HISTORY:-$XDG_DATA_HOME/nodejs/repl_history}"
-
-# postgres
-export PSQLRC="${PSQLRC:-$XDG_CONFIG_HOME/pg/psqlrc}"
-export PSQL_HISTORY="${PSQL_HISTORY:-$XDG_CACHE_HOME/pg/psql_history}"
-export PGPASSFILE="${PGPASSFILE:-$XDG_CONFIG_HOME/pg/pgpass}"
-export PGSERVICEFILE="${PGSERVICEFILE:-$XDG_CONFIG_HOME/pg/pg_service.conf}"
 
 # ruby bundler
 export BUNDLE_USER_CONFIG="${BUNDLE_USER_CONFIG:-$XDG_CONFIG_HOME/bundle}"
