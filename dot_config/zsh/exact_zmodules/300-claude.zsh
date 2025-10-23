@@ -64,6 +64,8 @@ if [ -f "$CLAUDE_DATA_DIR/settings.json" ] && [ ! -L "$CLAUDE_DATA_DIR/settings.
 fi
 
 if [ ! -L "$CLAUDE_DATA_DIR/settings.json" ]; then
+  log "Creating symlink from $CLAUDE_CONFIG_DIR/settings.json to $CLAUDE_DATA_DIR/settings.json"
+  touch "$CLAUDE_CONFIG_DIR/settings.json"
   ln -s "$CLAUDE_CONFIG_DIR/settings.json" "$CLAUDE_DATA_DIR/settings.json"
 fi
 
