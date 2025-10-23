@@ -32,37 +32,39 @@ if [ -d "$CLAUDE_ORIGINAL_DIR" ] && [ ! -L "$CLAUDE_ORIGINAL_DIR" ]; then
   # check for contents
   FAILED_TO_MOVE=0
   if [ "$(ls -A "$CLAUDE_ORIGINAL_DIR")" ]; then
-    log "Data directory already exists at $CLAUDE_ORIGINAL_DIR. Moving contents to $CLAUDE_CONFIG_DIR."
-    FAILED_TO_MOVE=$(rsync -a --delete "$CLAUDE_CONFIG_DIR"/ "$CLAUDE_ORIGINAL_DIR"/)
+    log "Data directory already exists at $CLAUDE_ORIGINAL_DIR. Moving contents to $CLAUDE_DATA_DIR."
+    FAILED_TO_MOVE=$(rsync -a --delete "$CLAUDE_ORIGINAL_DIR"/ "$CLAUDE_DATA_DIR"/)
     if [ $FAILED_TO_MOVE ]; then
-      err "Failed to sync $CLAUDE_CONFIG_DIR to $CLAUDE_ORIGINAL_DIR"
+      err "Failed to sync $CLAUDE_ORIGINAL_DIR to $CLAUDE_DATA_DIR"
       log "Creating backup of old data directory at $CLAUDE_ORIGINAL_DIR.bak"
       mv "$CLAUDE_ORIGINAL_DIR" "$CLAUDE_ORIGINAL_DIR.bak"
     fi
+    log "Removing old data directory at $CLAUDE_ORIGINAL_DIR"
+    rm -rf "$CLAUDE_ORIGINAL_DIR"
   fi
   
-  log "Creating symlink from $CLAUDE_CONFIG_DIR to $CLAUDE_ORIGINAL_DIR"
-  ln -s "$CLAUDE_CONFIG_DIR" "$CLAUDE_ORIGINAL_DIR"
+  log "Creating symlink from $CLAUDE_ORIGINAL_DIR to $CLAUDE_DATA_DIR"
+  ln -s "$CLAUDE_DATA_DIR" "$CLAUDE_ORIGINAL_DIR"
 fi
 
-if [ -f "$HOME/claude.json" ] && [ ! -L "$HOME/claude.json" ]; then
-  log "Found claude.json at $HOME/claude.json"
+if [ -f "$CLAUDE_DATA_DIR/settings.json" ] && [ ! -L "$CLAUDE_DATA_DIR/settings.json" ]; then
+  log "Found settings.json at $CLAUDE_DATA_DIR/settings.json"
 
   FAILED_TO_MOVE=0
-  FAILED_TO_MOVE="$(cp "$HOME"/.claude.json "$CLAUDE_DATA_DIR"/claude.json || echo 1)"
+  FAILED_TO_MOVE="$(cp "$CLAUDE_DATA_DIR"/.settings.json "$CLAUDE_CONFIG_DIR"/settings.json || echo 1)"
 
   if [ $FAILED_TO_MOVE ]; then
-    err "Failed to move claude.json to $CLAUDE_DATA_DIR. Creating backup."
-    log "Creating backup of claude.json at $CLAUDE_DATA_DIR/claude.json.bak"
-    mv "$HOME/claude.json" "$CLAUDE_DATA_DIR/claude.json.bak"
+    err "Failed to move settings.json to $CLAUDE_CONFIG_DIR. Creating backup."
+    log "Creating backup of settings.json at $CLAUDE_DATA_DIR/settings.json.bak"
+    mv "$CLAUDE_DATA_DIR/settings.json" "$CLAUDE_DATA_DIR/settings.json.bak"
   fi
 
-  log "Removing old claude.json from $HOME"
-  rm "$HOME/claude.json"
+  log "Removing old settings.json from $CLAUDE_DATA_DIR"
+  rm "$CLAUDE_DATA_DIR/settings.json"
 fi
 
-if [ ! -L "$HOME/claude.json" ]; then
-  ln -s "$CLAUDE_DATA_DIR/claude.json" "$HOME/claude.json"
+if [ ! -L "$CLAUDE_DATA_DIR/settings.json" ]; then
+  ln -s "$CLAUDE_CONFIG_DIR/settings.json" "$CLAUDE_DATA_DIR/settings.json"
 fi
 
 if [ -f $CLAUDE_LOCAL_BIN ]; then
