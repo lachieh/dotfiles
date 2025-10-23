@@ -47,27 +47,27 @@ if [ -d "$CLAUDE_ORIGINAL_DIR" ] && [ ! -L "$CLAUDE_ORIGINAL_DIR" ]; then
   ln -s "$CLAUDE_CONFIG_DIR" "$CLAUDE_ORIGINAL_DIR"
 fi
 
-if [ -f "$HOME/.claude.json" ] && [ ! -L "$CLAUDE_CONFIG_DIR/settings.json" ]; then
-  log "Found settings.json at $CLAUDE_CONFIG_DIR/settings.json"
+if [ -f "$HOME/.claude.json" ] && [ ! -L "$CLAUDE_CONFIG_DIR/.claude.json" ]; then
+  log "Found .claude.json at $CLAUDE_CONFIG_DIR/.claude.json"
 
   FAILED_TO_MOVE=0
-  FAILED_TO_MOVE="$(cp "$HOME"/.claude.json "$CLAUDE_CONFIG_DIR"/settings.json || echo 1)"
+  FAILED_TO_MOVE="$(cp "$HOME"/.claude.json "$CLAUDE_CONFIG_DIR"/.claude.json || echo 1)"
 
   if [ $FAILED_TO_MOVE ]; then
-    err "Failed to move settings.json to $CLAUDE_CONFIG_DIR. Creating backup."
-    log "Creating backup of settings.json at $CLAUDE_CONFIG_DIR/settings.json.bak"
-    mv "$CLAUDE_CONFIG_DIR/settings.json" "$CLAUDE_CONFIG_DIR/settings.json.bak"
+    err "Failed to move .claude.json to $CLAUDE_CONFIG_DIR. Creating backup."
+    log "Creating backup of .claude.json at $CLAUDE_CONFIG_DIR/.claude.json.bak"
+    mv "$CLAUDE_CONFIG_DIR/.claude.json" "$CLAUDE_CONFIG_DIR/.claude.json.bak"
   else
-    log "Successfully moved settings.json to $CLAUDE_CONFIG_DIR"
+    log "Successfully moved .claude.json to $CLAUDE_CONFIG_DIR"
     log "Removing old .claude.json from $HOME"
     rm "$HOME/.claude.json"
   fi
 fi
 
 if [ ! -L "$HOME/.claude.json" ]; then
-  log "Creating symlink: $HOME/.claude.json > $CLAUDE_CONFIG_DIR/settings.json"
-  touch "$CLAUDE_CONFIG_DIR/settings.json"
-  ln -s "$CLAUDE_CONFIG_DIR/settings.json" "$HOME/.claude.json"
+  log "Creating symlink: $HOME/.claude.json > $CLAUDE_CONFIG_DIR/.claude.json"
+  touch "$CLAUDE_CONFIG_DIR/.claude.json"
+  ln -s "$CLAUDE_CONFIG_DIR/.claude.json" "$HOME/.claude.json"
 fi
 
 if [ -f $CLAUDE_LOCAL_BIN ]; then
