@@ -51,7 +51,7 @@ if [ -f "$CLAUDE_DATA_DIR/settings.json" ] && [ ! -L "$CLAUDE_DATA_DIR/settings.
   log "Found settings.json at $CLAUDE_DATA_DIR/settings.json"
 
   FAILED_TO_MOVE=0
-  FAILED_TO_MOVE="$(cp "$CLAUDE_DATA_DIR"/.settings.json "$CLAUDE_CONFIG_DIR"/settings.json || echo 1)"
+  FAILED_TO_MOVE="$(cp "$CLAUDE_DATA_DIR"/settings.json "$CLAUDE_CONFIG_DIR"/settings.json || echo 1)"
 
   if [ $FAILED_TO_MOVE ]; then
     err "Failed to move settings.json to $CLAUDE_CONFIG_DIR. Creating backup."
