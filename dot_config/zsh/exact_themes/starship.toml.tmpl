@@ -119,9 +119,9 @@ style = "fg:prev_fg bg:prev_bg"
 format = "[$ahead_behind]($style)"
 style = "fg:prev_fg bg:prev_bg"
 stashed = "≡"
-ahead = "${count}"
-behind = "${count}"
-diverged = "${ahead_count}${behind_count}"
+ahead = "${count}"
+behind = "${count}"
+diverged = "${behind_count}${ahead_count}"
 
 [custom.git_status_dirty]
 when = 'test -n "$(git status --porcelain 2>/dev/null)"'

@@ -1,0 +1,4 @@
+**/.claude/settings.local.json
+**/CLAUDE.local.md
+.mise.local.toml
+.DS_Store
