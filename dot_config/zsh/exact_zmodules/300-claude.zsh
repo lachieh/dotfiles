@@ -5,7 +5,7 @@ CLAUDE_ORIGINAL_DIR="$HOME/.claude"
 CLAUDE_LOCAL_BIN="$HOME/.claude/local"
 CLAUDE_NATIVE_BIN="$HOME/.local/bin/claude"
 
-CLAUDE_DATA_DIR="$XDG_DATA_HOME/claude"
+CLAUDE_DATA_DIR="$XDG_DATA_HOME/claude/data"
 CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 
 log() {
@@ -32,10 +32,10 @@ if [ -d "$CLAUDE_ORIGINAL_DIR" ] && [ ! -L "$CLAUDE_ORIGINAL_DIR" ]; then
   # check for contents
   FAILED_TO_MOVE=0
   if [ "$(ls -A "$CLAUDE_ORIGINAL_DIR")" ]; then
-    log "Data directory already exists at $CLAUDE_ORIGINAL_DIR. Moving contents to $CLAUDE_DATA_DIR."
-    FAILED_TO_MOVE=$(rsync -a --delete "$CLAUDE_ORIGINAL_DIR"/ "$CLAUDE_DATA_DIR"/)
+    log "Data directory already exists at $CLAUDE_ORIGINAL_DIR. Moving contents to $CLAUDE_CONFIG_DIR."
+    FAILED_TO_MOVE=$(rsync -a --delete "$CLAUDE_ORIGINAL_DIR"/ "$CLAUDE_CONFIG_DIR"/)
     if [ $FAILED_TO_MOVE ]; then
-      err "Failed to sync $CLAUDE_ORIGINAL_DIR to $CLAUDE_DATA_DIR"
+      err "Failed to sync $CLAUDE_ORIGINAL_DIR to $CLAUDE_CONFIG_DIR"
       log "Creating backup of old data directory at $CLAUDE_ORIGINAL_DIR.bak"
       mv "$CLAUDE_ORIGINAL_DIR" "$CLAUDE_ORIGINAL_DIR.bak"
     fi
@@ -43,8 +43,8 @@ if [ -d "$CLAUDE_ORIGINAL_DIR" ] && [ ! -L "$CLAUDE_ORIGINAL_DIR" ]; then
     rm -rf "$CLAUDE_ORIGINAL_DIR"
   fi
   
-  log "Creating symlink from $CLAUDE_ORIGINAL_DIR to $CLAUDE_DATA_DIR"
-  ln -s "$CLAUDE_DATA_DIR" "$CLAUDE_ORIGINAL_DIR"
+  log "Creating symlink: $CLAUDE_ORIGINAL_DIR > $CLAUDE_CONFIG_DIR"
+  ln -s "$CLAUDE_CONFIG_DIR" "$CLAUDE_ORIGINAL_DIR"
 fi
 
 if [ -f "$HOME/.claude.json" ] && [ ! -L "$CLAUDE_CONFIG_DIR/settings.json" ]; then
@@ -65,7 +65,7 @@ if [ -f "$HOME/.claude.json" ] && [ ! -L "$CLAUDE_CONFIG_DIR/settings.json" ]; t
 fi
 
 if [ ! -L "$HOME/.claude.json" ]; then
-  log "Creating symlink from $CLAUDE_CONFIG_DIR/settings.json to $HOME/.claude.json"
+  log "Creating symlink: $HOME/.claude.json > $CLAUDE_CONFIG_DIR/settings.json"
   touch "$CLAUDE_CONFIG_DIR/settings.json"
   ln -s "$CLAUDE_CONFIG_DIR/settings.json" "$HOME/.claude.json"
 fi
