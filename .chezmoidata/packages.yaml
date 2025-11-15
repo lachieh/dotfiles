@@ -95,7 +95,7 @@ packages:
 
       # Browsers
       - arc
-      - chrome
+      - google-chrome
       - firefox
       - zen
 
