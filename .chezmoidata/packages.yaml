@@ -52,6 +52,9 @@ packages:
       - 1password
       - 1password-cli
 
+      # AI Tools
+      - claude-code
+
       # Design
       # - affinity-designer
       # - affinity-photo
