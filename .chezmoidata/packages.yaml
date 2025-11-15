@@ -103,7 +103,7 @@ packages:
       - font-cascadia-code
       - font-caskaydia-cove-nerd-font
 
-#    taps:
+    taps: []
      # - tap: homebrew/command-not-found
      #   brews: []
      # - tap: hashicorp/tap
