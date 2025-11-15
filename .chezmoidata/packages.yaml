@@ -34,10 +34,8 @@ packages:
       - gh
       - git
       - gitu
-      - git-filter-repo
       - handbrake
       - ios-sim
-      - wasmcloud/wasmcloud/wash
 
       # Kubernetes
       - helm
@@ -55,9 +53,9 @@ packages:
       - 1password-cli
 
       # Design
-      - affinity-designer
-      - affinity-photo
-      - affinity-publisher
+      # - affinity-designer
+      # - affinity-photo
+      # - affinity-publisher
 
       # macOS Utils
       - bettertouchtool
@@ -81,11 +79,12 @@ packages:
       - telegram
       - zoom
       - notion
+      - notion
       - obsidian
       - antinote
 
       # Dev Tooling
-      - iterm2
+      - ghostty
       - qlmarkdown
       - syntax-highlight
       - visual-studio-code
@@ -96,21 +95,21 @@ packages:
 
       # Browsers
       - arc
-      - microsoft-edge
+      - chrome
       - firefox
-      - chromium
+      - zen
 
       # Fonts
       - font-cascadia-code
       - font-caskaydia-cove-nerd-font
 
-    taps:
-      - tap: homebrew/command-not-found
-        brews: []
-      - tap: hashicorp/tap
-        brews:
-          - hashicorp/tap/consul
-          - hashicorp/tap/nomad
-          - hashicorp/tap/packer
-          - hashicorp/tap/terraform
-          - hashicorp/tap/vault
+#    taps:
+     # - tap: homebrew/command-not-found
+     #   brews: []
+     # - tap: hashicorp/tap
+     #   brews:
+     #     - hashicorp/tap/consul
+     #     - hashicorp/tap/nomad
+     #     - hashicorp/tap/packer
+     #     - hashicorp/tap/terraform
+     #     - hashicorp/tap/vault
