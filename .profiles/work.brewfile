@@ -1,0 +1,5 @@
+cask "notion"
+cask "discord"
+cask "linear-linear"
+cask "slack"
+cask "zoom"

@@ -1,1 +1,5 @@
 install.sh
+authorized_keys
+.shellcheckrc
+.vscode/
+README.md

@@ -1,0 +1,5 @@
+brew "ios-sim"
+cask "claude-code"
+cask "qlmarkdown"
+cask "syntax-highlight"
+cask "visual-studio-code"
