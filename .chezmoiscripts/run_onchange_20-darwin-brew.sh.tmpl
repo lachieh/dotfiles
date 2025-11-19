@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+log() { printf "\e[33m%s\e[0m\n" "$@"; }
+
+# Sources
+{{ range glob (joinPath .chezmoi.sourceDir "./.profiles/*.brewfile") -}}
+{{ if (or (has (base . | replace ".brewfile" "") $.profiles) (eq (base .) "_default.brewfile")) -}}
+# {{ base . }}: {{ include . | sha256sum }}
+log "Installing from {{ (base . | replace ".brewfile" "") }} profile..."
+brew bundle --file={{ . }} <<EOF
+{{ include . }}
+EOF
+echo ""
+
+{{ end -}} 
+{{ end -}}
+{{ end -}}

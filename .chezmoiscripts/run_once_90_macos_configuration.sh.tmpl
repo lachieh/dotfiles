@@ -212,6 +212,25 @@ defaults write com.apple.dock autohide -int 1
 # Set icon size to 32px
 defaults write com.apple.dock tilesize -int 32
 
+# Hot corners
+# 1: Disabled
+# 2: Mission Control
+# 3: Application Windows
+# 4: Desktop
+# 5: Start Screen Saver
+# 6: Disable Screen Saver
+# 7: Dashboard
+# 10: Put Display to Sleep
+# 11: Launchpad
+# 12: Notification Center
+# 13: Lock Screen
+# 14: Quick Note
+defaults write com.apple.dock wvous-tr-corner -int 12
+defaults write com.apple.dock wvous-br-corner -int 5
+# require modifier for hot corner
+# 0: no modifier, 524288: option, 1048576: command, 1573864: option + command
+defaults write com.apple.dock wvous-br-modifier -int 1048576
+
 #################################################
 # Terminal                                      #
 #################################################

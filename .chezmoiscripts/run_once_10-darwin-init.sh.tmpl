@@ -1,0 +1,21 @@
+{{ if eq .chezmoi.os "darwin" -}}
+
+#!/bin/bash
+# shellcheck disable=SC1090
+
+# Install Homebrew
+if ! command -v brew >/dev/null 2>&1; then
+  echo '🍺  Installing Homebrew'
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Install mise
+if ! command -v mise >/dev/null 2>&1; then
+  echo '🧩  Installing mise'
+  brew install mise
+
+  source <(/opt/homebrew/bin/mise activate zsh)
+  source <(/opt/homebrew/bin/mise hook-env -s zsh)
+fi
+
+{{ end -}}
