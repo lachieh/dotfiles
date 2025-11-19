@@ -2,6 +2,7 @@
 
 ## init
 "$ZDOTDIR"/plugins/starship-ftl
+mattmc3/zephyr path:plugins/compstyle
 mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew
 mattmc3/zephyr path:plugins/zfunctions
@@ -11,12 +12,13 @@ mattmc3/zephyr path:plugins/zfunctions
 mattmc3/zephyr path:plugins/prompt
 "$ZDOTDIR"/themes kind:fpath
 
-## compinit helper
+## compinit helper for ohmyzsh
 getantidote/use-omz
 
 ## config
 mattmc3/zephyr path:plugins/color
 mattmc3/zephyr path:plugins/completion
+mattmc3/zephyr path:plugins/directory
 mattmc3/zephyr path:plugins/history
 
 ## macos

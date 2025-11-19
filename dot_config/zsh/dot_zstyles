@@ -1,7 +1,7 @@
 #!/bin/zsh
 # shellcheck disable=SC1071
 
-# Antidote settings
+# Antidote settings (see: https://github.com/mattmc3/antidote)
 : ${ANTIDOTE_HOME:=${XDG_CACHE_HOME:-~/.cache}/repos}
 antidote_repo=$ANTIDOTE_HOME/mattmc3/antidote
 
@@ -11,6 +11,7 @@ zstyle ':antidote:bundle' use-friendly-names 'yes'
 zstyle ':antidote:plugin:*' defer-options '-p'
 zstyle ':antidote:*' zcompile 'yes'
 
+# Zephyr settings (see: https://github.com/mattmc3/zephyr#customization)
 # Use caching.
 # zstyle ':zephyr:plugin:*' 'use-cache' yes
 
