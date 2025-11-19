@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC1071
+
+# https://github.com/g-plane/pnpm-shell-completion
+
+local PLUGIN=$(antidote path g-plane/pnpm-shell-completion)
+[[ ! -e $PLUGIN/pnpm-shell-completion ]] && zsh -c "cd $PLUGIN && $PLUGIN/zplug.zsh"
