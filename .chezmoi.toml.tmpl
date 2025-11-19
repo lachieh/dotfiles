@@ -1,18 +1,48 @@
-{{/* config */}}
-
-{{- $computer_name := promptString "Device Name" "" -}}
-
-{{- $git_fname := promptString "Full Name" "Lachlan Heywood" -}}
-{{- $git_email := promptString "Git Email" "lachieh@users.noreply.github.com" -}}
-{{- $github_user := promptString "GitHub" "lachieh" -}}
-
-{{- $op_account := "YXLXGYRL3BFIBO7C6GIB7DX2VU" -}}
-{{- $op_vault := "ca24hrgc66dzwgihordsnfgs3u" -}}
+{{ $op_doc_uuid := "aoefrtppknao5jecm6wru4q5pu" -}}
+{{ $op_account := "YXLXGYRL3BFIBO7C6GIB7DX2VU" -}}
+{{ $op_vault := "ca24hrgc66dzwgihordsnfgs3u" -}}
+{{- writeToStdout "Confirming 1Password credentials...\n" -}}
+{{- $op_data := onepassword $op_doc_uuid "" $op_account -}}
+{{ if not $op_data -}}
+  {{- fail "1Password session could not be created. Please check your 1Password credentials and try again." -}}
+{{ end -}}
+{{- writeToStdout "1Password credentials confirmed.\n" -}}
 
 encryption = "age"
+[age]
+  identity = "~/.config/age/chezmoi.key.txt"
+  recipient = "{{ (onepasswordDetailsFields "kqcpbt6rlgmz7ewz2rk3czfg6q" $op_vault $op_account).username.value }}"
 
 [data]
+  {{ $computer_name := promptStringOnce . "computer_name" "Device Name" -}}
   computer_name = "{{ $computer_name }}"
+
+  {{ $profile_list := list -}}
+  {{ range glob (joinPath .chezmoi.sourceDir "./.profiles/*.brewfile") -}}
+    {{ $profile_name := (base . | replace ".brewfile" "") -}}
+    {{ if ne $profile_name "_default" -}}
+      {{ $profile_list = append $profile_list $profile_name -}}
+    {{ end -}}
+  {{ end -}}
+  {{ $profiles      := promptMultichoice
+      "Which device profiles should be applied"
+      $profile_list
+      $profile_list
+  -}}
+  profiles = {{ $profiles | toToml | default (list) }}
+
+  {{ $gui := promptBoolOnce . "gui" "Install GUI Apps" true -}}
+  gui = {{ $gui }}
+
+  {{ $git_name  := promptStringOnce . ( list "git" "name")  "Full Name" "Lachlan Heywood" -}}
+  {{ $git_email := promptStringOnce . ( list "git" "email") "Git Email" "lachieh@users.noreply.github.com" -}}
+  [data.git]
+    name = "{{ $git_name }}"
+    email = "{{ $git_email }}"
+
+  [data.github]
+    {{ $github_user := promptStringOnce . ( list "github" "username") "GitHub Username" "lachieh" -}}
+    username = "{{ $github_user }}"
 
   [data.op]
     account = "{{ $op_account }}"
@@ -26,6 +56,17 @@ encryption = "age"
   command = "code"
   args = "-w"
 
-[age]
-  identity = "~/.config/age/chezmoi.key.txt"
-  recipient = "{{ (onepasswordDetailsFields "kqcpbt6rlgmz7ewz2rk3czfg6q" $op_vault $op_account).username.value }}"
+[diff]
+  pager = "diff-so-fancy"
+
+[[textconv]]
+pattern = "**/*.plist"
+command = "plutil"
+args = ["-convert", "xml1", "-o", "-", "-"]
+
+[merge]
+command = "bash"
+args = [
+    "-c",
+    'cp {{ "{{" }} .Target | quote {{ "}}" }} {{ "{{" }} printf "%s.base" .Target | quote {{ "}}" }} && code --new-window --wait --merge {{ "{{" }} .Destination | quote {{ "}}" }} {{ "{{" }} .Target | quote {{ "}}" }} {{ "{{" }} printf "%s.base" .Target | quote {{ "}}" }} {{ "{{" }} .Source | quote {{ "}}" }}'
+]
