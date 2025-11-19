@@ -5,16 +5,16 @@
 	email = {{ .git.email }}
 	name = {{ .git.name }}
 
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICD1u1caVFg+AMYMi0NHOF783927yKbzSJBGI+BN5aDF
-
-[commit]
-	gpgsign = true
+	signingkey = {{ (onepasswordDetailsFields "t7ywvz2xwrlrxxeilo4fi2mwqm" "" .op.account).public_key.value }}
 
 [gpg]
   format = ssh
 
 [gpg "ssh"]
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+  gpgsign = true
 
 [pull]
 	rebase = false
