@@ -1,0 +1,41 @@
+# shellcheck shell=bash
+
+# Originally from mattmc3/dotfiles
+# @see https://github.com/mattmc3/dotfiles/blob/a6722eef1169a8978d25ec9c48248eefb5c3bb16/.config/bash/plugins/git.sh
+
+if [[ -z "$1" ]]; then
+  echo "What git repo do you want?" >&2
+  return 1
+fi
+local user repo
+local giturl="github.com"
+if [[ "$1" = */*/* ]]; then
+  giturl="${1%%/*}"
+  user="${1#*/}"
+  user="${user%/*}"
+  repo="${1##*/}"
+elif [[ "$1" = */* ]]; then
+  user="${1%/*}"
+  repo="${1##*/}"
+else
+  user=lachieh
+  repo="$1"
+fi
+
+local folder_suffix=""
+if [[ -n "$giturl" && "$giturl" != "github.com" ]]; then
+  folder_suffix="${giturl//./_}/"
+fi
+local dest="${XDG_PROJECTS_DIR:-$HOME/Projects}/$folder_suffix$user/$repo"
+
+if [[ ! -d "$dest" ]]; then
+  RESULT=$(git clone --recurse-submodules "git@${giturl}:${user}/${repo}.git" "$dest")
+  if [[ RESULT -ne 0 ]]; then
+    return "$RESULT"
+  fi
+else
+  echo "No need to clone, that directory already exists."
+  echo "Taking you there."
+fi
+
+cd "$dest" || return 1

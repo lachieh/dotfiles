@@ -24,7 +24,7 @@ mattmc3/zephyr path:plugins/macos conditional:is-macos
 
 # ## plugins
 "$ZDOTDIR"/plugins/mise
-"$ZDOTDIR"/plugins/wash
+"$ZDOTDIR"/plugins/ugh
 zsh-users/zsh-syntax-highlighting
 ajeetdsouza/zoxide
 g-plane/pnpm-shell-completion kind:zsh post:post_pnpm_comp
