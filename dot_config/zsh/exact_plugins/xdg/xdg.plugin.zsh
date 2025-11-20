@@ -58,6 +58,14 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME"/aws/credentials
 # docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
+# kubectl
+# kubernetes sig-cli decided to not follow XDG spec by default so we're just
+# going to symlink it ourselves
+# https://github.com/kubernetes/kubernetes/pull/97885
+if [[ -d ~/.kube && ! -L ~/.kube ]]; then
+  ln -sf "$XDG_CONFIG_HOME/kube" ~/.kube 2>/dev/null
+fi
+
 # node
 path+=(
   /{opt/homebrew,usr/local}/share/npm/bin(N)

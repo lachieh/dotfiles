@@ -14,4 +14,16 @@ if [[ $+commands[atuin] ]]; then
   # completion
   [[ -f "${ATUIN_DATA_PATH}/compdef/_atuin" ]] || atuin gen-completions --shell zsh > "${ATUIN_DATA_PATH}/compdef/_atuin"
   fpath=("${ATUIN_DATA_PATH}/compdef" $fpath)
+  
+  # auth
+  # if not logged in, log in, (`atuin account verify' returns non-zero exit code if not logged in)
+  if ! atuin account verify &>/dev/null; then
+    OP_VAULT_UUID="c5pj6izhhuuirobusafxvnkqau"
+    OP_ITEM_UUID="omx4nfxuac33q6v6g7fnr2pznq"
+    OP_PATH="op://$OP_VAULT_UUID/$OP_ITEM_UUID"
+    atuin account login \
+      --username "$(op read "$OP_PATH/username")" \
+      --password "$(op read "$OP_PATH/password")" \
+      --key "$(op read "$OP_PATH/key")"
+  fi
 fi
