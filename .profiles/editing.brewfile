@@ -1,0 +1,5 @@
+cask "cap"
+cask "handbrake-app"
+cask "screen-studio"
+cask "obs"
+mas "DaVinci Resolve", id: 571213070
