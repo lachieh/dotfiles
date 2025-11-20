@@ -1,0 +1,4 @@
+# System Specific Tasks
+# @see {https://mise.jdx.dev/configuration.html#mise-toml}
+# 
+#:schema https://mise.jdx.dev/schema/mise-task.json

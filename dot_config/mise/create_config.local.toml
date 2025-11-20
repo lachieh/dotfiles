@@ -1,0 +1,4 @@
+# System Specific Configuration
+# @see {https://mise.jdx.dev/configuration.html#mise-toml}
+# 
+#:schema https://mise.jdx.dev/schema/mise.json

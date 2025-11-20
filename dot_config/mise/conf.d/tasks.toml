@@ -1,0 +1,4 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+[task_config]
+includes = ["tasks.local.toml"]
