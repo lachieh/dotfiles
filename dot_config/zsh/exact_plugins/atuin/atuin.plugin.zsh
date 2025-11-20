@@ -4,7 +4,7 @@ ATUIN_DATA_PATH="${ATUIN_DATA_DIR:-$XDG_DATA_HOME/atuin-zsh}"
 ATUIN_CONFIG_DIR="${ATUIN_CONFIG_DIR:-$XDG_CONFIG_HOME/atuin}"
 
 # Check if atuin is installed
-if [[ $+commands[atuin] ]]; then
+if [[ ${+commands[atuin]} ]]; then
   # create data dirs
   mkdir -p "${ATUIN_DATA_PATH}"
   mkdir -p "${ATUIN_DATA_PATH}/compdef"
@@ -13,9 +13,16 @@ if [[ $+commands[atuin] ]]; then
   source "${ATUIN_DATA_PATH}/init.zsh"
   # completion
   [[ -f "${ATUIN_DATA_PATH}/compdef/_atuin" ]] || atuin gen-completions --shell zsh > "${ATUIN_DATA_PATH}/compdef/_atuin"
-  fpath=("${ATUIN_DATA_PATH}/compdef" $fpath)
+  fpath=("${ATUIN_DATA_PATH}/compdef" "${fpath[@]}")
   # auth
-  if [[ $(atuin account verify &>/dev/null) -ne 0 ]]; then
+  ATUIN_AUTH_LOG=$(atuin account verify 2>&1)
+  ATUIN_AUTH_EXIT_CODE=$?
+  if [[ $ATUIN_AUTH_EXIT_CODE -ne 0 ]]; then
+    if [[ $ATUIN_AUTH_EXIT_CODE -ne 1 ]]; then
+      echo "Error verifying atuin account:"
+      echo "${ATUIN_AUTH_LOG}"
+      return
+    fi
     echo "Logging into atuin account from 1Password..."
     OP_VAULT_UUID="c5pj6izhhuuirobusafxvnkqau"
     OP_ITEM_UUID="omx4nfxuac33q6v6g7fnr2pznq"
