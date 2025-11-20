@@ -15,7 +15,7 @@ if [[ $+commands[atuin] ]]; then
   [[ -f "${ATUIN_DATA_PATH}/compdef/_atuin" ]] || atuin gen-completions --shell zsh > "${ATUIN_DATA_PATH}/compdef/_atuin"
   fpath=("${ATUIN_DATA_PATH}/compdef" $fpath)
   # auth
-  if [[ $(atuin account verify) -ne 0 ]]; then
+  if [[ $(atuin account verify &>/dev/null) -ne 0 ]]; then
     echo "Logging into atuin account from 1Password..."
     OP_VAULT_UUID="c5pj6izhhuuirobusafxvnkqau"
     OP_ITEM_UUID="omx4nfxuac33q6v6g7fnr2pznq"
