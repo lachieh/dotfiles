@@ -1,9 +1,4 @@
-[tools]
-node = "lts"
-go = "latest"
-ubi = "latest"
-rust = "latest"
-python = "latest"
+#:schema https://mise.jdx.dev/schema/mise.json
 
 [settings]
 experimental = true

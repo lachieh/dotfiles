@@ -1,0 +1,8 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+[tools]
+node = "lts"
+go = "latest"
+ubi = "latest"
+rust = "latest"
+python = "latest"
