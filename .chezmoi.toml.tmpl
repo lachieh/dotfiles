@@ -70,3 +70,6 @@ args = [
     "-c",
     'cp {{ "{{" }} .Target | quote {{ "}}" }} {{ "{{" }} printf "%s.base" .Target | quote {{ "}}" }} && code --new-window --wait --merge {{ "{{" }} .Destination | quote {{ "}}" }} {{ "{{" }} .Target | quote {{ "}}" }} {{ "{{" }} printf "%s.base" .Target | quote {{ "}}" }} {{ "{{" }} .Source | quote {{ "}}" }}'
 ]
+
+[hooks.read-source-state.pre]
+script = "{{ .chezmoi.sourceDir }}/.profiles/__sync-profiles.sh"
