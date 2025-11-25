@@ -30,6 +30,11 @@
 #  https://developer.1password.com/docs/ssh/agent/config
 
 [[ssh-keys]]
+item = "t7ywvz2xwrlrxxeilo4fi2mwqm"
+vault = "Private"
+account = "YXLXGYRL3BFIBO7C6GIB7DX2VU"
+
+[[ssh-keys]]
 vault = "Infrastructure"
 account = "YXLXGYRL3BFIBO7C6GIB7DX2VU"
 
