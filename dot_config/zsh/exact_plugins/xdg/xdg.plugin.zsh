@@ -46,6 +46,7 @@ alias wget="${aliases[wget]:-wget} --hsts-file=\$XDG_CACHE_HOME/wget/wget-hsts"
 # gnupg
 export GNUPGHOME="${GNUPGHOME:-$XDG_DATA_HOME/gnupg}"
 [[ -d "$GNUPGHOME" ]] || mkdir -p "$GNUPGHOME"
+[[ "$(stat -f '%Lp' "$GNUPGHOME")" != "700" ]] && chmod 700 "$GNUPGHOME"
 
 #
 # Dev tools
