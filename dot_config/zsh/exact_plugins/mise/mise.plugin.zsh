@@ -18,7 +18,7 @@ source <(mise activate zsh)
 source <(mise hook-env -s zsh)
 
 # Completions directory for `mise` command
-local COMPLETIONS_DIR="$ZSH_CACHE_DIR/completions"
+local COMPLETIONS_DIR="$XDG_CACHE_HOME/zsh/completions"
 
 # Add completions to the FPATH
 typeset -TUx FPATH fpath

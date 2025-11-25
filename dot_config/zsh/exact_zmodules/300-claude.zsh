@@ -1,8 +1,23 @@
 #!/usr/bin/env zsh
 set -eo pipefail
 
+CLAUD_PLUGIN_DEBUG=${CLAUD_PLUGIN_DEBUG:-false}
+
+log() {
+  if [ "$CLAUD_PLUGIN_DEBUG" = "true" ]; then
+    printf "300-claude.zsh \e[33m[LOG]\e[0m %s\n" "$@";
+  else
+    log() { :; }
+  fi
+}
+err() { printf "300-claude.zsh \e[31m[ERR]\e[0m %s\n" "$@"; }
+file_exists() { [ -e "$1" ]; }
+folder_exists() { [ -d "$1" ]; }
+file_is_symlink() { [ -L "$1" ]; }
+
 # Cannot continue if claude is not installed
 if [[ ! ${+commands[claude]} ]]; then
+  CLAUD_PLUGIN_DEBUG=true
   log "No binary for claude found. Install it with"
   log "curl -fsSL https://claude.ai/install.sh | bash"
   return 0
@@ -16,12 +31,6 @@ if [ -z "$XDG_DATA_HOME" ] || [ -z "$XDG_CONFIG_HOME" ] || [ -z "$XDG_STATE_HOME
   echo "    \$XDG_STATE_HOME: ${XDG_STATE_HOME:-'not set'}"
   return 0
 fi
-
-log() { printf "300-claude.zsh \e[33m[LOG]\e[0m %s\n" "$@"; }
-err() { printf "300-claude.zsh \e[31m[ERR]\e[0m %s\n" "$@"; }
-file_exists() { [ -e "$1" ]; }
-folder_exists() { [ -d "$1" ]; }
-file_is_symlink() { [ -L "$1" ]; }
 
 handle_file() {
   local src_file="$1"
