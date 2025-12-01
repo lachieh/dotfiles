@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC1090
+
+local port
+port=$1
+if [[ -z $port ]]; then
+  echo "Usage: killport <port>"
+  return 1
+fi
+lsof -ti:$port | xargs kill -9

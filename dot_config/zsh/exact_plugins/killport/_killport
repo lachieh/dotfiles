@@ -1,0 +1,45 @@
+#compdef killport
+
+local -a matches
+local current_cmd=""
+local current_pid=""
+local in_listen=0
+
+# Parse lsof output to extract listening ports and their associated commands
+# The output format includes: p<PID>, c<COMMAND>, f<FD>, t<TYPE>, n<ADDRESS>, TST=<STATE>
+while IFS= read -r line; do
+  case $line in
+    p*)
+      current_pid=${line#p}
+      in_listen=0
+      ;;
+    c*)
+      current_cmd=${line#c}
+      ;;
+    TST=LISTEN)
+      in_listen=1
+      ;;
+    TST=*)
+      in_listen=0
+      ;;
+    n*)
+      if (( in_listen )); then
+        local addr=${line#n}
+        # Only process lines with port information (contains colon)
+        if [[ $addr == *:* ]]; then
+          # Get the local port (extract port after last colon, before any ->)
+          local local_part=${addr%%->*}
+          local port=${local_part##*:}
+          # Only add if port is numeric
+          if [[ $port == <-> ]]; then
+            matches+=("${port}:${current_cmd}")
+          fi
+        fi
+        in_listen=0
+      fi
+      ;;
+  esac
+done < <(lsof -i -P -n -F pcftnST 2>/dev/null)
+
+# Use _describe with completion:description format
+_describe -t ports 'port' matches
