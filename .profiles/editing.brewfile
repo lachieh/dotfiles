@@ -1,3 +1,4 @@
+brew "ffmpeg"
 cask "cap"
 cask "handbrake-app"
 cask "screen-studio"
