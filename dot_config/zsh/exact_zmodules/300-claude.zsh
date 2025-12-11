@@ -41,6 +41,7 @@ handle_file() {
   if file_exists "$src_file" && ! file_is_symlink "$src_file"; then
     log "Backing up $src_file to $src_file$backup_suffix"
     mv "$src_file" "$src_file$backup_suffix"
+    cp "$src_file$backup_suffix" "$dest_file"
     log "Creating symlink: $src_file -> $dest_file"
     ln -s "$dest_file" "$src_file"
   fi
@@ -67,12 +68,14 @@ handle_folder() {
   fi
 }
 
-CLAUDE_ALIAS_NAME="claude"
+CLAUDE_ALIAS_NAME="claude-code"
+CLAUDE_OG_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/$CLAUDE_ALIAS_NAME"
 CLAUDE_DATA_DIR="$XDG_DATA_HOME/$CLAUDE_ALIAS_NAME"
 CLAUDE_STATE_DIR="$XDG_STATE_HOME/$CLAUDE_ALIAS_NAME"
 
 CLAUDE_DIR_HOME=( "$HOME/.claude" "$CLAUDE_CONFIG_DIR" )
+CLAUDE_DIR_CONFIG=( "$CLAUDE_OG_CONFIG_DIR" "$CLAUDE_DIR_HOME" )
 CLAUDE_DIR_LOCAL=( "$CLAUDE_CONFIG_DIR/local" "$CLAUDE_DATA_DIR/local" )
 CLAUDE_DIR_PROJECTS=( "$CLAUDE_CONFIG_DIR/projects" "$CLAUDE_STATE_DIR/projects" )
 CLAUDE_DIR_TODOS=( "$CLAUDE_CONFIG_DIR/todos" "$CLAUDE_STATE_DIR/todos" )
