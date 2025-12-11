@@ -1,10 +1,16 @@
 #!/usr/bin/env zsh
 set -eo pipefail
 
-CLAUD_PLUGIN_DEBUG=${CLAUD_PLUGIN_DEBUG:-false}
+# Enable debug logging by setting CLAUDE_PLUGIN_DEBUG=true
+CLAUDE_PLUGIN_DEBUG=${CLAUDE_PLUGIN_DEBUG:-false}
+
+# This is where we want claude to store its config and data
+CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude-code"
+CLAUDE_DATA_DIR="$XDG_DATA_HOME/claude-code"
+CLAUDE_STATE_DIR="$XDG_STATE_HOME/claude-code"
 
 log() {
-  if [ "$CLAUD_PLUGIN_DEBUG" = "true" ]; then
+  if [ "$CLAUDE_PLUGIN_DEBUG" = "true" ]; then
     printf "300-claude.zsh \e[33m[LOG]\e[0m %s\n" "$@";
   else
     log() { :; }
@@ -14,10 +20,11 @@ err() { printf "300-claude.zsh \e[31m[ERR]\e[0m %s\n" "$@"; }
 file_exists() { [ -e "$1" ]; }
 folder_exists() { [ -d "$1" ]; }
 file_is_symlink() { [ -L "$1" ]; }
+symlink_is_target() { [ "$(readlink "$1")" = "$2" ]; }
 
 # Cannot continue if claude is not installed
 if [[ ! ${+commands[claude]} ]]; then
-  CLAUD_PLUGIN_DEBUG=true
+  CLAUDE_PLUGIN_DEBUG=true
   log "No binary for claude found. Install it with"
   log "curl -fsSL https://claude.ai/install.sh | bash"
   return 0
@@ -57,36 +64,39 @@ handle_folder() {
     mkdir -p "$dest_folder"
   fi
 
-  if folder_exists "$src_folder" && ! file_is_symlink "$src_folder"; then
+  if folder_exists "$src_folder" && ! file_is_symlink "$src_folder" && ; then
     if [ "$(ls -A "$src_folder")" ]; then
       log "Moving contents from $src_folder to $dest_folder"
       cp -R "$src_folder"/* "$dest_folder" 2>/dev/null || true
     fi
-    log "Creating symlink: $src_folder -> $dest_folder"
     rm -rf "$src_folder"
+  fi
+
+  if ! file_is_symlink "$src_folder"; then
+    log "Creating symlink: $src_folder -> $dest_folder"
+    ln -s "$dest_folder" "$src_folder"
+  elif ! symlink_is_target "$src_folder" "$dest_folder"; then
+    log "Updating symlink: $src_folder -> $dest_folder"
+    rm "$src_folder"
     ln -s "$dest_folder" "$src_folder"
   fi
 }
 
-CLAUDE_ALIAS_NAME="claude-code"
-CLAUDE_OG_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
-CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/$CLAUDE_ALIAS_NAME"
-CLAUDE_DATA_DIR="$XDG_DATA_HOME/$CLAUDE_ALIAS_NAME"
-CLAUDE_STATE_DIR="$XDG_STATE_HOME/$CLAUDE_ALIAS_NAME"
+# first, move and link $XDG_CONFIG_HOME/claude to $CLAUDE_CONFIG_DIR
+# - claude expects to use this folder, but not for everything
+handle_folder $XDG_CONFIG_HOME/claude "$CLAUDE_CONFIG_DIR"
 
-CLAUDE_DIR_HOME=( "$HOME/.claude" "$CLAUDE_CONFIG_DIR" )
-CLAUDE_DIR_CONFIG=( "$CLAUDE_OG_CONFIG_DIR" "$CLAUDE_DIR_HOME" )
-CLAUDE_DIR_LOCAL=( "$CLAUDE_CONFIG_DIR/local" "$CLAUDE_DATA_DIR/local" )
-CLAUDE_DIR_PROJECTS=( "$CLAUDE_CONFIG_DIR/projects" "$CLAUDE_STATE_DIR/projects" )
-CLAUDE_DIR_TODOS=( "$CLAUDE_CONFIG_DIR/todos" "$CLAUDE_STATE_DIR/todos" )
-CLAUDE_DIR_STATSIG=( "$CLAUDE_CONFIG_DIR/statsig" "$CLAUDE_STATE_DIR/statsig" )
-CLAUDE_FILE_HOME=("$HOME/.claude.json" "$CLAUDE_CONFIG_DIR/.claude.home.json")
+# next, move and link $HOME/.claude to $CLAUDE_CONFIG_DIR
+handle_folder "$HOME/.claude" "$CLAUDE_CONFIG_DIR"
+handle_folder "$HOME/.claude_worktrees" "$CLAUDE_DATA_DIR/worktrees"
 
-handle_folder "${CLAUDE_DIR_HOME[@]}"
-handle_folder "${CLAUDE_DIR_LOCAL[@]}"
-handle_folder "${CLAUDE_DIR_PROJECTS[@]}"
-handle_folder "${CLAUDE_DIR_TODOS[@]}"
-handle_folder "${CLAUDE_DIR_STATSIG[@]}"
-handle_file "${CLAUDE_FILE_HOME[@]}"
+# now handle the various subdirectories and files used by claude into their correct XDG locations
+handle_folder "$CLAUDE_CONFIG_DIR/local" "$CLAUDE_DATA_DIR/local"
+handle_folder "$CLAUDE_CONFIG_DIR/projects" "$CLAUDE_STATE_DIR/projects"
+handle_folder "$CLAUDE_CONFIG_DIR/todos" "$CLAUDE_STATE_DIR/todos"
+handle_folder "$CLAUDE_CONFIG_DIR/statsig" "$CLAUDE_STATE_DIR/statsig"
+
+# Finally, move and link the home config file
+handle_file "$HOME/.claude.json" "$CLAUDE_CONFIG_DIR/.claude-code.home.json"
 
 set +eo pipefail
