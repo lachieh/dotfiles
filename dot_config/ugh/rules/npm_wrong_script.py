@@ -23,7 +23,7 @@ def get_new_command(command):
     if len(suggestion_lines) > 0:
         # Take the first suggestion
         first_suggestion = suggestion_lines[0]
-        suggested_command = first_suggestion.split('#')[0].strip()
+        suggested_command = first_suggestion.split('#')[0].strip().replace('npm ', '')
         return command.script.replace(command.script.split()[1], suggested_command)
     
     return command.script
