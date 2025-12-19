@@ -2,8 +2,6 @@
 
 # sorry, mum
 
-eval "$(thefuck --alias ugh)"
-
 $UGH_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ugh"
 $OG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/thefuck"
 
@@ -21,3 +19,5 @@ if [[ -d "${OG_CONFIG_DIR}" ]]; then
     ln -s "${UGH_CONFIG_DIR}" "${OG_CONFIG_DIR}"
   fi
 fi
+
+eval "$(thefuck --alias ugh)"
