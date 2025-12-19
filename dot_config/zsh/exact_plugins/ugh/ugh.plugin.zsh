@@ -1,9 +1,10 @@
 #!/usr/bin/env zsh
+# shellcheck disable=SC1071
 
 # sorry, mum
 
-$UGH_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ugh"
-$OG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/thefuck"
+UGH_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ugh"
+OG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/thefuck"
 
 # if the folder config dir does not exist, create it
 if [[ ! -d "${UGH_CONFIG_DIR}" ]]; then
