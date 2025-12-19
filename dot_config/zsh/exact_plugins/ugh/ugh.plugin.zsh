@@ -15,8 +15,8 @@ fi
 if [[ -d "${OG_CONFIG_DIR}" ]]; then
   if [[ ! -L "${OG_CONFIG_DIR}" ]]; then
     # move its contents to the new ugh config dir, delete it, and symlink it to the ugh config dir
-    mv "${OG_CONFIG_DIR}/*" "${UGH_CONFIG_DIR}"
-    rmdir "${OG_CONFIG_DIR}"
+    mv "${OG_CONFIG_DIR}" "${UGH_CONFIG_DIR}/backup-$(date +%Y%m%d%H%M%S)"
+    rm -rf "${OG_CONFIG_DIR}"
     ln -s "${UGH_CONFIG_DIR}" "${OG_CONFIG_DIR}"
   fi
 fi
