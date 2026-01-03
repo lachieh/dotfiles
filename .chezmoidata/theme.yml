@@ -29,12 +29,12 @@ theme:
         normal: '#768f9b'
         bright: '#152228'
   colors:
-    t1: "#84F9BD"
-    t2: "#2FC9B9"
-    t3: "#0098A7"
-    t4: "#006884"
-    t5: "#003750"
-    t6: "#7FFF00"
+    t1: "#1F243D"
+    t2: "#3A4356"
+    t3: "#456B62"
+    t4: "#4BA87A"
+    t5: "#58ee85"
+    t6: "#84F9BD"
   fonts:
     mono: '"CaskaydiaCove Nerd Font Propo", "Cascadia Code", "Fira Code", "Consolas", "Monaco", "monospace"'
     sans: '"Inter", "Arial", "sans-serif"'

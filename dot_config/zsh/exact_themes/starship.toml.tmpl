@@ -1,12 +1,25 @@
+{{- /* Device-specific color overrides */ -}}
+{{- $device_type := "desktop" -}}
+{{- if hasKey . "device_type" -}}
+  {{- $device_type = .device_type -}}
+{{- end -}}
+{{- $accent := .theme.colors.t5 -}}
+{{- $accent_name := "green" -}}
+{{- if eq $device_type "server" -}}
+  {{- $accent = .theme.tokens.palette.cyan.normal -}}
+  {{- $accent_name = "cyan" -}}
+{{- end -}}
+
 format = """
-[ ${custom.live-clock-icon} $time ](fg:#1F243D bg:#58ee85)[](fg:#58ee85 bg:#3A4356)\
-[ $directory ](bg:#3A4356)[](fg:#3A4356 bg:#1F243D)\
-[ ($git_branch ${custom.git_status_dirty}$git_status )](fg:#58ee85 bg:#1F243D)[](fg:#1F243D bg:none)\
+${custom.ssh_indicator}\
+[ ${custom.live-clock-icon} $time ](fg:{{ .theme.colors.t1 }} bg:{{ $accent }})[](fg:{{ $accent }} bg:{{ .theme.colors.t2 }})\
+[ $directory ](bg:{{ .theme.colors.t2 }})[](fg:{{ .theme.colors.t2 }} bg:{{ .theme.colors.t1 }})\
+[ ($git_branch ${custom.git_status_dirty}$git_status )](fg:{{ $accent }} bg:{{ .theme.colors.t1 }})[](fg:{{ .theme.colors.t1 }} bg:none)\
 $fill\
 $package\
 $docker$aws$kubernetes\
 $nodejs$rust$golang$python$php$buf$c$cmake$elixir$java$kotlin$lua$ruby$zig\
-$line_break[ $battery $character  ](fg:#58ee85 bg:#3A4356)[ ](fg:#3A4356 bg:none)\
+$line_break[ $battery $character  ](fg:{{ $accent }} bg:{{ .theme.colors.t2 }})[ ](fg:{{ .theme.colors.t2 }} bg:none)\
 """
 
 right_format = """
@@ -20,29 +33,29 @@ command_timeout = 2000
 palette = "starlach"
 
 [palettes.starlach]
-black = "#5c5855"
-red = "#fb4b63"
-green = "#58ee85"
-yellow = "#f0df7e"
-blue = "#379ff8"
-purple = "#f498fd"
-cyan = "#86dbff"
-white = "#768f9b"
-bright-black = '#090300'
-bright-red = '#681d27'
-bright-green = '#224b31'
-bright-yellow = '#655913'
-bright-blue = '#004179'
-bright-purple = '#4b1850'
-bright-cyan = '#4a778a'
-bright-white = '#152228'
+black = "{{ .theme.tokens.palette.black.normal }}"
+red = "{{ .theme.tokens.palette.red.normal }}"
+green = "{{ .theme.tokens.palette.green.normal }}"
+yellow = "{{ .theme.tokens.palette.yellow.normal }}"
+blue = "{{ .theme.tokens.palette.blue.normal }}"
+purple = "{{ .theme.tokens.palette.magenta.normal }}"
+cyan = "{{ .theme.tokens.palette.cyan.normal }}"
+white = "{{ .theme.tokens.palette.white.normal }}"
+bright-black = "{{ .theme.tokens.palette.black.bright }}"
+bright-red = "{{ .theme.tokens.palette.red.bright }}"
+bright-green = "{{ .theme.tokens.palette.green.bright }}"
+bright-yellow = "{{ .theme.tokens.palette.yellow.bright }}"
+bright-blue = "{{ .theme.tokens.palette.blue.bright }}"
+bright-purple = "{{ .theme.tokens.palette.magenta.bright }}"
+bright-cyan = "{{ .theme.tokens.palette.cyan.bright }}"
+bright-white = "{{ .theme.tokens.palette.white.bright }}"
 
 
 # Prompt
 
 [character]
 format = "$symbol"
-success_symbol = "[󰚩 ](bg:prev_bg fg:green)"
+success_symbol = "[󰚩 ](bg:prev_bg fg:{{ $accent_name }})"
 error_symbol = "[󱚝 ](bg:prev_bg fg:red)"
 
 [line_break]
@@ -50,6 +63,15 @@ disabled = false
 
 [fill]
 symbol = " "
+
+# SSH Indicator
+
+[custom.ssh_indicator]
+when = '[ -n "$SSH_TTY" ]'
+symbol = "󰣀"
+format = "[ $symbol SSH ](fg:{{ .theme.colors.t1 }} bg:{{ .theme.tokens.palette.yellow.normal }})[](fg:{{ .theme.tokens.palette.yellow.normal }} bg:{{ $accent }})"
+shell = ["sh"]
+description = "Shows when connected via SSH"
 
 # System Information
 
@@ -68,7 +90,7 @@ read_only = " 󰌾"
 truncation_length = 2
 fish_style_pwd_dir_length = 1
 use_logical_path = true
-style = "fg:#58EE85 bg:#3A4356"
+style = "fg:{{ $accent }} bg:{{ .theme.colors.t2 }}"
 format = "[$path]($style)[$read_only]($style)"
 
 [time]

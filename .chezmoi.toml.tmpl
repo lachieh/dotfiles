@@ -34,6 +34,9 @@ encryption = "age"
   {{ $gui := promptBoolOnce . "gui" "Install GUI Apps" true -}}
   gui = {{ $gui }}
 
+  {{ $device_type := promptChoiceOnce . "device_type" "Device Type" (list "desktop" "laptop" "server") -}}
+  device_type = "{{ $device_type }}"
+
   {{ $git_name  := promptStringOnce . ( list "git" "name")  "Full Name" "Lachlan Heywood" -}}
   {{ $git_email := promptStringOnce . ( list "git" "email") "Git Email" "lachieh@users.noreply.github.com" -}}
   [data.git]
