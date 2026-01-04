@@ -22,6 +22,7 @@ mattmc3/zephyr path:plugins/macos conditional:is-macos
 
 # ## plugins
 "$ZDOTDIR"/plugins/mise
+"$ZDOTDIR"/plugins/fnox
 "$ZDOTDIR"/plugins/npm
 "$ZDOTDIR"/plugins/ugh
 "$ZDOTDIR"/plugins/killport
