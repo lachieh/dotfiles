@@ -1,40 +1,55 @@
 theme:
   tokens:
     mode: "dark" # dark | light
+    primary:
+      bg: '#1F243D'
+      fg: '#3A4356'
+      light: '#A2FBBD'
+      base: '#58EE85'
+      dark: '#40B078'
+    alternate:
+      bg: '#1F243D'
+      fg: '#3A4356'
+      light: '#A1F0FF'
+      base: '#00CDE8'
+      dark: '#208FAF'
     palette:
-      background: '#070b0d'
-      foreground: '#d6e0e4'
-      black:
-        normal: '#5c5855'
-        bright: '#090300'
+      background: '#070B0D'
+      foreground: '#D6E0E4'
       red:
-        normal: '#fb4b63'
-        bright: '#681d27'
-      green:
-        normal: '#58ee85'
-        bright: '#224b31'
+        normal: '#FB4B63'
+        bright: '#681D27'
+      orange:
+        normal: '#FA8C48'
+        bright: '#7A3C1D'
       yellow:
-        normal: '#f0df7e'
-        bright: '#655913'
-      blue:
-        normal: '#379ff8'
-        bright: '#004179'
-      magenta:
-        normal: '#f498fd'
-        bright: '#4b1850'
+        normal: '#F0DD7D'
+        bright: '#5C4E06'
+      green:
+        normal: '#58EE85'
+        bright: '#164725'
       cyan:
-        normal: '#86dbff'
-        bright: '#4a778a'
+        normal: '#00CDE8'
+        bright: '#004F59'
+      blue:
+        normal: '#20A1F7'
+        bright: '#0D4163'
+      magenta:
+        normal: '#F498FD'
+        bright: '#532557'
+      black:
+        normal: '#5C5855'
+        bright: '#090300'
       white:
-        normal: '#768f9b'
+        normal: '#768F9B'
         bright: '#152228'
   colors:
     t1: "#1F243D"
     t2: "#3A4356"
     t3: "#456B62"
-    t4: "#4BA87A"
-    t5: "#58ee85"
-    t6: "#84F9BD"
+    t4: "#40B078"
+    t5: "#58EE85"
+    t6: "#A2FBBD"
   fonts:
     mono: '"CaskaydiaCove Nerd Font Propo", "Cascadia Code", "Fira Code", "Consolas", "Monaco", "monospace"'
     sans: '"Inter", "Arial", "sans-serif"'

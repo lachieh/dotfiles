@@ -3,23 +3,22 @@
 {{- if hasKey . "device_type" -}}
   {{- $device_type = .device_type -}}
 {{- end -}}
-{{- $accent := .theme.colors.t5 -}}
-{{- $accent_name := "green" -}}
+
+{{- $theme := .theme.tokens.primary -}}
 {{- if eq $device_type "server" -}}
-  {{- $accent = .theme.tokens.palette.cyan.normal -}}
-  {{- $accent_name = "cyan" -}}
+  {{- $theme := .theme.tokens.alternate -}}
 {{- end -}}
 
 format = """
 ${custom.ssh_indicator}\
-[ ${custom.live-clock-icon} $time ](fg:{{ .theme.colors.t1 }} bg:{{ $accent }})[](fg:{{ $accent }} bg:{{ .theme.colors.t2 }})\
-[ $directory ](bg:{{ .theme.colors.t2 }})[](fg:{{ .theme.colors.t2 }} bg:{{ .theme.colors.t1 }})\
-[ ($git_branch ${custom.git_status_dirty}$git_status )](fg:{{ $accent }} bg:{{ .theme.colors.t1 }})[](fg:{{ .theme.colors.t1 }} bg:none)\
+[ ${custom.live-clock-icon} $time ](fg:{{ $theme.bg }} bg:{{ $theme.base }})[](fg:{{ $theme.base }} bg:{{ $theme.fg }})\
+[ $directory ](bg:{{ $theme.fg }})[](fg:{{ $theme.fg }} bg:{{ $theme.bg }})\
+[ ($git_branch ${custom.git_status_dirty}$git_status )](fg:{{ $theme.base }} bg:{{ $theme.bg }})[](fg:{{ $theme.bg }} bg:none)\
 $fill\
 $package\
 $docker$aws$kubernetes\
 $nodejs$rust$golang$python$php$buf$c$cmake$elixir$java$kotlin$lua$ruby$zig\
-$line_break[ $battery $character  ](fg:{{ $accent }} bg:{{ .theme.colors.t2 }})[ ](fg:{{ .theme.colors.t2 }} bg:none)\
+$line_break[ $battery $character  ](fg:{{ $theme.base }} bg:{{ $theme.fg }})[ ](fg:{{ $theme.fg }} bg:none)\
 """
 
 right_format = """
@@ -55,7 +54,7 @@ bright-white = "{{ .theme.tokens.palette.white.bright }}"
 
 [character]
 format = "$symbol"
-success_symbol = "[󰚩 ](bg:prev_bg fg:{{ $accent_name }})"
+success_symbol = "[󰚩 ](bg:prev_bg fg:{{ $theme.base }})"
 error_symbol = "[󱚝 ](bg:prev_bg fg:red)"
 
 [line_break]
@@ -67,11 +66,13 @@ symbol = " "
 # SSH Indicator
 
 [custom.ssh_indicator]
+command = '[[ -z "{{ .computer_name }}" ]] && echo "{{ .computer_name }}" || uname -n'
+description = "Shows when connected via SSH"
+format = "[ $symbol $output ]($style)[](fg:{{ .theme.tokens.palette.yellow.normal }} bg:{{ $theme.base }})"
+style = "fg:{{ $theme.bg }} bg:{{ .theme.tokens.palette.yellow.normal }}"
 when = '[ -n "$SSH_TTY" ]'
 symbol = "󰣀"
-format = "[ $symbol SSH ](fg:{{ .theme.colors.t1 }} bg:{{ .theme.tokens.palette.yellow.normal }})[](fg:{{ .theme.tokens.palette.yellow.normal }} bg:{{ $accent }})"
 shell = ["sh"]
-description = "Shows when connected via SSH"
 
 # System Information
 
@@ -90,7 +91,7 @@ read_only = " 󰌾"
 truncation_length = 2
 fish_style_pwd_dir_length = 1
 use_logical_path = true
-style = "fg:{{ $accent }} bg:{{ .theme.colors.t2 }}"
+style = "fg:{{ $theme.base }} bg:{{ $theme.fg }}"
 format = "[$path]($style)[$read_only]($style)"
 
 [time]
