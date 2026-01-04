@@ -6,7 +6,7 @@
 
 {{- $theme := .theme.tokens.primary -}}
 {{- if eq $device_type "server" -}}
-  {{- $theme := .theme.tokens.alternate -}}
+  {{- $theme = .theme.tokens.alternate -}}
 {{- end -}}
 
 format = """
