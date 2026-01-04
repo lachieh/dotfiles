@@ -6,6 +6,7 @@ go = "latest"
 ubi = "latest"
 rust = "latest"
 python = "latest"
+fnox = "latest"
 
 [tools."http:claude"]
 version = "latest"
