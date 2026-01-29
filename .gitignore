@@ -1,2 +1,4 @@
 .chezmoiscripts/brew/*
+docs
 !.keep
+*.local.md
