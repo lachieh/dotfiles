@@ -64,7 +64,7 @@ handle_folder() {
     mkdir -p "$dest_folder"
   fi
 
-  if folder_exists "$src_folder" && ! file_is_symlink "$src_folder" && ; then
+  if folder_exists "$src_folder" && ! file_is_symlink "$src_folder"; then
     if [ "$(ls -A "$src_folder")" ]; then
       log "Moving contents from $src_folder to $dest_folder"
       cp -R "$src_folder"/* "$dest_folder" 2>/dev/null || true
@@ -84,7 +84,7 @@ handle_folder() {
 
 # first, move and link $XDG_CONFIG_HOME/claude to $CLAUDE_CONFIG_DIR
 # - claude expects to use this folder, but not for everything
-handle_folder $XDG_CONFIG_HOME/claude "$CLAUDE_CONFIG_DIR"
+handle_folder "$XDG_CONFIG_HOME"/claude "$CLAUDE_CONFIG_DIR"
 
 # next, move and link $HOME/.claude to $CLAUDE_CONFIG_DIR
 handle_folder "$HOME/.claude" "$CLAUDE_CONFIG_DIR"
