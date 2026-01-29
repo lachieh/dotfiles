@@ -1,10 +1,58 @@
 #!/usr/bin/env zsh
-# shellcheck disable=SC1090
 
-local port
-port=$1
-if [[ -z $port ]]; then
-  echo "Usage: killport <port>"
-  return 1
+local force=0
+[[ $1 == -f ]] && { force=1; shift }
+
+local port=$1
+
+# Validate input
+[[ -z $port ]] && { echo "Usage: killport [-f] <port>" >&2; return 1 }
+
+# Security: validate port is numeric to prevent command injection
+[[ ! $port =~ '^[0-9]+$' ]] && { echo "Invalid port: $port" >&2; return 1 }
+
+# Get process info
+local -a lines pids
+lines=("${(@f)$(lsof -i :"${port}" -P -n 2>/dev/null | tail -n +2)}")
+
+(( ${#lines} == 0 )) && { echo "No process on port $port"; return 1 }
+
+# Parse with native zsh (zero subprocesses)
+echo "Port $port:"
+for line in "${lines[@]}"; do
+  local parts=("${(@s: :)line}")
+  local cmd="${parts[1]}" pid="${parts[2]}"
+
+  # Validate PID is numeric (security)
+  [[ $pid =~ '^[0-9]+$' ]] || continue
+
+  pids+=("$pid")
+
+  # Get full command line
+  local full_cmd
+  full_cmd=$(ps -p "$pid" -o args= 2>/dev/null)
+  echo "  PID $pid  $cmd  ${full_cmd:-<unknown>}"
+done
+
+# Deduplicate PIDs
+typeset -U pids
+
+# Confirm unless forced
+if (( ! force )); then
+  echo
+  read -q "?Kill? [y/N] " || { echo; return 0 }
+  echo
 fi
-lsof -ti:$port | xargs kill -9
+
+# Kill processes
+local failed=0
+for pid in "${pids[@]}"; do
+  if kill -9 -- "$pid" 2>/dev/null; then
+    echo "Killed PID $pid"
+  else
+    echo "Failed to kill PID $pid" >&2
+    failed=1
+  fi
+done
+
+return $failed

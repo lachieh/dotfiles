@@ -7,7 +7,7 @@ fi
 
 autoload -Uz killport
 
-if (( ${+_comps[killport]} )); then
+if (( ! ${+_comps[killport]} )); then
   typeset -g -A _comps
   autoload -Uz _killport
   _comps[killport]=_killport
