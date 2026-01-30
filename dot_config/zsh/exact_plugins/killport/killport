@@ -13,10 +13,8 @@ local port=$1
 
 # Get process info
 local -a lines pids
-local output
-output=$(lsof -i :"${port}" -P -n 2>/dev/null | tail -n +2)
-[[ -z "$output" ]] && { echo "Nothing running on $port"; return 2 }
-lines=("${(@f)output}")
+lines=("${(@f)$(lsof -i :"${port}" -P -n 2>/dev/null | tail -n +2)}")
+[[ -z "${lines[1]}" ]] && { echo "Nothing running on $port"; return 2 }
 
 # Parse with native zsh (zero subprocesses)
 echo "Port $port:"

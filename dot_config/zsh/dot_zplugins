@@ -26,6 +26,7 @@ mattmc3/zephyr path:plugins/macos conditional:is-macos
 "$ZDOTDIR"/plugins/npm
 "$ZDOTDIR"/plugins/ugh
 "$ZDOTDIR"/plugins/killport
+"$ZDOTDIR"/plugins/docker-gh-creds
 zsh-users/zsh-syntax-highlighting
 ajeetdsouza/zoxide
 g-plane/pnpm-shell-completion kind:zsh post:post_pnpm_comp
