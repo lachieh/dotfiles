@@ -1,3 +1,10 @@
+{{- $target := joinPath .chezmoi.homeDir ".config" "git" "config" -}}
+{{- $signingkey := "" -}}
+{{- if stat $target -}}
+{{-   $signingkey = (output "bash" "-c" (printf "grep -m1 'signingkey' %s | awk '{print $3}'" $target)) | trim -}}
+{{- else -}}
+{{-   $signingkey = (onepasswordDetailsFields "t7ywvz2xwrlrxxeilo4fi2mwqm" "" .op.account).public_key.value -}}
+{{- end -}}
 [init]
 	defaultBranch = main
 
@@ -5,13 +12,13 @@
 	email = {{ .git.email }}
 	name = {{ .git.name }}
 
-	signingkey = {{ (onepasswordDetailsFields "t7ywvz2xwrlrxxeilo4fi2mwqm" "" .op.account).public_key.value }}
+	signingkey = {{ $signingkey }}
 
 [gpg]
   format = ssh
 
 [gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  program = "~/.local/bin/git-ssh-sign"
 
 [commit]
   gpgsign = true
