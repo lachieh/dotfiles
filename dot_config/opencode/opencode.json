@@ -1,14 +1,28 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "pencil": {
-      "command": [
-        "/Volumes/SSD/Home/lachlan/.vscode/extensions/highagency.pencildev-0.6.36/out/mcp-server-darwin-arm64",
-        "--app",
-        "visual_studio_code"
-      ],
-      "enabled": true,
-      "type": "local"
+  "mcp": {},
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM",
+      "options": {
+        "baseURL": "https://litellm.heywood.dev/v1"
+      }
+    },
+    "poolside": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Poolside",
+      "options": {
+        "baseURL": "https://inference.poolside.ai/v1"
+      },
+      "models": {
+        "poolside/laguna-m.1": {
+          "name": "Laguna M.1"
+        },
+        "poolside/laguna-xs.2": {
+          "name": "Laguna XS.2"
+        }
+      }
     }
-  }
+  },
 }
