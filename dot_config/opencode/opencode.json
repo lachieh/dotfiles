@@ -57,10 +57,18 @@
       },
       "models": {
         "poolside/laguna-m.1": {
-          "name": "Laguna M.1"
+          "name": "Laguna M.1",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          }
         },
         "poolside/laguna-xs.2": {
-          "name": "Laguna XS.2"
+          "name": "Laguna XS.2",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          }
         }
       }
     }
