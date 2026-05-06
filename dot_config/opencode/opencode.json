@@ -30,7 +30,7 @@
             "output": 16384
           }
         },
-        "openrouter/tencent/hy3-preview": {
+                "openrouter/tencent/hy3-preview:free": {
           "name": "Tencent: Hy3 preview (free)",
           "limit": {
             "context": 262144,
@@ -45,14 +45,21 @@
             }
           }
         },
-        "openrouter/nvidia/nemotron-3-super-120b-a12b": {
+        "openrouter/nvidia/nemotron-3-super-120b-a12b:free": {
           "name": "NVIDIA: Nemotron 3 Super (free)",
           "limit": {
             "context": 262144,
             "output": 262144
           }
         },
-        "openrouter/openai/gpt-oss-120b": {
+        "openrouter/poolside/laguna-m.1:free": {
+          "name": "Poolside: Laguna M.1 (free)",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          }
+        },
+        "openrouter/openai/gpt-oss-120b:free": {
           "name": "OpenAI: gpt-oss-120b (free)",
           "limit": {
             "context": 131072,
@@ -67,35 +74,28 @@
             }
           }
         },
-        "openrouter/poolside/laguna-m.1": {
-          "name": "Poolside: Laguna M.1 (free)",
-          "limit": {
-            "context": 131072,
-            "output": 8192
-          }
-        },
-        "openrouter/z-ai/glm-4.5-air": {
+        "openrouter/z-ai/glm-4.5-air:free": {
           "name": "Z.ai: GLM 4.5 Air (free)",
           "limit": {
             "context": 131072,
             "output": 96000
           }
         },
-        "openrouter/minimax/minimax-m2.5": {
+        "openrouter/minimax/minimax-m2.5:free": {
           "name": "MiniMax: MiniMax M2.5 (free)",
           "limit": {
             "context": 196608,
             "output": 8192
           }
         },
-        "openrouter/nvidia/nemotron-3-nano-30b-a3b": {
+        "openrouter/nvidia/nemotron-3-nano-30b-a3b:free": {
           "name": "NVIDIA: Nemotron 3 Nano 30B A3B (free)",
           "limit": {
             "context": 256000,
             "output": 8192
           }
         },
-        "openrouter/openai/gpt-oss-20b": {
+        "openrouter/openai/gpt-oss-20b:free": {
           "name": "OpenAI: gpt-oss-20b (free)",
           "limit": {
             "context": 131072,
@@ -110,46 +110,53 @@
             }
           }
         },
-        "openrouter/poolside/laguna-xs.2": {
+        "openrouter/poolside/laguna-xs.2:free": {
           "name": "Poolside: Laguna XS.2 (free)",
           "limit": {
             "context": 131072,
             "output": 8192
           }
         },
-        "openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+        "openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free": {
           "name": "NVIDIA: Nemotron 3 Nano Omni (free)",
           "limit": {
             "context": 256000,
             "output": 65536
           }
         },
-        "openrouter/google/gemma-4-31b-it": {
+        "openrouter/google/gemma-4-31b-it:free": {
           "name": "Google: Gemma 4 31B (free)",
           "limit": {
             "context": 262144,
             "output": 32768
           }
         },
-        "openrouter/nvidia/nemotron-nano-12b-v2-vl": {
-          "name": "NVIDIA: Nemotron Nano 12B 2 VL (free)",
-          "limit": {
-            "context": 128000,
-            "output": 128000
-          }
-        },
-        "openrouter/nvidia/nemotron-nano-9b-v2": {
+        "openrouter/nvidia/nemotron-nano-9b-v2:free": {
           "name": "NVIDIA: Nemotron Nano 9B V2 (free)",
           "limit": {
             "context": 128000,
             "output": 8192
           }
         },
-        "openrouter/google/gemma-4-26b-a4b-it": {
+        "openrouter/nvidia/nemotron-nano-12b-v2-vl:free": {
+          "name": "NVIDIA: Nemotron Nano 12B 2 VL (free)",
+          "limit": {
+            "context": 128000,
+            "output": 128000
+          }
+        },
+        "openrouter/google/gemma-4-26b-a4b-it:free": {
           "name": "Google: Gemma 4 26B A4B  (free)",
           "limit": {
             "context": 262144,
             "output": 32768
+          }
+        },
+        "openrouter/baidu/cobuddy:free": {
+          "name": "Baidu Qianfan: CoBuddy (free)",
+          "limit": {
+            "context": 131072,
+            "output": 65536
           }
         }
       }
