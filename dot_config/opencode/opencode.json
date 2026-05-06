@@ -9,43 +9,148 @@
         "baseURL": "https://litellm.heywood.dev/v1"
       },
       "models": {
-        "laguna-m.1": {
-          "name": "Laguna M.1"
-        },
-        "laguna-xs.2": {
-          "name": "Laguna XS.2"
-        },
-        "gpt-5.4": {
+        "chatgpt/gpt-5.4": {
           "name": "GPT-5.4",
-          "limit": { "context": 128000, "output": 32768 }
+          "limit": {
+            "context": 128000,
+            "output": 32768
+          }
         },
-        "gpt-5.4-pro": {
-          "name": "GPT-5.4 Pro",
-          "limit": { "context": 128000, "output": 32768 }
+        "chatgpt/gpt-5.5": {
+          "name": "GPT-5.5",
+          "limit": {
+            "context": 128000,
+            "output": 32768
+          }
         },
-        "gpt-5.3-codex": {
+        "chatgpt/gpt-5.3-codex": {
           "name": "GPT-5.3 Codex",
-          "limit": { "context": 192000, "output": 16384 }
+          "limit": {
+            "context": 192000,
+            "output": 16384
+          }
         },
-        "gpt-5.3-codex-spark": {
-          "name": "GPT-5.3 Codex Spark",
-          "limit": { "context": 192000, "output": 16384 }
+        "openrouter/tencent/hy3-preview": {
+          "name": "Tencent: Hy3 preview (free)",
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          },
+          "variants": {
+            "thinking": {
+              "reasoningEffort": "high"
+            },
+            "fast": {
+              "disabled": true
+            }
+          }
         },
-        "gpt-5.3-instant": {
-          "name": "GPT-5.3 Instant",
-          "limit": { "context": 128000, "output": 16384 }
+        "openrouter/nvidia/nemotron-3-super-120b-a12b": {
+          "name": "NVIDIA: Nemotron 3 Super (free)",
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          }
         },
-        "gpt-5.3-chat-latest": {
-          "name": "GPT-5.3 Chat Latest",
-          "limit": { "context": 128000, "output": 16384 }
+        "openrouter/openai/gpt-oss-120b": {
+          "name": "OpenAI: gpt-oss-120b (free)",
+          "limit": {
+            "context": 131072,
+            "output": 131072
+          },
+          "variants": {
+            "thinking": {
+              "reasoningEffort": "high"
+            },
+            "fast": {
+              "disabled": true
+            }
+          }
         },
-        "gemma4": {
-          "name": "Gemma 4 (local)",
-          "limit": { "context": 128000, "output": 8192 }
+        "openrouter/poolside/laguna-m.1": {
+          "name": "Poolside: Laguna M.1 (free)",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          }
         },
-        "nomic-embed-text": {
-          "name": "Nomic Embed Text",
-          "limit": { "context": 8192, "output": 0 }
+        "openrouter/z-ai/glm-4.5-air": {
+          "name": "Z.ai: GLM 4.5 Air (free)",
+          "limit": {
+            "context": 131072,
+            "output": 96000
+          }
+        },
+        "openrouter/minimax/minimax-m2.5": {
+          "name": "MiniMax: MiniMax M2.5 (free)",
+          "limit": {
+            "context": 196608,
+            "output": 8192
+          }
+        },
+        "openrouter/nvidia/nemotron-3-nano-30b-a3b": {
+          "name": "NVIDIA: Nemotron 3 Nano 30B A3B (free)",
+          "limit": {
+            "context": 256000,
+            "output": 8192
+          }
+        },
+        "openrouter/openai/gpt-oss-20b": {
+          "name": "OpenAI: gpt-oss-20b (free)",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          },
+          "variants": {
+            "thinking": {
+              "reasoningEffort": "high"
+            },
+            "fast": {
+              "disabled": true
+            }
+          }
+        },
+        "openrouter/poolside/laguna-xs.2": {
+          "name": "Poolside: Laguna XS.2 (free)",
+          "limit": {
+            "context": 131072,
+            "output": 8192
+          }
+        },
+        "openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+          "name": "NVIDIA: Nemotron 3 Nano Omni (free)",
+          "limit": {
+            "context": 256000,
+            "output": 65536
+          }
+        },
+        "openrouter/google/gemma-4-31b-it": {
+          "name": "Google: Gemma 4 31B (free)",
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          }
+        },
+        "openrouter/nvidia/nemotron-nano-12b-v2-vl": {
+          "name": "NVIDIA: Nemotron Nano 12B 2 VL (free)",
+          "limit": {
+            "context": 128000,
+            "output": 128000
+          }
+        },
+        "openrouter/nvidia/nemotron-nano-9b-v2": {
+          "name": "NVIDIA: Nemotron Nano 9B V2 (free)",
+          "limit": {
+            "context": 128000,
+            "output": 8192
+          }
+        },
+        "openrouter/google/gemma-4-26b-a4b-it": {
+          "name": "Google: Gemma 4 26B A4B  (free)",
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          }
         }
       }
     },
