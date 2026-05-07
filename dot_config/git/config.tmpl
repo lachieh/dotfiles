@@ -1,8 +1,6 @@
 {{- $target := joinPath .chezmoi.homeDir ".config" "git" "config" -}}
-{{- $signingkey := "" -}}
-{{- if stat $target -}}
-{{-   $signingkey = (output "bash" "-c" (printf "grep -m1 'signingkey' %s | awk '{print $3}'" $target)) | trim -}}
-{{- else -}}
+{{- $signingkey := ((output "bash" "-c" "printf \"$(git config get user.signingkey)\"") | trim) -}}
+{{- if or (eq $target "") (eq $signingkey "ssh-ed25519" "") -}}
 {{-   $signingkey = (onepasswordDetailsFields "t7ywvz2xwrlrxxeilo4fi2mwqm" "" .op.account).public_key.value -}}
 {{- end -}}
 [init]
@@ -11,17 +9,13 @@
 [user]
 	email = {{ .git.email }}
 	name = {{ .git.name }}
-
 	signingkey = {{ $signingkey }}
 
 [gpg]
-  format = ssh
-
-[gpg "ssh"]
-  program = "~/.local/bin/git-ssh-sign"
+	format = ssh
 
 [commit]
-  gpgsign = true
+	gpgsign = true
 
 [pull]
 	rebase = false
