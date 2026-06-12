@@ -8,13 +8,8 @@ rust = "latest"
 python = "latest"
 fnox = "latest"
 
-[tools."http:claude"]
+[tools.'http:pool']
 version = "latest"
-version_list_url = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/stable"
-# checksum: https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/{VERSION}/manifest.json
-
-[tools."http:claude".platforms]
-macos-x64 = { url = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/{version}/darwin-x64/claude" }
-macos-arm64 = { url = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/{version}/darwin-arm64/claude" }
-linux-x64 = { url = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/{version}/linux-x64/claude" }
-linux-arm64 = { url = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/{version}/linux-arm64/claude" }
+url = "https://downloads.poolside.ai/pool/v{{ version }}/pool-{{ os(macos='darwin') }}-{{ arch(x64='amd64') }}.tar.gz"
+version_list_url = "https://downloads.poolside.ai/pool/pool-latest-version.txt"
+rename_exe = "pool"
