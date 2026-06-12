@@ -1,5 +1,11 @@
 onboarding = false
 
+[keys]
+next_workspace = "prefix+shift+n"
+previous_workspace = "prefix+shift+p"
+new_workspace = "prefix+shift+c"  # default prefix+shift+n now cycles workspaces
+rename_pane = "prefix+comma"      # default prefix+shift+p now cycles workspaces
+
 [ui]
 show_agent_labels_on_pane_borders = false
 
