@@ -1,0 +1,12 @@
+onboarding = false
+
+[ui]
+show_agent_labels_on_pane_borders = false
+
+agent_panel_scope = "current"
+[ui.toast]
+delivery = "terminal"
+
+[experimental]
+pane_history = true
+switch_ascii_input_source_in_prefix = false
