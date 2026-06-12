@@ -17,3 +17,7 @@ zstyle ':antidote:*' zcompile 'yes'
 
 # Set prompt
 zstyle ':zephyr:plugin:prompt' theme starship starship
+
+# SSH agent — auto-load id_ed25519 from macOS Keychain on login
+zstyle ':omz:plugins:ssh-agent' identities id_ed25519
+zstyle ':omz:plugins:ssh-agent' ssh-add-args --apple-load-keychain

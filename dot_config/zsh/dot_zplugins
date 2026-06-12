@@ -33,6 +33,7 @@ g-plane/pnpm-shell-completion kind:zsh post:post_pnpm_comp
 romkatv/zsh-bench kind:path
 
 # ## omz plugins
+ohmyzsh/ohmyzsh path:plugins/ssh-agent
 ohmyzsh/ohmyzsh path:plugins/eza
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/gitfast
