@@ -1,5 +1,8 @@
 #:schema https://mise.jdx.dev/schema/mise.json
 
+[settings.npm]
+package_manager = "aube"
+
 [tools]
 node = "lts"
 go = "latest"
