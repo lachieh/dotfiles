@@ -2,3 +2,5 @@
 
 export ZDOTDIR="${HOME}/.config/zsh"
 [[ -r $ZDOTDIR/.zshenv ]] && . $ZDOTDIR/.zshenv
+
+export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
