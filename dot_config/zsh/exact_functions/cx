@@ -1,9 +1,66 @@
 #!/bin/zsh
-# Prefill the next prompt with the given text, ready to edit. Nothing runs
-# until you press enter. Wraps zsh's editor buffer stack (`print -z`).
+# Describe a goal, get a shell command prefilled on the next prompt, ready to
+# read and edit. Nothing runs until you press enter.
 #
-#   cx "$(some-command)"    # put a command's output on the next prompt
+#   cx list every file changed today
+#   cx "find the 10 largest files under ~/Downloads"
+#   cx --model opus rewrite this git history interactively
+#   cx -m sonnet "explain what this repo does"
+#   cx -- --model is a flag I want explained
 #
-# -r keeps the text raw, so backslashes and \n survive unmangled.
-# -- ends option parsing, so text starting with a dash isn't read as a flag.
-print -rz -- "$*"
+# Model precedence: --model / -m, then $CX_MODEL, then the default below.
+# Flags are only read before the goal; everything after the first non-flag
+# word is the goal. Use -- to start a goal that itself begins with a dash.
+
+local DEFAULT_MODEL="claude-haiku-4-5"
+
+local model="${CX_MODEL:-$DEFAULT_MODEL}"
+while (( $# )); do
+  case $1 in
+    --model=*|-m=*) model="${1#*=}"; shift ;;
+    --model|-m)
+      if (( $# < 2 )); then
+        print -ru2 -- "cx: $1 needs a value, e.g. cx $1 opus find large files"
+        return 1
+      fi
+      model=$2; shift 2 ;;
+    --) shift; break ;;
+    *) break ;;
+  esac
+done
+
+local goal="$*"
+if [[ -z $goal ]]; then
+  print -ru2 -- "cx: say what you want the command to do, e.g. cx list files changed today"
+  return 1
+fi
+
+# Quoted delimiter keeps the template literal, so {{OUTPUT}} survives to be
+# replaced below and nothing in it is expanded by the shell.
+local template
+template=$(cat <<'EOP'
+Do not respond with commentary, or formatting like backticks, etc.
+Only output a single command as if it were to be the ps1 input of a zsh shell.
+Output the command that best achieves the goal stated
+<shell-output-goal>
+  {{OUTPUT}}
+</shell-output-goal>
+EOP
+)
+
+local prompt="${template//\{\{OUTPUT\}\}/$goal}"
+
+local command
+if ! command=$(claude -p "$prompt" --model "$model"); then
+  print -ru2 -- "cx: claude failed (model: $model)"
+  return 1
+fi
+
+if [[ -z ${command//[[:space:]]/} ]]; then
+  print -ru2 -- "cx: no command came back"
+  return 1
+fi
+
+# -r keeps the text raw, so backslashes survive unmangled.
+# -- ends option parsing, so a command starting with a dash isn't read as a flag.
+print -rz -- "$command"

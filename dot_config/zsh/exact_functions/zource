@@ -1,0 +1,37 @@
+#!/bin/zsh
+# Reload the zsh config in place, without exiting the shell.
+#
+#   zource        # re-source .zshrc and re-arm $ZDOTDIR/functions
+#   zource -x     # re-exec zsh instead, for a genuinely clean slate
+#
+# Plain zource keeps the current shell, so variables, directory stack, and
+# running jobs survive. It re-sources .zshrc only: changes to .zshenv or
+# .zprofile need -x, and anything deleted from the config (an alias, a
+# function) stays defined until then, because sourcing adds but never removes.
+
+emulate -L zsh
+
+if [[ $1 == -x || $1 == --exec ]]; then
+  exec zsh -l
+fi
+
+if [[ -n $1 ]]; then
+  print -ru2 -- "zource: unknown option $1 (use -x for a full re-exec)"
+  return 1
+fi
+
+if [[ ! -r ${ZDOTDIR:-$HOME}/.zshrc ]]; then
+  print -ru2 -- "zource: no readable .zshrc under ${ZDOTDIR:-$HOME}"
+  return 1
+fi
+
+# Autoloaded functions are materialised on first call and then cached in
+# memory, so an edited file is ignored until the function is dropped and
+# re-armed. Do that before sourcing, so .zshrc wins on anything it redefines.
+local fn
+for fn in ${ZDOTDIR:-$HOME}/functions/*(N.:t); do
+  unfunction -- $fn 2>/dev/null
+  autoload -Uz -- $fn
+done
+
+source ${ZDOTDIR:-$HOME}/.zshrc
