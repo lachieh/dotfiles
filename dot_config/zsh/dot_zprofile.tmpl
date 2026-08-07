@@ -14,6 +14,10 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # commands otherwise see no aliases and no functions at all. Give them a
 # stripped-down load: personal aliases and functions, no plugins, no prompt.
 # See lib/agent-shell.zsh for what is skipped and why.
-if [[ -n $AI_AGENT$CLAUDECODE ]] && [[ ! -o interactive ]]; then
+# One marker per agent: Claude Code sets AI_AGENT and CLAUDECODE, opencode
+# sets OPENCODE, Codex sets CODEX_CI in its shell tool (CODEX_SANDBOX is not
+# a substitute -- it disappears when sandboxing is bypassed), and Hermes sets
+# HERMES_RPC_SOCKET, though it prefers bash and may never read this file.
+if [[ -n $AI_AGENT$CLAUDECODE$OPENCODE$CODEX_CI$HERMES_RPC_SOCKET ]] && [[ ! -o interactive ]]; then
   source ${ZDOTDIR:-$HOME}/lib/agent-shell.zsh
 fi
