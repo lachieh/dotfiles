@@ -7,12 +7,17 @@ new_workspace = "prefix+shift+c"  # default prefix+shift+n now cycles workspaces
 rename_pane = "prefix+comma"      # default prefix+shift+p now cycles workspaces
 
 [ui]
-show_agent_labels_on_pane_borders = false
+show_agent_labels_on_pane_borders = true
 
 agent_panel_scope = "all"
+agent_panel_sort = "priority"
 [ui.toast]
 delivery = "terminal"
 
 [experimental]
 pane_history = true
-switch_ascii_input_source_in_prefix = false
+switch_ascii_input_source_in_prefix = true
+
+[theme]
+name = "catppuccin"
+auto_switch = false

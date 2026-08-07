@@ -1,0 +1,9 @@
+#!/bin/zsh
+# Prefill the next prompt with the given text, ready to edit. Nothing runs
+# until you press enter. Wraps zsh's editor buffer stack (`print -z`).
+#
+#   cx "$(some-command)"    # put a command's output on the next prompt
+#
+# -r keeps the text raw, so backslashes and \n survive unmangled.
+# -- ends option parsing, so text starting with a dash isn't read as a flag.
+print -rz -- "$*"
