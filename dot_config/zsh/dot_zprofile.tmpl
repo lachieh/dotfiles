@@ -19,7 +19,7 @@ if [[ -z $AI_AGENT ]]; then
     export AI_AGENT=opencode
   elif [[ -n $CODEX_CI ]]; then
     export AI_AGENT=codex
-  elif [[ -n $HERMES_RPC_SOCKET ]]; then
+  elif [[ -n $HERMES_SESSION_ID ]]; then
     export AI_AGENT=hermes
   elif [[ -n $CLAUDECODE ]]; then
     export AI_AGENT=claude
