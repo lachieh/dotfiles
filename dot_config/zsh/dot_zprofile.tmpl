@@ -9,15 +9,28 @@ source ~/.orbstack/shell/init.zsh 2>/dev/null || :
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 {{- end }}
 
-# Agent tool shells (Claude Code and friends) run commands in a login but
-# NON-interactive zsh, and zsh reads .zshrc only when interactive — so those
-# commands otherwise see no aliases and no functions at all. Give them a
-# stripped-down load: personal aliases and functions, no plugins, no prompt.
-# See lib/agent-shell.zsh for what is skipped and why.
-# One marker per agent: Claude Code sets AI_AGENT and CLAUDECODE, opencode
-# sets OPENCODE, Codex sets CODEX_CI in its shell tool (CODEX_SANDBOX is not
-# a substitute -- it disappears when sandboxing is bypassed), and Hermes sets
-# HERMES_RPC_SOCKET, though it prefers bash and may never read this file.
-if [[ -n $AI_AGENT$CLAUDECODE$OPENCODE$CODEX_CI$HERMES_RPC_SOCKET ]] && [[ ! -o interactive ]]; then
+# Normalise "which agent am I running under" into one variable. Claude Code
+# already sets AI_AGENT itself (to a versioned string), so an existing value
+# always wins; the rest each get a plain name. Own marker before CLAUDECODE,
+# so an agent launched from a Claude Code shell reports itself rather than the
+# CLAUDECODE it inherited.
+if [[ -z $AI_AGENT ]]; then
+  if [[ -n $OPENCODE ]]; then
+    export AI_AGENT=opencode
+  elif [[ -n $CODEX_CI ]]; then
+    export AI_AGENT=codex
+  elif [[ -n $HERMES_RPC_SOCKET ]]; then
+    export AI_AGENT=hermes
+  elif [[ -n $CLAUDECODE ]]; then
+    export AI_AGENT=claude
+  fi
+fi
+
+# Agent tool shells run commands in a login but NON-interactive zsh, and zsh
+# reads .zshrc only when interactive — so those commands otherwise see no
+# aliases and no functions at all. Give them a stripped-down load: personal
+# aliases and functions, no plugins, no prompt. See lib/agent-shell.zsh for
+# what is skipped and why. Hermes prefers bash, so it may never read this.
+if [[ -n $AI_AGENT ]] && [[ ! -o interactive ]]; then
   source ${ZDOTDIR:-$HOME}/lib/agent-shell.zsh
 fi
