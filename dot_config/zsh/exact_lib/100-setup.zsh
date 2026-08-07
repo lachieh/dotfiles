@@ -24,3 +24,9 @@ is-theme-starship() { [[ "$ZSH_THEME" == starship* ]] }
 
 # Aliases
 [[ -r ${ZDOTDIR:-$HOME}/.zaliases ]] && source ${ZDOTDIR:-$HOME}/.zaliases
+
+# Own functions. Declared here rather than left to a plugin, so they work in
+# any shell that loads this file — including the stripped-down agent shell in
+# lib/agent-shell.zsh, which never loads plugins.
+fpath=(${ZDOTDIR:-$HOME}/functions $fpath)
+autoload -Uz ${ZDOTDIR:-$HOME}/functions/*(N.:t)

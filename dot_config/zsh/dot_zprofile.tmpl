@@ -8,3 +8,12 @@ source ~/.orbstack/shell/init.zsh 2>/dev/null || :
 {{ if eq .chezmoi.os "linux" -}}
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 {{- end }}
+
+# Agent tool shells (Claude Code and friends) run commands in a login but
+# NON-interactive zsh, and zsh reads .zshrc only when interactive — so those
+# commands otherwise see no aliases and no functions at all. Give them a
+# stripped-down load: personal aliases and functions, no plugins, no prompt.
+# See lib/agent-shell.zsh for what is skipped and why.
+if [[ -n $AI_AGENT$CLAUDECODE ]] && [[ ! -o interactive ]]; then
+  source ${ZDOTDIR:-$HOME}/lib/agent-shell.zsh
+fi
