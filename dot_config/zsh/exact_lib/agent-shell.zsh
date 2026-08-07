@@ -19,6 +19,24 @@
 source ${ZDOTDIR:-$HOME}/lib/100-setup.zsh
 source ${ZDOTDIR:-$HOME}/lib/500-modules.zsh
 
+# gst, gco, gd and the rest live in ohmyzsh's git plugin, not zmodules. Worth
+# the one exception to the no-plugins rule: they are the aliases anyone
+# actually reaches for, and they measure free. Sourced by path rather than
+# through antidote, so none of the rest of the bundle rides along.
+_agent_git_plugin=${ANTIDOTE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}/repos}/ohmyzsh/ohmyzsh/plugins/git/git.plugin.zsh
+if [[ -r $_agent_git_plugin ]]; then
+  # The plugin registers completions, but compinit never runs in a shell with
+  # no prompt. Stub compdef for the duration instead of eating an error per
+  # registration, then put things back.
+  if (( ! $+functions[compdef] )); then
+    compdef() { : }
+    _agent_stubbed_compdef=1
+  fi
+  source $_agent_git_plugin
+  (( $+_agent_stubbed_compdef )) && unfunction compdef
+fi
+unset _agent_git_plugin _agent_stubbed_compdef
+
 # Agent shells capture this state into a snapshot file and replay it for each
 # command, but the snapshot keeps PATH and not fpath. A lazy autoload stub
 # would serialise as "# undefined" and break, so force the real bodies in with
