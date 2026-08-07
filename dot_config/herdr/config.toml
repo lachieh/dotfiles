@@ -8,9 +8,8 @@ rename_pane = "prefix+comma"      # default prefix+shift+p now cycles workspaces
 
 [ui]
 show_agent_labels_on_pane_borders = true
-
-agent_panel_scope = "all"
 agent_panel_sort = "priority"
+
 [ui.toast]
 delivery = "terminal"
 
