@@ -2,3 +2,29 @@
 
 [task_config]
 includes = ["tasks.local.toml"]
+
+[tasks."dotfiles:status"]
+description = "Show chezmoi and mise-managed dotfile drift"
+dir = "{{ env.HOME }}"
+run = [
+  "chezmoi status",
+  "mise bootstrap dotfiles status",
+]
+
+[tasks."dotfiles:apply"]
+description = "Apply chezmoi files, then mise-managed dotfiles"
+dir = "{{ env.HOME }}"
+run = [
+  "chezmoi apply",
+  "mise bootstrap dotfiles apply --yes",
+]
+
+[tasks."nvim:check"]
+description = "Verify that the Neovim configuration starts cleanly"
+dir = "{{ env.HOME }}"
+run = "nvim --headless '+lua vim.print(vim.version())' +qa"
+
+[tasks."nvim:sync"]
+description = "Install missing Neovim plugins and Treesitter parsers"
+dir = "{{ env.HOME }}"
+run = "nvim --headless \"+lua require('config.treesitter').sync()\" +qa"

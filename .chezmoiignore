@@ -4,3 +4,7 @@ authorized_keys
 .vscode/
 README.md
 TODOS.md
+
+# New dotfiles are gradually moving to mise's native dotfile manager. Keep
+# their sources in this repository without having chezmoi apply them too.
+mise-dotfiles/**

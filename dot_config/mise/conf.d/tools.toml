@@ -10,6 +10,10 @@ ubi = "latest"
 rust = "latest"
 python = "latest"
 fnox = "latest"
+neovim = "latest"
+tree-sitter = "latest"
+lua-language-server = "latest"
+stylua = "latest"
 
 [tools.'http:pool']
 version = "latest"
