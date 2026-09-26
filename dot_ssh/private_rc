@@ -1,0 +1,7 @@
+#!/bin/sh
+# Run by sshd for every incoming session (login or command), before the shell starts.
+# Point a stable symlink at the newest forwarded agent socket so long-lived processes
+# (herdr server, tmux, Claude Code) keep a working agent after reconnects.
+if [ -S "${SSH_AUTH_SOCK:-}" ] && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent.sock" ]; then
+  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/agent.sock"
+fi
