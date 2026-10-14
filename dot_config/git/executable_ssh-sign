@@ -1,0 +1,15 @@
+#!/bin/sh
+# gpg.ssh.program: ssh-keygen that signs from an unencrypted on-disk key file
+# instead of an agent. ssh-keygen -Y sign prefers any agent holding the same key,
+# and when that agent is 1Password it pops an approval dialog on the local screen,
+# which a headless machine can never answer. Public-key signing keys (held only
+# in 1Password) still go through the agent.
+prev=
+for arg in "$@"; do
+  if [ "$prev" = "-f" ] && ssh-keygen -y -P '' -f "$arg" >/dev/null 2>&1; then
+    unset SSH_AUTH_SOCK
+    break
+  fi
+  prev=$arg
+done
+exec /usr/bin/ssh-keygen "$@"

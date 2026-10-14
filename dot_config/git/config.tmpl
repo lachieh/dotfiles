@@ -16,6 +16,7 @@
 
 [gpg "ssh"]
 	allowedSignersFile = ~/.config/git/allowed_signers
+	program = {{ .chezmoi.homeDir }}/.config/git/ssh-sign
 
 [commit]
 	gpgsign = true
