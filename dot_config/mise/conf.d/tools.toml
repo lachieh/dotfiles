@@ -4,6 +4,7 @@
 package_manager = "aube"
 
 [tools]
+age = "latest"
 node = "lts"
 go = "latest"
 ubi = "latest"

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Install mise and its global tools before chezmoi writes any files, so every
+# later step (including chezmoi's own decryption with `age`) can rely on them.
+# The tools come straight from the source tools.toml because the target copy
+# has not been written yet on a fresh machine.
+
+# tools.toml: {{ include "dot_config/mise/conf.d/tools.toml" | sha256sum }}
+
+set -euo pipefail
+
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+
+if ! command -v mise >/dev/null 2>&1; then
+  echo '🧩  Installing mise'
+  curl -fsSL https://mise.run | sh
+fi
+
+MISE_EXPERIMENTAL=1 \
+  MISE_GLOBAL_CONFIG_FILE={{ joinPath .chezmoi.sourceDir "dot_config/mise/conf.d/tools.toml" | quote }} \
+  mise install --yes
