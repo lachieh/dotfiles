@@ -4,3 +4,16 @@
 #
 
 export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
+
+typeset -ga bash_compat_options=(
+  no_nomatch
+  no_bad_pattern
+  no_equals
+  sh_word_split
+  glob_subst
+  no_extended_glob
+  no_bare_glob_qual
+)
+if [[ ! -o interactive && ! -o login && -z $ZSH_SCRIPT ]]; then
+  setopt $bash_compat_options
+fi

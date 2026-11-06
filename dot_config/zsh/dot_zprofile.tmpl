@@ -34,3 +34,7 @@ fi
 if [[ -n $AI_AGENT ]] && [[ ! -o interactive ]]; then
   source ${ZDOTDIR:-$HOME}/lib/agent-shell.zsh
 fi
+
+if [[ ! -o interactive && -z $ZSH_SCRIPT ]]; then
+  setopt $bash_compat_options
+fi

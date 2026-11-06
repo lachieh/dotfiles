@@ -28,3 +28,5 @@ source "${ZDOTDIR}/lib/700-prompt.zsh"
 # here. Useful for stuff that might happen in the background and shouldn't block
 # the shell from starting.
 source "${ZDOTDIR}/lib/900-post.zsh"
+
+setopt $bash_compat_options
