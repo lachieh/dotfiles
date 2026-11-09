@@ -1,0 +1,10 @@
+# Install Ghostty's terminfo on SSH hosts that lack it, falling back to
+# xterm-256color, and keep TERM intact under sudo.
+shell-integration-features = ssh-terminfo,ssh-env,sudo
+
+# Left Option sends Alt for shell and editor shortcuts; right Option still
+# types special characters.
+macos-option-as-alt = left
+
+window-save-state = always
+mouse-hide-while-typing = true
