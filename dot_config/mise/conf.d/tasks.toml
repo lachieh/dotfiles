@@ -14,10 +14,7 @@ run = [
 [tasks."dotfiles:apply"]
 description = "Apply chezmoi files, then mise-managed dotfiles"
 dir = "{{ env.HOME }}"
-run = [
-  "chezmoi apply",
-  "mise bootstrap dotfiles apply --yes",
-]
+run = "chezmoi apply"
 
 [tasks."nvim:check"]
 description = "Verify that the Neovim configuration starts cleanly"

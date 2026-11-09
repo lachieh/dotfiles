@@ -13,7 +13,6 @@ Run this:
 
 ```shell
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply lachieh
-mise bootstrap dotfiles apply --yes
 ```
 
 ## Daily use
