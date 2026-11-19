@@ -13,6 +13,10 @@ activate_shims = false
 idiomatic_version_file_enable_tools = ["rust", "node", "go", "python", "yarn"]
 dotfiles.root = "~/.config/mise/dotfiles"
 dotfiles.default_mode = "symlink"
+# Every global tool follows its version request ("latest", "24") on its own:
+# checked daily, 24h after a release, by the mise-tool-update service below.
+# Exact versions are never moved. Opt one tool out with `auto_update = false`.
+tool_update.global_auto = true
 
 [settings.npm]
 package_manager = "aube"
@@ -116,6 +120,12 @@ description = "Atuin daemon"
 command = "~/.local/bin/mise exec -- atuin daemon start"
 restart = "on-failure"
 requires_tools = true
+
+# Checks hourly and upgrades each tool whose update is due (see
+# tool_update.global_auto above), with no shell open. Replaced versions are
+# pruned after `upgrade.prune_after`.
+[bootstrap.services.mise-tool-update]
+builtin = "tool-update"
 
 # Point GUI apps (and anything else launchd starts) at the 1Password SSH agent,
 # so git signing works outside a terminal too.
