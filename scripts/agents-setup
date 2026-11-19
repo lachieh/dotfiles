@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Post-tools hook of the agents profile (config.agents.toml). Safe to re-run.
 #   - Removes opencode's old LiteLLM provider; cliproxy replaces it.
 #   - Warns about saved opencode and grok logins that would bypass cliproxy.
@@ -23,8 +23,9 @@ fi
 
 # Runs a command with a time limit; macOS has no `timeout`.
 with_timeout() { # <seconds> <command...>
-  "${@:2}" & pid=$!
-  (sleep "$1"; kill "$pid" 2>/dev/null) & watchdog=$!
+  secs=$1; shift
+  "$@" & pid=$!
+  (sleep "$secs"; kill "$pid" 2>/dev/null) & watchdog=$!
   wait "$pid" 2>/dev/null; rc=$?
   kill "$watchdog" 2>/dev/null
   return $rc
