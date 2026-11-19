@@ -11,7 +11,7 @@ A Mac at your desk:
 ```sh
 curl https://mise.run | sh
 ~/.local/bin/mise bootstrap --adopt lachieh/dotfiles --prompt-vars
-mise run git:key          # this Mac's git key (needs Secretive, see below)
+mise run git:key          # this Mac's git key
 mise run atuin:login      # 1Password CLI, Touch ID
 mise run secrets:homelab  # homelab age key
 mise run macos:system     # settings that need sudo
@@ -99,13 +99,9 @@ reorders PATH in login shells.
 its own git key, registered on GitHub for push and for signing, and listed in
 `dotfiles/.config/git/allowed_signers`. If a machine is lost, revoke its key.
 
-- macOS: a Secure Enclave key in [Secretive](https://github.com/maxgoedjen/secretive),
-  created with authentication off. It cannot be copied off the machine, and
-  Secretive's agent signs with it without prompting. Install Secretive, create
-  a secret named `git <hostname>` with no authentication, then run
-  `mise run git:key`. (macOS 26.1's built-in Secure Enclave SSH keys failed
-  without Touch ID in testing, and with it they prompt on every signature.)
-- Linux: a key file generated on the machine, `~/.ssh/id_git`.
+The key is a file generated on the machine, `~/.ssh/id_git`, used only for
+GitHub. Anything running as you there can read it, which is the trade-off
+for unattended signing; a leak means revoking that one key.
 
 `git:key` writes `~/.ssh/git.conf` (the github.com host block) and
 `~/.config/git/signing`, and `git/ssh-sign` keeps 1Password's agent out of
