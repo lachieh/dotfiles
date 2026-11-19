@@ -29,6 +29,36 @@ prompt = "Device type: desktop, laptop or server (server switches the prompt col
 default = ""
 prompt = "Computer name (macOS; empty leaves it unchanged)"
 
+# Terminal palette, shared by starship.toml and the atuin theme (both are
+# templates). The accent (theme_light/base/dark) follows device_type: green on
+# desktops and laptops, cyan on servers. Override any entry per machine with
+# `mise vars theme_base_desktop=#...`.
+[vars]
+theme_black = "#5C5855"
+theme_red = "#FB4B63"
+theme_green = "#58EE85"
+theme_yellow = "#F0DD7D"
+theme_blue = "#20A1F7"
+theme_purple = "#F498FD"
+theme_cyan = "#00CDE8"
+theme_white = "#768F9B"
+theme_bright_black = "#090300"
+theme_bright_red = "#681D27"
+theme_bright_green = "#164725"
+theme_bright_yellow = "#5C4E06"
+theme_bright_blue = "#0D4163"
+theme_bright_purple = "#532557"
+theme_bright_cyan = "#004F59"
+theme_bright_white = "#152228"
+theme_bg = "#1F243D"
+theme_fg = "#3A4356"
+theme_light_desktop = "#A2FBBD"
+theme_base_desktop = "#58EE85"
+theme_dark_desktop = "#40B078"
+theme_light_server = "#A1F0FF"
+theme_base_server = "#00CDE8"
+theme_dark_server = "#208FAF"
+
 [tools]
 # Shell and CLI
 atuin = "latest"
@@ -93,7 +123,8 @@ rename_exe = "pool"
 "~/.config/1password/ssh/agent.toml" = {}
 
 "~/.config/atuin/config.toml" = {}
-"~/.config/atuin/themes" = {}
+"~/.config/atuin/themes/hellotimber.toml" = {}
+"~/.config/atuin/themes/lachie.toml" = { mode = "template" }
 "~/.config/gh/config.yml" = {}
 "~/.config/ghostty" = {}
 "~/.config/nvim" = {}

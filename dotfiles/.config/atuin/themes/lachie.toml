@@ -1,0 +1,21 @@
+# Rendered by mise dotfiles (template mode) from the same theme_* vars as
+# starship.toml, so both follow device_type (laptop here).
+[theme]
+name = "lachie"
+
+[colors]
+# Base is left to the terminal's default foreground.
+Title = "#58EE85"
+Important = "#A2FBBD"
+Guidance = "#768F9B"
+Annotation = "#40B078"
+Muted = "#5C5855"
+AlertInfo = "#58EE85"
+AlertWarn = "#F0DD7D"
+AlertError = "#FB4B63"
+SyntaxCommand = "#58EE85"
+SyntaxFlag = "#20A1F7"
+SyntaxString = "#F0DD7D"
+SyntaxVariable = "#F498FD"
+SyntaxOperator = "#768F9B"
+SyntaxComment = "#5C5855"

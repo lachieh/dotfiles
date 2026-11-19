@@ -1,7 +1,1 @@
-[theme]
-name = "hellotimber"
-parent = "autumn"
-
-[colors]
-AlertInto = "green"
-Guidance = "#888844"
+/Users/lachlan/.config/mise/dotfiles/.config/atuin/themes/hellotimber.toml

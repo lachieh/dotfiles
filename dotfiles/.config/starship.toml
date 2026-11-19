@@ -1,6 +1,6 @@
-# Rendered by mise dotfiles (template mode). The palette follows the
-# per-machine `device_type` var: `mise vars device_type=server` switches to
-# the server colours; anything else uses the desktop ones.
+# Rendered by mise dotfiles (template mode) from the theme_* vars in
+# ~/.config/mise/config.toml. `mise vars device_type=server` switches the
+# accent to the server colours; anything else uses the desktop ones.
 
 format = """
 ${custom.ssh_indicator}\
@@ -20,55 +20,34 @@ $status( $cmd_duration)\
 
 command_timeout = 2000
 
-# Colors
+# Colors: from the theme_* vars in ~/.config/mise/config.toml, which the atuin
+# theme shares. The accent follows device_type ({{ vars.device_type }} here).
+{%- set dt = "server" if vars.device_type == "server" else "desktop" %}
 
-palette = "{% if vars.device_type == "server" %}server{% else %}desktop{% endif %}"
+palette = "lachie"
 
-[palettes.desktop]
-black = "#5C5855"
-red = "#FB4B63"
-green = "#58EE85"
-yellow = "#F0DD7D"
-blue = "#20A1F7"
-purple = "#F498FD"
-cyan = "#00CDE8"
-white = "#768F9B"
-bright-black = "#090300"
-bright-red = "#681D27"
-bright-green = "#164725"
-bright-yellow = "#5C4E06"
-bright-blue = "#0D4163"
-bright-purple = "#532557"
-bright-cyan = "#004F59"
-bright-white = "#152228"
-theme_bg = "#1F243D"
-theme_fg = "#3A4356"
-theme_light = "#A2FBBD"
-theme_base = "#58EE85"
-theme_dark = "#40B078"
-
-[palettes.server]
-black = "#5C5855"
-red = "#FB4B63"
-green = "#58EE85"
-yellow = "#F0DD7D"
-blue = "#20A1F7"
-purple = "#F498FD"
-cyan = "#00CDE8"
-white = "#768F9B"
-bright-black = "#090300"
-bright-red = "#681D27"
-bright-green = "#164725"
-bright-yellow = "#5C4E06"
-bright-blue = "#0D4163"
-bright-purple = "#532557"
-bright-cyan = "#004F59"
-bright-white = "#152228"
-theme_bg = "#1F243D"
-theme_fg = "#3A4356"
-theme_light = "#A1F0FF"
-theme_base = "#00CDE8"
-theme_dark = "#208FAF"
+[palettes.lachie]
+black = "{{ vars.theme_black }}"
+red = "{{ vars.theme_red }}"
+green = "{{ vars.theme_green }}"
+yellow = "{{ vars.theme_yellow }}"
+blue = "{{ vars.theme_blue }}"
+purple = "{{ vars.theme_purple }}"
+cyan = "{{ vars.theme_cyan }}"
+white = "{{ vars.theme_white }}"
+bright-black = "{{ vars.theme_bright_black }}"
+bright-red = "{{ vars.theme_bright_red }}"
+bright-green = "{{ vars.theme_bright_green }}"
+bright-yellow = "{{ vars.theme_bright_yellow }}"
+bright-blue = "{{ vars.theme_bright_blue }}"
+bright-purple = "{{ vars.theme_bright_purple }}"
+bright-cyan = "{{ vars.theme_bright_cyan }}"
+bright-white = "{{ vars.theme_bright_white }}"
+theme_bg = "{{ vars.theme_bg }}"
+theme_fg = "{{ vars.theme_fg }}"
+theme_light = "{{ vars["theme_light_" ~ dt] }}"
+theme_base = "{{ vars["theme_base_" ~ dt] }}"
+theme_dark = "{{ vars["theme_dark_" ~ dt] }}"
 
 
 # Prompt
