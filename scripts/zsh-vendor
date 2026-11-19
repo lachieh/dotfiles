@@ -1,0 +1,37 @@
+#!/bin/sh
+# Rebuild dotfiles/.config/zsh/vendor/omz-git.zsh from ohmyzsh/ohmyzsh:
+# the git plugin's aliases plus the two lib/git.zsh helpers they call.
+# Usage: zsh-vendor [ref]
+set -eu
+
+ref=${1:-master}
+root=$(cd "$(dirname "$0")/.." && pwd)
+out="$root/dotfiles/.config/zsh/vendor/omz-git.zsh"
+base="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/$ref"
+
+sha=$(git ls-remote https://github.com/ohmyzsh/ohmyzsh.git "$ref" | cut -f1)
+sha=${sha:-$ref}
+lib=$(curl -fsSL "$base/lib/git.zsh")
+plugin=$(curl -fsSL "$base/plugins/git/git.plugin.zsh")
+curl -fsSL "$base/LICENSE.txt" >"$(dirname "$out")/LICENSE.ohmyzsh.txt"
+
+extract() { printf '%s\n' "$lib" | sed -n "/^function $1()/,/^}/p"; }
+
+{
+  echo "# Vendored from ohmyzsh/ohmyzsh@$sha (MIT)."
+  echo "# plugins/git/git.plugin.zsh plus the lib/git.zsh helpers it calls."
+  echo "# Refresh with: mise run zsh:vendor"
+  echo
+  echo "# Completion registrations are no-ops when compinit has not run (agent shells)."
+  echo '(( $+functions[compdef] )) || { compdef() { : }; _omz_git_stub_compdef=1 }'
+  echo
+  extract __git_prompt_git
+  echo
+  extract git_current_branch
+  echo
+  printf '%s\n' "$plugin"
+  echo
+  echo '(( ${+_omz_git_stub_compdef} )) && { unfunction compdef; unset _omz_git_stub_compdef }'
+} >"$out"
+
+zsh -fc "source '$out' && alias gst >/dev/null" && echo "Updated $out ($sha)"

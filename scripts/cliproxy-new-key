@@ -1,0 +1,76 @@
+#!/bin/sh
+# Get a machine's own cliproxy key, creating it the first time, and make sure
+# cliproxy accepts it. Run on a Mac with 1Password. Prints cliproxy's URL and
+# the key on stdout (one per line), for `cliproxy-key` on the target machine;
+# messages go to stderr.
+#
+# The URL is not in this repo: it is https://<subdomain>.<domain>, with the
+# shared domain in the "Home infrastructure" item and the subdomain in
+# cliproxy's own item, both in the Infrastructure vault.
+#
+#   1. 1Password item "cliproxy <host>" in Infrastructure: read it, or create
+#      it with a new random key.
+#   2. Add the key to cliproxy's client keys (access.api-keys) through the
+#      management API, if it is not there yet.
+#   3. Check that cliproxy answers with the key.
+#
+# To revoke a machine: delete its key in cliproxy, then its 1Password item.
+#
+# Usage: cliproxy-new-key <host>
+set -eu
+
+host=${1:?usage: cliproxy-new-key <host>}
+export OP_ACCOUNT=${OP_ACCOUNT:-YXLXGYRL3BFIBO7C6GIB7DX2VU} # personal account
+vault=ca24hrgc66dzwgihordsnfgs3u                             # Infrastructure
+infra="op://$vault/cpraxae7tgz5m5p5m3ur7tgnky"               # Home infrastructure
+cliproxy="op://$vault/y75wtn2xz47lfxargmlmuxr6hq"            # cliproxy management
+title="cliproxy $host"
+
+say() { echo "cliproxy-new-key: $*" >&2; }
+op() { mise exec -- op "$@"; }
+jq() { mise exec -- jq "$@"; }
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+chmod 700 "$tmp"
+
+domain=$(op read "$infra/domain") || { say "could not read the domain from 1Password"; exit 1; }
+subdomain=$(op read "$cliproxy/subdomain") || { say "could not read cliproxy's subdomain from 1Password"; exit 1; }
+url="https://$subdomain.$domain"
+
+# Secrets reach curl and op through files and stdin, never as arguments.
+# A failed substitution inside printf's arguments would not stop `set -e`.
+secret=$(op read "$cliproxy/management-key") || { say "could not read the management key from 1Password"; exit 1; }
+printf 'Authorization: Bearer %s\n' "$secret" >"$tmp/management"
+unset secret
+
+if key=$(op read "op://$vault/$title/credential" 2>/dev/null) && [ -n "$key" ]; then
+  say "using the existing 1Password item \"$title\""
+else
+  key="sk-$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 48)"
+  jq -n --arg title "$title" --arg key "$key" '{
+    title: $title, category: "API_CREDENTIAL",
+    fields: [{id: "credential", type: "CONCEALED", label: "credential", value: $key}]
+  }' | op item create --vault "$vault" --url "$url" - >/dev/null
+  say "created the 1Password item \"$title\""
+fi
+
+keys="$url/v8/management/config/access/api-keys"
+curl -fsS -H @"$tmp/management" "$keys" >"$tmp/keys.json"
+if jq -e --arg k "$key" 'index($k) != null' "$tmp/keys.json" >/dev/null; then
+  say "cliproxy already has this key"
+else
+  # The API replaces the whole list, so send the current list plus this key.
+  jq --arg k "$key" '. + [$k]' "$tmp/keys.json" |
+    curl -fsS -X PUT -H @"$tmp/management" -H 'Content-Type: application/json' \
+      --data-binary @- "$keys" >/dev/null
+  curl -fsS -H @"$tmp/management" "$keys" | jq -e --arg k "$key" 'index($k) != null' >/dev/null ||
+    { say "cliproxy did not keep the key"; exit 1; }
+  say "added the key to cliproxy"
+fi
+
+printf 'Authorization: Bearer %s\n' "$key" >"$tmp/client"
+code=$(curl -sS -o /dev/null -w '%{http_code}' -H @"$tmp/client" "$url/v1/models")
+[ "$code" = 200 ] || { say "cliproxy rejected the key (HTTP $code)"; exit 1; }
+
+printf '%s\n%s\n' "$url" "$key"

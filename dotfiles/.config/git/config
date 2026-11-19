@@ -1,0 +1,47 @@
+[init]
+	defaultBranch = main
+
+[user]
+	email = lachieh@users.noreply.github.com
+	name = Lachlan Heywood
+
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+
+# This machine's own signing key and ~/.config/git/ssh-sign, written by
+# `mise run git:key`. Each machine signs with its own key, without prompts.
+[include]
+	path = ~/.config/git/signing
+
+[commit]
+	gpgsign = true
+
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
+
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true  # use n and N to move between diff sections
+	dark = true      # or light = true, or omit for auto-detection
+
+[merge]
+	conflictStyle = zdiff3
+
+# gh through mise rather than a shim, so it resolves even where PATH has no
+# mise tools (GUI apps).
+[credential "https://github.com"]
+	helper =
+	helper = !\"$HOME/.local/bin/mise\" exec -- gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !\"$HOME/.local/bin/mise\" exec -- gh auth git-credential

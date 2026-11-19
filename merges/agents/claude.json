@@ -1,0 +1,13 @@
+{%- set f = env.HOME ~ "/.config/cliproxy/url" -%}
+{%- if f is file -%}
+{
+  "apiKeyHelper": "cat ~/.config/cliproxy/key",
+  "env": {
+    "ANTHROPIC_BASE_URL": "{{ read_file(path=f) | trim }}",
+    "API_TIMEOUT_MS": "600000",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+  }
+}
+{%- else -%}
+{}
+{%- endif %}

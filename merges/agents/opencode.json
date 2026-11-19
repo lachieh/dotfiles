@@ -1,0 +1,22 @@
+{%- set f = env.HOME ~ "/.config/cliproxy/url" -%}
+{%- if f is file -%}
+{%- set url = read_file(path=f) | trim -%}
+{
+  "providers": {
+    "openai": {
+      "settings": {
+        "baseURL": "{{ url }}/v1",
+        "apiKey": "{file:~/.config/cliproxy/key}"
+      }
+    },
+    "anthropic": {
+      "settings": {
+        "baseURL": "{{ url }}/v1",
+        "apiKey": "{file:~/.config/cliproxy/key}"
+      }
+    }
+  }
+}
+{%- else -%}
+{}
+{%- endif %}

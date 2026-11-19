@@ -1,2 +1,0 @@
-These scripts are generated from `.profiles/*.brewfile` files. They install Homebrew packages
-for the active chezmoi profiles.

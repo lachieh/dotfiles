@@ -1,3 +1,0 @@
-# Chezmoi
-
-alias chez="chezmoi"

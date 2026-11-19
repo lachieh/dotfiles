@@ -1,0 +1,74 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+[task_config]
+includes = ["tasks.local.toml"]
+
+# ── Dotfiles ────────────────────────────────────────────────────────────────
+
+[tasks."dotfiles:apply"]
+description = "Apply dotfiles, unlocking the shell startup files around the write"
+dir = "{{ env.HOME }}"
+run = "mise bootstrap --only dotfiles --yes"
+
+[tasks."dotfiles:status"]
+description = "Show dotfile drift, including edits made to the locked shell files"
+dir = "{{ env.HOME }}"
+run = "mise dot status"
+
+# ── Shell ───────────────────────────────────────────────────────────────────
+
+[tasks."shell:check"]
+description = "Check that agent-style shells get mise tools, aliases, fnox and the SSH agent"
+run = "{{ config_root }}/scripts/shell-check"
+
+[tasks."zsh:vendor"]
+description = "Refresh the vendored oh-my-zsh git aliases"
+usage = 'arg "[ref]" default="master" help="ohmyzsh/ohmyzsh commit or branch"'
+run = "{{ config_root }}/scripts/zsh-vendor ${usage_ref}"
+
+# ── Machines ────────────────────────────────────────────────────────────────
+
+[tasks."machine:setup"]
+description = "Set up a machine over SSH: mise, tools, dotfiles, then secrets from 1Password"
+usage = '''
+arg "<host>" help="SSH destination, usually a host alias from ~/.ssh/config.d/"
+flag "--update" help="Fast-forward the machine's existing checkout first"
+flag "--agents" help="Select the agents profile there and give the machine its own cliproxy key"
+'''
+run = "{{ config_root }}/scripts/machine-setup ${usage_host} ${usage_update:+--update} ${usage_agents:+--agents}"
+
+[tasks."atuin:login"]
+description = "Log in to atuin sync once on this machine (key from stdin or 1Password)"
+run = "{{ config_root }}/scripts/atuin-login"
+
+[tasks."git:key"]
+description = "Set up this machine's git key (push and signing, no prompts) and register it on GitHub"
+run = "{{ config_root }}/scripts/git-key | {{ config_root }}/scripts/git-register \"git $(hostname -s)\""
+
+[tasks."agents:key"]
+description = "Create this machine's cliproxy key (1Password + cliproxy) and install it for the agent CLIs"
+dir = "{{ env.HOME }}"
+run = [
+  "{{ config_root }}/scripts/cliproxy-new-key \"$(hostname -s)\" | {{ config_root }}/scripts/cliproxy-key",
+  "mise bootstrap --only dotfiles --yes",
+]
+
+[tasks."secrets:homelab"]
+description = "Write the homelab age key on this machine if missing (1Password CLI)"
+run = "{{ config_root }}/scripts/homelab-key"
+
+[tasks."macos:system"]
+description = "Apply the macOS settings that need sudo (computer name, boot sound, timezone)"
+run = "{{ config_root }}/scripts/macos-system"
+
+# ── Neovim ──────────────────────────────────────────────────────────────────
+
+[tasks."nvim:check"]
+description = "Verify that the Neovim configuration starts cleanly"
+dir = "{{ env.HOME }}"
+run = "nvim --headless '+lua vim.print(vim.version())' +qa"
+
+[tasks."nvim:sync"]
+description = "Install missing Neovim plugins and Treesitter parsers"
+dir = "{{ env.HOME }}"
+run = "nvim --headless \"+lua require('config.treesitter').sync()\" +qa"

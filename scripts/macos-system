@@ -1,0 +1,30 @@
+#!/bin/sh
+# macOS settings that need sudo, which `mise bootstrap` never uses. Run it
+# yourself once per Mac: `mise run macos:system`.
+set -eu
+
+[ "$(uname)" = Darwin ] || { echo "macos:system: not macOS, skipping"; exit 0; }
+
+name=$(mise vars computer_name 2>/dev/null || true)
+if [ -n "$name" ]; then
+  echo "Setting computer name to $name"
+  sudo scutil --set ComputerName "$name"
+  sudo scutil --set HostName "$name"
+  sudo scutil --set LocalHostName "$name"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$name"
+fi
+
+# No boot chime.
+sudo nvram SystemAudioVolume=" "
+
+# Login window: hostname, IP and OS version when clicking the clock; input
+# menu on the boot screen.
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
+
+sudo systemsetup -settimezone "America/New_York" >/dev/null 2>&1
+
+# HiDPI display modes (needs a restart).
+sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
+
+echo "Done. Some changes need a logout or restart."

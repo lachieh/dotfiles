@@ -1,0 +1,30 @@
+#!/bin/sh
+# Write the homelab age identity to ~/.config/age/homelab.key.txt if it is
+# missing. The key comes from stdin (two lines: public key, secret key), as
+# `machine:setup` sends, or from the 1Password CLI.
+set -eu
+
+target="${XDG_CONFIG_HOME:-$HOME/.config}/age/homelab.key.txt"
+if [ -s "$target" ]; then
+  echo "homelab key: already present"
+  exit 0
+fi
+
+mise=$(command -v mise 2>/dev/null || echo "$HOME/.local/bin/mise")
+item="op://ca24hrgc66dzwgihordsnfgs3u/qp2cnsepzqzh6dfmvro42khssq"
+public="" secret=""
+
+if [ ! -t 0 ]; then
+  IFS= read -r public || true
+  IFS= read -r secret || true
+fi
+if [ -z "$secret" ]; then
+  public=$("$mise" exec -- op read "$item/username")
+  secret=$("$mise" exec -- op read "$item/password")
+fi
+
+umask 077
+mkdir -p "$(dirname "$target")"
+printf '# public key: %s\n%s\n' "$public" "$secret" >"$target.tmp"
+mv "$target.tmp" "$target"
+echo "homelab key: written to $target"

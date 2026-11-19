@@ -1,0 +1,96 @@
+#!/bin/sh
+# Check what each way of starting a shell actually gets. Agents start shells
+# differently (login or not, interactive or not, zsh or bash), so each row
+# starts in $HOME and then cd's into a throwaway project, like an agent would.
+#
+#   tool   a global mise tool resolves to its install dir (not a shim)
+#   pin    the project's pinned tool version is on PATH
+#   env    the project's mise [env] loaded after cd
+#   fnox   the project's fnox secret loaded after cd
+#   alias  oh-my-zsh git aliases (zsh only)
+#   func   personal autoloaded functions (zsh only)
+#   ssh    SSH_AUTH_SOCK points at a live agent socket
+#   shims  no mise shims directory on PATH
+set -u
+
+proj=$(mktemp -d "${TMPDIR:-/tmp}/shell-check.XXXXXX")
+trap 'rm -rf "$proj"' EXIT
+# Pin some installed tool to a version other than the global one, so the
+# check can tell per-directory versions from whatever PATH started with.
+pin=$(cd "$HOME" && mise ls --installed 2>/dev/null | awk '
+  { n[$1]++; v[$1] = v[$1] " " $2 }
+  NF >= 3 && $3 ~ /\// { active[$1] = $2 }
+  END {
+    split("node python go bun pnpm", pref, " ")
+    for (i = 1; i in pref; i++) { t = pref[i]; if (n[t] > 1 && t in active) { pick(t); exit } }
+    for (t in active) if (n[t] > 1 && t != "fnox") { pick(t); exit }
+  }
+  function pick(t,  xs, j) { split(v[t], xs, " "); for (j = 1; j in xs; j++) if (xs[j] != active[t]) { print t, xs[j]; return } }')
+pin_tool=${pin%% *}
+pin_version=${pin#* }
+{
+  echo '[env]'
+  echo 'SHELL_CHECK_ENV = "ok"'
+  if [ -n "$pin" ]; then
+    echo '[tools]'
+    echo "$pin_tool = \"$pin_version\""
+  fi
+} >"$proj/mise.toml"
+cat >"$proj/fnox.toml" <<'EOF'
+[secrets]
+SHELL_CHECK_SECRET = { default = "ok" }
+EOF
+mise trust -q "$proj/mise.toml" >/dev/null 2>&1
+
+probe='cd "'"$proj"'" 2>/dev/null
+r() { if [ "$2" = 1 ]; then printf "%-6s" "$1"; else printf "%-6s" "-"; fi; }
+t=0; case "$(command -v jq 2>/dev/null)" in *mise/installs/*) t=1;; esac; r tool $t
+p=0; case ":$PATH:" in *"/installs/'"$pin_tool/$pin_version"'/"*|*"/installs/'"$pin_tool/$pin_version"':"*) p=1;; esac; r pin $p
+e=0; [ "${SHELL_CHECK_ENV:-}" = ok ] && e=1; r env $e
+f=0; [ "${SHELL_CHECK_SECRET:-}" = ok ] && f=1; r fnox $f
+a=0; alias gst >/dev/null 2>&1 && a=1; r alias $a
+u=0; command -v clone >/dev/null 2>&1 && u=1; r func $u
+s=0; [ -S "${SSH_AUTH_SOCK:-}" ] && s=1; r ssh $s
+m=1; case ":$PATH:" in *mise/shims*) m=0;; esac; r shims $m
+echo'
+
+# Run a command from a directory with a minimal, clean environment.
+clean() {
+  dir=$1
+  shift
+  # shellcheck disable=SC2086
+  (cd "$dir" && env -i HOME="$HOME" USER="${USER:-}" TERM=dumb \
+    PATH=/usr/bin:/bin:/usr/sbin:/sbin ${SSH_CONNECTION:+SSH_CONNECTION="$SSH_CONNECTION"} \
+    ${MISE_DATA_DIR:+MISE_DATA_DIR="$MISE_DATA_DIR"} ${MISE_STATE_DIR:+MISE_STATE_DIR="$MISE_STATE_DIR"} \
+    "$@" 2>/dev/null </dev/null | tail -1)
+}
+
+printf '%-14s %s\n' "shell" "tool  pin   env   fnox  alias func  ssh   shims"
+for sh in "zsh -c" "zsh -lc" "zsh -ic" "bash -c" "bash -lc" "sh -c"; do
+  # shellcheck disable=SC2086
+  out=$(clean "$HOME" $sh "$probe")
+  printf '%-14s %s\n' "$sh" "${out:-(no output)}"
+done
+
+# Claude Code's Bash tool: a login zsh that then replays a snapshot whose PATH
+# was captured when the session started (here, in $HOME). Without the
+# claude-env hook, per-directory tools and env keep their $HOME values.
+# shellcheck disable=SC2016
+snap=$(clean "$HOME" zsh -lc 'print -r -- "export PATH=${(q)PATH}"')
+out=$(clean "$proj" zsh -lc "$snap; $probe")
+printf '%-14s %s\n' "claude" "${out:-(no output)}"
+envfile="$proj/claude-env.sh"
+(cd "$proj" && CLAUDE_ENV_FILE="$envfile" "$(dirname "$0")/claude-env")
+out=$(clean "$proj" zsh -lc "$snap; . '$envfile'; $probe")
+printf '%-14s %s\n' "claude + hook" "${out:-(no output)}"
+
+[ -n "$pin" ] && echo "(pin: $pin_tool $pin_version)"
+cat <<'TEXT'
+
+"-" marks a missing capability. Expected:
+  zsh rows        everything
+  bash -lc        no fnox (it refreshes on prompts only), no aliases or functions
+  bash -c, sh -c  nothing: they read no startup files and only inherit
+  claude          no pin: the snapshot keeps the PATH from session start
+  claude + hook   pin restored by scripts/claude-env
+TEXT

@@ -1,0 +1,91 @@
+#!/bin/sh
+# Set up this machine's own git key: GitHub push (SSH) and commit signing,
+# with no prompts and without your 1Password key ever touching disk.
+#
+#   macOS  a Secure Enclave key in Secretive, created with "no authentication".
+#          The private key cannot leave the Secure Enclave; Secretive's agent
+#          signs with it on request.
+#   Linux  a key file generated here, used only by this machine. If it leaks,
+#          revoke this one key on GitHub.
+#
+# Writes ~/.ssh/git.conf (the github.com host block that ~/.ssh/config
+# includes) and ~/.config/git/signing (git's signing key and program), then
+# prints the public key on stdout for registering on GitHub (`git:register`).
+# Messages go to stderr. Safe to re-run.
+#
+# Usage: git-key [path-to-public-key]   (macOS: pick one of Secretive's keys)
+set -eu
+
+say() { echo "git-key: $*" >&2; }
+
+ssh_conf="$HOME/.ssh/git.conf"
+git_conf="${XDG_CONFIG_HOME:-$HOME/.config}/git/signing"
+agent_file="$HOME/.ssh/git.agent"
+pub="$HOME/.ssh/git.pub"
+mkdir -p "$HOME/.ssh" "$(dirname "$git_conf")"
+chmod 700 "$HOME/.ssh"
+
+if [ "$(uname)" = Darwin ]; then
+  data="$HOME/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data"
+  socket="$data/socket.ssh"
+  if [ ! -d "$data" ]; then
+    say "Secretive is not set up. Install it (https://github.com/maxgoedjen/secretive),"
+    say "open it, create a secret named \"git $(hostname -s)\" with authentication"
+    say "turned off, then run this again."
+    exit 1
+  fi
+  if [ -n "${1:-}" ]; then
+    source_pub=$1
+  else
+    set -- "$data"/PublicKeys/*.pub
+    if [ ! -e "$1" ]; then
+      say "Secretive has no keys yet. Create one with authentication turned off."
+      exit 1
+    fi
+    if [ $# -gt 1 ]; then
+      say "Secretive has $# keys. Pass the one for git:"
+      for k in "$@"; do say "  $k  ($(cut -d' ' -f3- "$k"))"; done
+      exit 1
+    fi
+    source_pub=$1
+  fi
+  cp "$source_pub" "$pub"
+  printf '%s\n' "$socket" >"$agent_file"
+  {
+    echo "# Written by ~/.config/mise/scripts/git-key. GitHub through Secretive."
+    echo "Host github.com"
+    echo "  User git"
+    echo "  IdentityAgent \"$socket\""
+    echo "  IdentityFile ~/.ssh/git.pub"
+    echo "  IdentitiesOnly yes"
+  } >"$ssh_conf"
+  signingkey=$pub
+else
+  key="$HOME/.ssh/id_git"
+  if [ ! -s "$key" ]; then
+    ssh-keygen -q -t ed25519 -N '' -C "git $(hostname -s)" -f "$key"
+    say "generated $key"
+  fi
+  cp "$key.pub" "$pub"
+  rm -f "$agent_file"
+  {
+    echo "# Written by ~/.config/mise/scripts/git-key. GitHub with this machine's key."
+    echo "Host github.com"
+    echo "  User git"
+    echo "  IdentityFile ~/.ssh/id_git"
+    echo "  IdentityAgent none"
+    echo "  IdentitiesOnly yes"
+  } >"$ssh_conf"
+  signingkey=$key
+fi
+
+{
+  echo "# Written by ~/.config/mise/scripts/git-key. Included from git/config."
+  echo "[user]"
+  echo "	signingkey = $signingkey"
+  echo "[gpg \"ssh\"]"
+  echo "	program = ${XDG_CONFIG_HOME:-$HOME/.config}/git/ssh-sign"
+} >"$git_conf"
+
+say "wrote $ssh_conf and $git_conf"
+cut -d' ' -f1,2 "$pub"

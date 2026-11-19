@@ -1,4 +1,10 @@
-.chezmoiscripts/brew/*
-docs
-!.keep
+# Machine-specific mise config and state (this repo is ~/.config/mise)
+config.local.toml
+miserc.local.toml
+tasks.local.toml
+mise.lock
+mise.local.lock
+locks/
+
 *.local.md
+docs

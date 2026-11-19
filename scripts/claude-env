@@ -1,0 +1,8 @@
+#!/bin/sh
+# Claude Code SessionStart and CwdChanged hook. Claude's Bash tool replays a
+# shell snapshot whose PATH was fixed when the session started, so a cd into
+# a project with different tool versions is not picked up by `mise activate`.
+# Claude runs $CLAUDE_ENV_FILE before every Bash command; this writes mise's
+# environment for the current directory there.
+[ -n "${CLAUDE_ENV_FILE:-}" ] || exit 0
+"$HOME/.local/bin/mise" env -s bash >"$CLAUDE_ENV_FILE" 2>/dev/null || true

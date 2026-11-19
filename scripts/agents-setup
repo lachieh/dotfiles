@@ -1,0 +1,51 @@
+#!/bin/sh
+# Post-tools hook of the agents profile (config.agents.toml). Safe to re-run.
+#   - Removes opencode's old LiteLLM provider; cliproxy replaces it.
+#   - Warns about saved opencode logins that would bypass cliproxy.
+#   - Linux: installs T3 Code with its official installer and runs it as a
+#     user service. On macOS the T3 Code desktop app provides it.
+#   - Reminds you when this machine has no cliproxy key yet.
+set -eu
+
+say() { echo "agents-setup: $*" >&2; }
+jq() { "$HOME/.local/bin/mise" exec -- jq "$@"; }
+
+oc="${XDG_CONFIG_HOME:-$HOME/.config}/opencode/opencode.json"
+# Covers both opencode's v1 `provider` key and v2's `providers`.
+if [ -f "$oc" ] && jq -e '.provider.litellm // .providers.litellm' "$oc" >/dev/null 2>&1; then
+  jq 'del(.provider.litellm, .providers.litellm)
+      | with_entries(select((.key == "model" or .key == "small_model")
+                            and (.value | tostring | startswith("litellm/")) | not))' \
+    "$oc" >"$oc.tmp"
+  mv "$oc.tmp" "$oc"
+  say "removed the litellm provider from $oc"
+fi
+
+# A saved opencode login wins over the cliproxy key in the config, so requests
+# would skip cliproxy (or fail, once the login goes stale).
+if opencode_logins=$("$HOME/.local/bin/mise" exec -- opencode auth list 2>/dev/null) &&
+  printf '%s\n' "$opencode_logins" | grep -qE '^(OpenAI|Anthropic) '; then
+  say "opencode has a saved OpenAI or Anthropic login, which bypasses cliproxy."
+  say "Remove it with \`opencode auth logout openai\` (or anthropic)."
+fi
+
+if [ "$(uname)" = Linux ]; then
+  t3="$HOME/.local/bin/t3"
+  if [ ! -x "$t3" ]; then
+    say "installing T3 Code"
+    installer=$(mktemp)
+    curl -fsSL https://t3.codes/install.sh -o "$installer"
+    sh "$installer" </dev/null
+    rm -f "$installer"
+  fi
+  # `t3 service status` exits 0 either way, so look for its systemd unit.
+  if [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/t3code.service" ]; then
+    "$t3" service install
+    say "T3 Code is running as a service. Pair it from the desktop app: $t3 pair"
+  fi
+fi
+
+if [ ! -s "${XDG_CONFIG_HOME:-$HOME/.config}/cliproxy/key" ]; then
+  say "no cliproxy key yet: run \`mise run agents:key\` here, or"
+  say "\`mise run machine:setup <host> --agents\` from your Mac"
+fi

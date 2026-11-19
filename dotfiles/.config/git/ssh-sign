@@ -1,0 +1,23 @@
+#!/bin/sh
+# gpg.ssh.program: ssh-keygen pointed at this machine's git key, never at
+# 1Password, so signing never waits for an approval.
+#
+#   ~/.ssh/git.agent names an agent socket (macOS: Secretive) -> sign there
+#   otherwise, signing with an unencrypted key file -> no agent at all
+#
+# Without this, ssh-keygen -Y sign asks whatever agent SSH_AUTH_SOCK names,
+# which is 1Password, and that shows an approval dialog.
+if [ -r "$HOME/.ssh/git.agent" ]; then
+  SSH_AUTH_SOCK=$(cat "$HOME/.ssh/git.agent")
+  export SSH_AUTH_SOCK
+else
+  prev=
+  for arg in "$@"; do
+    if [ "$prev" = "-f" ] && ssh-keygen -y -P '' -f "$arg" >/dev/null 2>&1; then
+      unset SSH_AUTH_SOCK
+      break
+    fi
+    prev=$arg
+  done
+fi
+exec ssh-keygen "$@"

@@ -1,0 +1,21 @@
+#!/bin/sh
+# Set or clear the immutable flag on the shell startup files, so nothing but
+# `mise run dotfiles:apply` can change them. macOS only: Linux's equivalent
+# (chattr +i) needs root, so there they rely on read-only permissions and
+# `mise dot status` reporting drift.
+# Usage: dotfiles-lock lock|unlock
+set -eu
+
+[ "$(uname)" = Darwin ] || exit 0
+case "${1:-}" in
+  lock) flag=uchg ;;
+  unlock) flag=nouchg ;;
+  *) echo "usage: dotfiles-lock lock|unlock" >&2; exit 2 ;;
+esac
+
+for f in "$HOME/.zshenv" "$HOME/.config/zsh/.zshenv" "$HOME/.config/zsh/.zprofile" \
+  "$HOME/.config/zsh/.zshrc" "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.profile"; do
+  if [ -f "$f" ] && [ ! -L "$f" ]; then
+    chflags "$flag" "$f"
+  fi
+done

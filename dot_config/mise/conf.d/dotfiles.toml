@@ -1,9 +1,0 @@
-#:schema https://mise.jdx.dev/schema/mise.json
-
-[settings]
-dotfiles.root = "~/.local/share/chezmoi/mise-dotfiles"
-dotfiles.default_mode = "symlink"
-
-[dotfiles]
-"~/.config/ghostty" = {}
-"~/.config/nvim" = {}

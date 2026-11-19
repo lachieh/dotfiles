@@ -1,0 +1,40 @@
+#!/bin/sh
+# Register a machine's git key (from git-key) on GitHub, as both an
+# authentication key (push) and a signing key, and add it to allowed_signers
+# so `git log --show-signature` trusts it. Skips anything already registered.
+# Run where gh is signed in. Needs the admin:public_key and
+# admin:ssh_signing_key scopes: `gh auth refresh -s admin:public_key,admin:ssh_signing_key`.
+#
+# Usage: git-register <title> < public-key-line
+set -eu
+
+title=${1:?usage: git-register <title> < public-key-line}
+IFS= read -r line
+key=$(printf '%s\n' "$line" | cut -d' ' -f1,2)
+[ -n "$key" ] || { echo "git-register: no public key on stdin" >&2; exit 1; }
+
+mise=$(command -v mise 2>/dev/null || echo "$HOME/.local/bin/mise")
+gh() { "$mise" exec -- gh "$@"; }
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+printf '%s %s\n' "$key" "$title" >"$tmp"
+
+register() { # endpoint type
+  if gh api "$1" --paginate --jq '.[].key' | grep -qxF "$key"; then
+    echo "git-register: already a GitHub $2 key"
+  else
+    gh ssh-key add "$tmp" --type "$2" --title "$title" >/dev/null
+    echo "git-register: added as a GitHub $2 key ($title)"
+  fi
+}
+register user/keys authentication
+register user/ssh_signing_keys signing
+
+signers="$(cd "$(dirname "$0")/.." && pwd)/dotfiles/.config/git/allowed_signers"
+email=$(git config --get user.email || echo lachieh@users.noreply.github.com)
+if grep -qF "$key" "$signers"; then
+  echo "git-register: already in allowed_signers"
+else
+  printf '%s namespaces="git" %s %s\n' "$email" "$key" "$title" >>"$signers"
+  echo "git-register: added to $signers (commit it)"
+fi

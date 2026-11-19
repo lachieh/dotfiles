@@ -1,3 +1,0 @@
-brew "ffmpeg"
-cask "cap"
-mas "DaVinci Resolve", id: 571213070

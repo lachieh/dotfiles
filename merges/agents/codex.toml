@@ -1,0 +1,14 @@
+{%- set f = env.HOME ~ "/.config/cliproxy/url" -%}
+{%- if f is file -%}
+model_provider = "cliproxy"
+
+[model_providers.cliproxy]
+name = "cliproxy"
+base_url = "{{ read_file(path=f) | trim }}/v1"
+wire_api = "responses"
+
+[model_providers.cliproxy.auth]
+command = "/bin/sh"
+args = ["-c", "cat \"$HOME/.config/cliproxy/key\""]
+refresh_interval_ms = 0
+{%- endif %}

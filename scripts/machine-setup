@@ -1,0 +1,87 @@
+#!/bin/sh
+# Set up a machine over SSH, run from a Mac with 1Password.
+#
+#   1. mise bootstrap remote: installs mise, checks this repo out at
+#      ~/.config/mise from GitHub, installs tools, applies dotfiles.
+#   2. Copies ~/.ssh/config.d/ (private host entries) to the machine.
+#   3. Sets up the machine's own git key there and registers it on GitHub from
+#      here (push and signing, no prompts; it never sees your 1Password key).
+#   4. With --agents: selects the agents profile there (config.agents.toml)
+#      and installs the machine's own cliproxy key, created here on first use.
+#   5. Logs atuin in and writes the homelab age key. Secrets are read here
+#      through the 1Password CLI (Touch ID on this Mac) and sent over SSH
+#      stdin, so they are never passed as arguments or written anywhere
+#      except their final file.
+#
+# Usage: machine-setup <host> [--update] [--agents]
+set -eu
+
+dest=${1:?usage: machine-setup <host> [--update] [--agents]}
+shift
+update='' agents=''
+for arg in "$@"; do
+  case $arg in
+    --update) update=--update ;;
+    --agents) agents=1 ;;
+    *) echo "machine-setup: unknown option $arg" >&2; exit 2 ;;
+  esac
+done
+repo=${DOTFILES_REPO:-lachieh/dotfiles}
+atuin_item="op://c5pj6izhhuuirobusafxvnkqau/omx4nfxuac33q6v6g7fnr2pznq"
+age_item="op://ca24hrgc66dzwgihordsnfgs3u/qp2cnsepzqzh6dfmvro42khssq"
+op() { mise exec -- op "$@"; }
+
+echo "==> Bootstrapping $dest"
+# shellcheck disable=SC2086
+mise bootstrap remote --host "$dest" --adopt "$repo" --install-mise --yes \
+  --ssh-option ForwardAgent=yes $update ${agents:+--remote-env agents}
+
+echo "==> Copying private SSH host entries"
+if [ -d "$HOME/.ssh/config.d" ]; then
+  tar -C "$HOME/.ssh" -cf - config.d |
+    ssh "$dest" 'umask 077; mkdir -p ~/.ssh && tar -C ~/.ssh -xf -'
+fi
+
+# Remote paths are single-quoted on purpose: ~ expands on the remote host.
+echo "==> Setting up the git key"
+# shellcheck disable=SC2016,SC2088
+pubkey=$(ssh "$dest" '~/.config/mise/scripts/git-key')
+title="git $(ssh "$dest" 'hostname -s')"
+printf '%s\n' "$pubkey" | "$(dirname "$0")/git-register" "$title"
+
+if [ -n "$agents" ]; then
+  echo "==> Installing the cliproxy key and selecting the agents profile"
+  # The key and URL come first: the profile's config merges read the URL.
+  # shellcheck disable=SC2016,SC2088
+  "$(dirname "$0")/cliproxy-new-key" "$(ssh "$dest" 'hostname -s')" |
+    ssh "$dest" '~/.config/mise/scripts/cliproxy-key'
+  # --save-env records the profile in miserc.local.toml there, so later
+  # mise runs on that machine keep it.
+  # shellcheck disable=SC2016,SC2088
+  ssh "$dest" '~/.local/bin/mise bootstrap -E agents --save-env --only dotfiles --yes'
+fi
+
+# shellcheck disable=SC2016,SC2088
+if ssh "$dest" 'test -s ~/.local/share/atuin/session'; then
+  echo "==> atuin already logged in on $dest"
+else
+  echo "==> Logging in to atuin sync"
+  {
+    op read "$atuin_item/username"
+    op read "$atuin_item/password"
+    op read "$atuin_item/key"
+  } | ssh "$dest" '~/.config/mise/scripts/atuin-login'
+fi
+
+# shellcheck disable=SC2016,SC2088
+if ssh "$dest" 'test -s ~/.config/age/homelab.key.txt'; then
+  echo "==> homelab age key already on $dest"
+else
+  echo "==> Writing homelab age key"
+  {
+    op read "$age_item/username"
+    op read "$age_item/password"
+  } | ssh "$dest" '~/.config/mise/scripts/homelab-key'
+fi
+
+echo "==> Done. On $dest: open a new shell, then run \`mise run shell:check\`."

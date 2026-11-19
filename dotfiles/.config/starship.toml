@@ -1,0 +1,262 @@
+# Rendered by mise dotfiles (template mode). The palette follows the
+# per-machine `device_type` var: `mise vars device_type=server` switches to
+# the server colours; anything else uses the desktop ones.
+
+format = """
+${custom.ssh_indicator}\
+[ ${custom.live-clock-icon} $time ](fg:theme_bg bg:theme_base)[](fg:theme_base bg:theme_fg)\
+[ $directory ](bg:theme_fg)[](fg:theme_fg bg:theme_bg)\
+[ ($git_branch ${custom.git_status_dirty}$git_status )](fg:theme_base bg:theme_bg)[](fg:theme_bg bg:none)\
+$fill\
+$package\
+$docker$aws$kubernetes\
+$nodejs$rust$golang$python$php$buf$c$cmake$elixir$java$kotlin$lua$ruby$zig\
+$line_break[ $battery $character  ](fg:theme_base bg:theme_fg)[ ](fg:theme_fg bg:none)\
+"""
+
+right_format = """
+$status( $cmd_duration)\
+"""
+
+command_timeout = 2000
+
+# Colors
+
+palette = "{% if vars.device_type == "server" %}server{% else %}desktop{% endif %}"
+
+[palettes.desktop]
+black = "#5C5855"
+red = "#FB4B63"
+green = "#58EE85"
+yellow = "#F0DD7D"
+blue = "#20A1F7"
+purple = "#F498FD"
+cyan = "#00CDE8"
+white = "#768F9B"
+bright-black = "#090300"
+bright-red = "#681D27"
+bright-green = "#164725"
+bright-yellow = "#5C4E06"
+bright-blue = "#0D4163"
+bright-purple = "#532557"
+bright-cyan = "#004F59"
+bright-white = "#152228"
+theme_bg = "#1F243D"
+theme_fg = "#3A4356"
+theme_light = "#A2FBBD"
+theme_base = "#58EE85"
+theme_dark = "#40B078"
+
+[palettes.server]
+black = "#5C5855"
+red = "#FB4B63"
+green = "#58EE85"
+yellow = "#F0DD7D"
+blue = "#20A1F7"
+purple = "#F498FD"
+cyan = "#00CDE8"
+white = "#768F9B"
+bright-black = "#090300"
+bright-red = "#681D27"
+bright-green = "#164725"
+bright-yellow = "#5C4E06"
+bright-blue = "#0D4163"
+bright-purple = "#532557"
+bright-cyan = "#004F59"
+bright-white = "#152228"
+theme_bg = "#1F243D"
+theme_fg = "#3A4356"
+theme_light = "#A1F0FF"
+theme_base = "#00CDE8"
+theme_dark = "#208FAF"
+
+
+# Prompt
+
+[character]
+format = "$symbol"
+success_symbol = "[󰚩 ](bg:prev_bg fg:theme_base)"
+error_symbol = "[󱚝 ](bg:prev_bg fg:red)"
+
+[line_break]
+disabled = false
+
+[fill]
+symbol = " "
+
+# SSH Indicator
+
+[custom.ssh_indicator]
+command = 'uname -n'
+description = "Shows when connected via SSH"
+format = "[ $symbol $output ]($style)[](fg:#F0DD7D bg:theme_base)"
+style = "fg:theme_bg bg:#F0DD7D"
+when = '[ -n "$SSH_TTY" ]'
+symbol = "󰣀"
+shell = ["sh"]
+
+# System Information
+
+[cmd_duration]
+format = "[⏱ $duration ]($style)"
+
+[status]
+disabled = false
+pipestatus = true
+format = "[$symbol$status]($style)"
+symbol = "✘"
+pipestatus_format = "\\[$pipestatus\\]($style)"
+
+[directory]
+read_only = " 󰌾"
+truncation_length = 2
+fish_style_pwd_dir_length = 1
+use_logical_path = true
+style = "fg:theme_base bg:theme_fg"
+format = "[$path]($style)[$read_only]($style)"
+
+[time]
+disabled = false
+style = "fg:prev_fg bg:prev_bg"
+time_format = "%R"              # Hour:Minute Format
+format = '[$time]($style)'
+
+[custom.live-clock-icon]
+command = 'echo "󱑖󱑋" | cut -c $(($(date +%H)%12+1))'
+description = "Live updating clock icon, changes hourly. Icons can be customized to your liking."
+when = true
+style = "fg:prev_fg bg:prev_bg"
+format = "[$output]($style)"
+
+[battery]
+display = [
+  { discharging_symbol = "󰁺", style = "bg:prev_bg fg:red", threshold = 10 },
+  { discharging_symbol = "󰁻", style = "bg:prev_bg fg:yellow", threshold = 20 },
+  { discharging_symbol = "󰁼", style = "bg:prev_bg fg:yellow", threshold = 30 },
+  { discharging_symbol = "󰁽", style = "bg:prev_bg fg:green", threshold = 40 },
+  { discharging_symbol = "󰁾", style = "bg:prev_bg fg:green", threshold = 50 },
+  { discharging_symbol = "󰁿", style = "bg:prev_bg fg:green", threshold = 60 },
+  { discharging_symbol = "󰂀", style = "bg:prev_bg fg:green", threshold = 70 },
+  { discharging_symbol = "󰂁", style = "bg:prev_bg fg:green", threshold = 80 },
+  { discharging_symbol = "󰂂", style = "bg:prev_bg fg:green", threshold = 90 },
+  { discharging_symbol = "󰁹", style = "bg:prev_bg fg:green", threshold = 100 },
+]
+full_symbol = "󱈑"
+charging_symbol = "󰂄"
+discharging_symbol = "󰁾"
+unknown_symbol = "󰂑"
+empty_symbol = "󰂃"
+format = "[$symbol]($style)"
+
+# Version Control
+
+[git_branch]
+symbol = ""
+format = '$symbol $branch'
+style = "fg:prev_fg bg:prev_bg"
+
+[git_commit]
+tag_symbol = " "
+style = "fg:prev_fg bg:prev_bg"
+
+[git_status]
+format = "[$ahead_behind]($style)"
+style = "fg:prev_fg bg:prev_bg"
+stashed = "≡"
+ahead = "${count}"
+behind = "${count}"
+diverged = "${behind_count}${ahead_count}"
+
+[custom.git_status_dirty]
+when = 'test -n "$(git status --porcelain 2>/dev/null)"'
+symbol = "•"
+style = "fg:prev_fg bg:prev_bg"
+format = "[$symbol]($style)"
+shell = ["sh"]
+
+[hg_branch]
+symbol = ""
+
+[fossil_branch]
+symbol = ""
+format = "\\[[$symbol$branch]($style)\\]"
+
+# Languages
+
+[nodejs]
+symbol = ""
+format = '[$symbol ($version)]($style) '
+
+[rust]
+symbol = ""
+format = '[$symbol ($version)]($style) '
+
+[golang]
+symbol = ""
+format = '[$symbol ($version)]($style) '
+
+[package]
+disabled = false
+symbol = "󰏗"
+display_private = true
+format = '[$symbol ($version)]($style) '
+
+[python]
+symbol = ""
+format = "[${symbol} ${pyenv_prefix}(${version})(@$virtualenv)]($style)"
+
+[php]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[buf]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[c]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[cmake]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[elixir]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[java]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[kotlin]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[lua]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[ruby]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+[zig]
+symbol = ""
+format = '[$symbol ($version)]($style)'
+
+# Context
+
+[aws]
+disabled = false
+symbol = ""
+format = "[($symbol ($profile)@$region)(|$duration)]($style) "
+
+[docker_context]
+symbol = ""
+disabled = false
+
+[kubernetes]
+disabled = true
+symbol = ""
+format = "[($symbol $context(|$namespace))]($style) "

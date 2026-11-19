@@ -1,6 +1,0 @@
-brew "ios-sim"
-cask "claude-code"
-cask "orbstack"
-cask "qlmarkdown"
-cask "syntax-highlight"
-cask "visual-studio-code"

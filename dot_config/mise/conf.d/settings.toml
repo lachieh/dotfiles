@@ -1,5 +1,0 @@
-#:schema https://mise.jdx.dev/schema/mise.json
-
-[settings]
-experimental = true
-idiomatic_version_file_enable_tools = ["rust", "node", "go", "python", "yarn"]

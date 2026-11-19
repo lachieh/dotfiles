@@ -1,6 +1,0 @@
-cask "chromium"
-cask "firefox"
-cask "google-chrome"
-cask "microsoft-edge"
-cask "zen"
-mas "Velja", id: 1607635845

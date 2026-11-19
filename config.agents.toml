@@ -1,0 +1,36 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+#
+# The "agents" profile: Claude Code, Codex, opencode and T3 Code, all sending
+# requests through your cliproxy with this machine's own key. Loaded
+# only where the profile is selected:
+#
+#   mise bootstrap -E agents --save-env       this machine (saved in miserc.local.toml)
+#   mise run machine:setup <host> --agents    over SSH
+#   mise run agents:key                        create this machine's key (once)
+#   mise bootstrap unapply agents             remove the profile's dotfiles
+#
+# The key lives only in ~/.config/cliproxy/key (0600). Every CLI reads it from
+# there, so the config edits below hold no secret. cliproxy's URL is not in
+# this repo either: `agents:key` writes it to ~/.config/cliproxy/url from
+# 1Password, and the CLI merges below read it. Until then they merge nothing.
+
+[tools]
+claude = "latest"
+codex = "latest"
+"aqua:anomalyco/opencode" = "latest"
+
+# Each CLI writes its own config, so these merge only the keys listed in the
+# source file and leave everything else alone. Edits to these keys are put
+# back on the next apply.
+[dotfiles]
+"~/.claude/settings.json/cliproxy" = { source = "merges/agents/claude.json", merge = true, template = "tera" }
+"~/.codex/config.toml/cliproxy" = { source = "merges/agents/codex.toml", merge = true, template = "tera" }
+"~/.config/opencode/opencode.json/cliproxy" = { source = "merges/agents/opencode.json", merge = true, template = "tera" }
+# T3 Code runs the mise-installed CLIs. `latest` is a link mise keeps on the
+# newest install, so the paths survive upgrades.
+"~/.t3/userdata/settings.json/cliproxy" = { source = "merges/agents/t3.json", merge = true, template = "tera" }
+
+# Drops the old LiteLLM provider from opencode and, on Linux, installs T3 Code
+# and its background service.
+[bootstrap.hooks.post-tools]
+run = "~/.config/mise/scripts/agents-setup"

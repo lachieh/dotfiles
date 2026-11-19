@@ -1,0 +1,49 @@
+#!/bin/sh
+# Log in to atuin sync once per machine. Afterwards atuin keeps its session
+# token and encryption key under ~/.local/share/atuin and never needs
+# 1Password again.
+#
+# Credentials come from the first source that has them:
+#   stdin    three lines (username, password, key), as `machine:setup` sends
+#   op       the 1Password CLI, where it is signed in (Touch ID on a Mac)
+#   prompt   atuin asks for anything still missing
+#
+# The password and key reach atuin through ATUIN_PASSWORD and
+# ATUIN_ENCRYPTION_KEY, never as arguments. The key must be the account's
+# existing one, or synced history from other machines cannot be decrypted.
+set -eu
+
+session="${XDG_DATA_HOME:-$HOME/.local/share}/atuin/session"
+if [ -s "$session" ]; then
+  echo "atuin: already logged in on this machine"
+  exit 0
+fi
+
+mise=$(command -v mise 2>/dev/null || echo "$HOME/.local/bin/mise")
+item="op://c5pj6izhhuuirobusafxvnkqau/omx4nfxuac33q6v6g7fnr2pznq"
+username="" ATUIN_PASSWORD="" ATUIN_ENCRYPTION_KEY=""
+
+if [ ! -t 0 ]; then
+  IFS= read -r username || true
+  IFS= read -r ATUIN_PASSWORD || true
+  IFS= read -r ATUIN_ENCRYPTION_KEY || true
+fi
+
+if [ -z "$username" ] && "$mise" exec -- op --version >/dev/null 2>&1 &&
+  username=$("$mise" exec -- op read "$item/username" 2>/dev/null); then
+  ATUIN_PASSWORD=$("$mise" exec -- op read "$item/password")
+  ATUIN_ENCRYPTION_KEY=$("$mise" exec -- op read "$item/key")
+fi
+
+if [ -z "$username" ]; then
+  if ! { : >/dev/tty; } 2>/dev/null; then
+    echo "atuin-login: no credentials on stdin, op is not signed in, and there is no terminal to ask on" >&2
+    exit 1
+  fi
+  printf 'atuin username: ' >/dev/tty
+  IFS= read -r username </dev/tty
+fi
+
+[ -n "$ATUIN_PASSWORD" ] && export ATUIN_PASSWORD
+[ -n "$ATUIN_ENCRYPTION_KEY" ] && export ATUIN_ENCRYPTION_KEY
+exec "$mise" exec -- atuin account login --username "$username"

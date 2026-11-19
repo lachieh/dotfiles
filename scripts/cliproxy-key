@@ -1,0 +1,29 @@
+#!/bin/sh
+# Install this machine's cliproxy URL and key from stdin (one per line) into
+# ~/.config/cliproxy/url and ~/.config/cliproxy/key (0600). Claude Code,
+# Codex, opencode and T3 Code read the key from that file, and the agents
+# profile's config merges read the URL, so apply dotfiles afterwards.
+# Normally fed by `mise run agents:key` here, or `machine:setup --agents`.
+#
+# Usage: cliproxy-new-key <host> | cliproxy-key
+set -eu
+
+dir="${XDG_CONFIG_HOME:-$HOME/.config}/cliproxy"
+IFS= read -r url || true
+IFS= read -r key || true
+case $url in https://*) ;; *) echo "cliproxy-key: expected a URL on the first line" >&2; exit 1 ;; esac
+[ -n "$key" ] || { echo "cliproxy-key: no key on the second line" >&2; exit 1; }
+
+mkdir -p "$dir"
+chmod 700 "$dir"
+put() { # <file> <value>
+  if [ -r "$1" ] && [ "$(cat "$1")" = "$2" ]; then
+    echo "cliproxy-key: $1 is up to date" >&2
+    return
+  fi
+  (umask 077 && printf '%s\n' "$2" >"$1.tmp")
+  mv "$1.tmp" "$1"
+  echo "cliproxy-key: wrote $1" >&2
+}
+put "$dir/url" "$url"
+put "$dir/key" "$key"

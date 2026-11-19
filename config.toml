@@ -1,0 +1,217 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+#
+# Global mise config, and the dotfiles repo: this directory is ~/.config/mise.
+# Dotfile sources live in dotfiles/. Machine-specific settings and tools go in
+# config.local.toml, which is not committed.
+
+[settings]
+experimental = true
+# Tools come from `mise activate` in every shell. No shims on PATH: a shim
+# exists for every installed tool, so tools installed for one project look
+# installed everywhere and then fail with "No version is set".
+activate_shims = false
+idiomatic_version_file_enable_tools = ["rust", "node", "go", "python", "yarn"]
+dotfiles.root = "~/.config/mise/dotfiles"
+dotfiles.default_mode = "symlink"
+
+[settings.npm]
+package_manager = "aube"
+
+[vars.device_type]
+default = "desktop"
+prompt = "Device type: desktop, laptop or server (server switches the prompt colours)"
+
+[vars.computer_name]
+default = ""
+prompt = "Computer name (macOS; empty leaves it unchanged)"
+
+[tools]
+# Shell and CLI
+atuin = "latest"
+starship = "latest"
+zoxide = "latest"
+fzf = "latest"
+fd = "latest"
+bat = "latest"
+delta = "latest"
+jq = "latest"
+gh = "latest"
+op = "latest"
+fnox = "latest"
+age = "latest"
+ubi = "latest"
+
+# Languages
+node = "lts"
+go = "latest"
+rust = "latest"
+python = "latest"
+
+# Editor
+neovim = "latest"
+tree-sitter = "latest"
+lua-language-server = "latest"
+stylua = "latest"
+
+[tools.'http:pool']
+version = "latest"
+url = "https://downloads.poolside.ai/pool/v{{ version }}/pool-{{ os(macos='darwin') }}-{{ arch(x64='amd64') }}.tar.gz"
+version_list_url = "https://downloads.poolside.ai/pool/pool-latest-version.txt"
+rename_exe = "pool"
+
+# Dotfiles. A source defaults to the target's path under dotfiles/.
+[dotfiles]
+# Shell startup files are copies, read-only and (on macOS) immutable, so
+# installers cannot append to them. `mise run dotfiles:apply` unlocks them
+# around each apply. ~/.zshrc and ~/.zprofile are never read: ZDOTDIR points
+# zsh at ~/.config/zsh.
+"~/.zshenv" = { mode = "copy", permissions = "0444" }
+"~/.config/zsh/.zshenv" = { mode = "copy", permissions = "0444" }
+"~/.config/zsh/.zprofile" = { mode = "copy", permissions = "0444" }
+"~/.config/zsh/.zshrc" = { mode = "copy", permissions = "0444" }
+"~/.bashrc" = { mode = "copy", permissions = "0444" }
+"~/.bash_profile" = { mode = "copy", permissions = "0444" }
+"~/.profile" = { mode = "copy", permissions = "0444" }
+
+"~/.config/shell/env.sh" = {}
+"~/.config/zsh/aliases.zsh" = {}
+"~/.config/zsh/functions" = {}
+"~/.config/zsh/vendor" = {}
+"~/.config/starship.toml" = { mode = "template" }
+
+"~/.config/git/config" = {}
+"~/.config/git/ignore" = {}
+"~/.config/git/allowed_signers" = {}
+"~/.config/git/ssh-sign" = {}
+"~/.ssh/config" = {}
+"~/.ssh/rc" = {}
+"~/.ssh/agent-check" = {}
+"~/.config/1password/ssh/agent.toml" = {}
+
+"~/.config/atuin/config.toml" = {}
+"~/.config/atuin/themes" = {}
+"~/.config/gh/config.yml" = {}
+"~/.config/ghostty" = {}
+"~/.config/nvim" = {}
+"~/.config/herdr/config.toml" = {}
+"~/.config/topgrade.toml" = {}
+"~/.config/wget/wgetrc" = {}
+
+[bootstrap.hooks.pre-dotfiles]
+description = "Unlock shell startup files"
+run = "~/.config/mise/scripts/dotfiles-lock unlock"
+
+[bootstrap.hooks.post-dotfiles]
+description = "Lock shell startup files"
+run = "~/.config/mise/scripts/dotfiles-lock lock"
+
+[bootstrap.repos]
+"~/.local/share/zsh/plugins/zsh-syntax-highlighting" = { url = "https://github.com/zsh-users/zsh-syntax-highlighting.git", depth = 1 }
+
+# Atuin's daemon captures agent threads and syncs history. It runs at login,
+# so capture works even when no terminal has been opened.
+[bootstrap.services.atuin-daemon]
+scope = "user"
+description = "Atuin daemon"
+command = "~/.local/bin/mise exec -- atuin daemon start"
+restart = "on-failure"
+requires_tools = true
+
+# Point GUI apps (and anything else launchd starts) at the 1Password SSH agent,
+# so git signing works outside a terminal too.
+[bootstrap.macos.launchd.agents.ssh-auth-sock]
+program = "/bin/sh"
+args = ["-c", "launchctl setenv SSH_AUTH_SOCK \"$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\""]
+run_at_load = true
+
+# macOS preferences in the user domain. Ones that need sudo are in the
+# `macos:system` task, because mise never uses sudo for preferences.
+[bootstrap.settings.macos.defaults.NSGlobalDomain]
+NSNavPanelExpandedStateForSaveMode = true
+NSNavPanelExpandedStateForSaveMode2 = true
+PMPrintingExpandedStateForPrint = true
+PMPrintingExpandedStateForPrint2 = true
+NSDocumentSaveNewDocumentsToCloud = false
+NSTextShowsControlCharacters = true
+NSDisableAutomaticTermination = true
+NSAutomaticCapitalizationEnabled = false
+NSAutomaticPeriodSubstitutionEnabled = false
+AppleKeyboardUIMode = 3
+ApplePressAndHoldEnabled = false
+InitialKeyRepeat = 15
+KeyRepeat = 2
+"com.apple.trackpad.forceClick" = 1
+"com.apple.mouse.tapBehavior" = 1
+AppleLanguages = ["en"]
+AppleLocale = "en_US@currency=USD"
+AppleMeasurementUnits = "Inches"
+AppleMetricUnits = false
+AppleFontSmoothing = 1
+AppleShowAllExtensions = true
+"com.apple.springing.enabled" = true
+"com.apple.springing.delay" = 0.7
+
+[bootstrap.settings.macos.defaults."com.apple.print.PrintingPrefs"]
+"Quit When Finished" = true
+
+[bootstrap.settings.macos.defaults."com.apple.CrashReporter"]
+DialogType = "none"
+
+[bootstrap.settings.macos.defaults."com.apple.helpviewer"]
+DevMode = true
+
+[bootstrap.settings.macos.defaults."com.apple.driver.AppleBluetoothMultitouch.trackpad"]
+Clicking = true
+
+[bootstrap.settings.macos.defaults."com.apple.AppleMultitouchTrackpad"]
+Clicking = 0
+
+[bootstrap.settings.macos.defaults."com.apple.BluetoothAudioAgent"]
+"Apple Bitpool Min (editable)" = 40
+
+[bootstrap.settings.macos.defaults."com.apple.screencapture"]
+type = "png"
+disable-shadow = true
+
+[bootstrap.settings.macos.defaults."com.apple.finder"]
+DisableAllAnimations = true
+NewWindowTarget = "PfDe"
+ShowStatusBar = true
+ShowPathbar = true
+_FXShowPosixPathInTitle = true
+_FXSortFoldersFirst = true
+FXDefaultSearchScope = "SCcf"
+OpenWindowForNewRemovableDisk = true
+FXPreferredViewStyle = "Nlsv"
+
+[bootstrap.settings.macos.defaults."com.apple.desktopservices"]
+DSDontWriteNetworkStores = true
+DSDontWriteUSBStores = true
+
+[bootstrap.settings.macos.defaults."com.apple.frameworks.diskimages"]
+skip-verify = true
+skip-verify-locked = true
+skip-verify-remote = true
+auto-open-ro-root = true
+auto-open-rw-root = true
+
+[bootstrap.settings.macos.defaults."com.apple.dock"]
+mouse-over-hilite-stack = true
+enable-spring-load-actions-on-all-items = true
+show-process-indicators = true
+autohide = true
+tilesize = 32
+# Hot corners: top right Notification Center, bottom right screen saver (cmd).
+wvous-tr-corner = 12
+wvous-br-corner = 5
+wvous-br-modifier = 1048576
+
+[bootstrap.settings.macos.defaults."com.apple.Terminal"]
+"Startup Window Settings" = "Pro"
+"Default Window Settings" = "Pro"
+
+[[bootstrap.settings.macos.defaults_entries]]
+domain = "NSGlobalDomain"
+key = "com.apple.mouse.tapBehavior"
+host = "current"
+value = 1

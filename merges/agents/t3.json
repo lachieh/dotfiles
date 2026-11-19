@@ -1,0 +1,20 @@
+{
+  "providerInstances": {
+    "claudeAgent": {
+      "driver": "claudeAgent",
+      "enabled": true,
+      "config": { "binaryPath": "{{ env.HOME }}/.local/share/mise/installs/claude/latest/claude" }
+    },
+    "codex": {
+      "driver": "codex",
+      "enabled": true,
+      "config": { "binaryPath": "{{ env.HOME }}/.local/share/mise/installs/codex/latest/bin/codex" }
+    },
+    "opencode": {
+      "driver": "opencode",
+      "enabled": true,
+      "environment": [],
+      "config": { "binaryPath": "{{ env.HOME }}/.local/share/mise/installs/aqua-anomalyco-opencode/latest/opencode" }
+    }
+  }
+}
