@@ -19,12 +19,12 @@ run = "mise dot status"
 
 [tasks."shell:check"]
 description = "Check that agent-style shells get mise tools, aliases, fnox and the SSH agent"
-run = "{{ config_root }}/scripts/shell-check"
+run = "{{ xdg_config_home }}/mise/scripts/shell-check"
 
 [tasks."zsh:vendor"]
 description = "Refresh the vendored oh-my-zsh git aliases"
 usage = 'arg "[ref]" default="master" help="ohmyzsh/ohmyzsh commit or branch"'
-run = "{{ config_root }}/scripts/zsh-vendor ${usage_ref}"
+run = "{{ xdg_config_home }}/mise/scripts/zsh-vendor ${usage_ref}"
 
 # ── Machines ────────────────────────────────────────────────────────────────
 
@@ -35,31 +35,31 @@ arg "<host>" help="SSH destination, usually a host alias from ~/.ssh/config.d/"
 flag "--update" help="Fast-forward the machine's existing checkout first"
 flag "--agents" help="Select the agents profile there and give the machine its own cliproxy key"
 '''
-run = "{{ config_root }}/scripts/machine-setup ${usage_host} ${usage_update:+--update} ${usage_agents:+--agents}"
+run = "{{ xdg_config_home }}/mise/scripts/machine-setup ${usage_host} ${usage_update:+--update} ${usage_agents:+--agents}"
 
 [tasks."atuin:login"]
 description = "Log in to atuin sync once on this machine (key from stdin or 1Password)"
-run = "{{ config_root }}/scripts/atuin-login"
+run = "{{ xdg_config_home }}/mise/scripts/atuin-login"
 
 [tasks."git:key"]
 description = "Set up this machine's git key (push and signing, no prompts) and register it on GitHub"
-run = "{{ config_root }}/scripts/git-key | {{ config_root }}/scripts/git-register \"git $(hostname -s)\""
+run = "{{ xdg_config_home }}/mise/scripts/git-key | {{ xdg_config_home }}/mise/scripts/git-register \"git $(hostname -s)\""
 
 [tasks."agents:key"]
 description = "Create this machine's cliproxy key (1Password + cliproxy) and install it for the agent CLIs"
 dir = "{{ env.HOME }}"
 run = [
-  "{{ config_root }}/scripts/cliproxy-new-key \"$(hostname -s)\" | {{ config_root }}/scripts/cliproxy-key",
+  "{{ xdg_config_home }}/mise/scripts/cliproxy-new-key \"$(hostname -s)\" | {{ xdg_config_home }}/mise/scripts/cliproxy-key",
   "mise bootstrap --only dotfiles --yes",
 ]
 
 [tasks."secrets:homelab"]
 description = "Write the homelab age key on this machine if missing (1Password CLI)"
-run = "{{ config_root }}/scripts/homelab-key"
+run = "{{ xdg_config_home }}/mise/scripts/homelab-key"
 
 [tasks."macos:system"]
 description = "Apply the macOS settings that need sudo (computer name, boot sound, timezone)"
-run = "{{ config_root }}/scripts/macos-system"
+run = "{{ xdg_config_home }}/mise/scripts/macos-system"
 
 # ── Neovim ──────────────────────────────────────────────────────────────────
 
