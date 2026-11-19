@@ -10,6 +10,11 @@
       "enabled": true,
       "config": { "binaryPath": "{{ env.HOME }}/.local/share/mise/installs/codex/latest/bin/codex" }
     },
+    "grok": {
+      "driver": "grok",
+      "enabled": true,
+      "config": { "binaryPath": "{{ env.HOME }}/.local/share/mise/installs/grok/latest/grok" }
+    },
     "opencode": {
       "driver": "opencode",
       "enabled": true,

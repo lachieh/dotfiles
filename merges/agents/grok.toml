@@ -1,0 +1,15 @@
+{%- set f = env.HOME ~ "/.config/cliproxy/url" -%}
+{%- if f is file -%}
+# Every model through cliproxy: the key is this machine's cliproxy key, read by
+# grok's auth-provider command in place of `grok login`.
+[endpoints]
+models_base_url = "{{ read_file(path=f) | trim }}/v1"
+
+[auth]
+auth_provider_command = "cat \"$HOME/.config/cliproxy/key\""
+auth_provider_label = "cliproxy"
+
+# mise installs and updates grok; its own updater would install a second copy.
+[cli]
+auto_update = false
+{%- endif %}

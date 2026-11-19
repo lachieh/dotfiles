@@ -1,6 +1,6 @@
 #:schema https://mise.jdx.dev/schema/mise.json
 #
-# The "agents" profile: Claude Code, Codex, opencode and T3 Code, all sending
+# The "agents" profile: Claude Code, Codex, opencode, grok and T3 Code, all sending
 # requests through your cliproxy with this machine's own key. Loaded
 # only where the profile is selected:
 #
@@ -18,6 +18,7 @@
 claude = "latest"
 codex = "latest"
 "aqua:anomalyco/opencode" = "latest"
+grok = "latest"
 
 # Each CLI writes its own config, so these merge only the keys listed in the
 # source file and leave everything else alone. Edits to these keys are put
@@ -26,6 +27,7 @@ codex = "latest"
 "~/.claude/settings.json/cliproxy" = { source = "merges/agents/claude.json", merge = true, template = "tera" }
 "~/.codex/config.toml/cliproxy" = { source = "merges/agents/codex.toml", merge = true, template = "tera" }
 "~/.config/opencode/opencode.json/cliproxy" = { source = "merges/agents/opencode.json", merge = true, template = "tera" }
+"~/.grok/config.toml/cliproxy" = { source = "merges/agents/grok.toml", merge = true, template = "tera" }
 # T3 Code runs the mise-installed CLIs. `latest` is a link mise keeps on the
 # newest install, so the paths survive upgrades.
 "~/.t3/userdata/settings.json/cliproxy" = { source = "merges/agents/t3.json", merge = true, template = "tera" }

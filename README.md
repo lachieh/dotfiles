@@ -39,7 +39,7 @@ mise run agents:key                    # this machine's cliproxy key
 mise run machine:setup <host> --agents # over SSH, including the key
 ```
 
-The profile installs Claude Code, Codex and opencode as mise tools, and on
+The profile installs Claude Code, Codex, opencode and grok as mise tools, and on
 Linux installs T3 Code and runs it as a user service (the desktop app covers
 macOS). Every CLI sends requests through cliproxy (CLIProxyAPI):
 
@@ -55,7 +55,8 @@ macOS). Every CLI sends requests through cliproxy (CLIProxyAPI):
   templates that read it, so they merge nothing before the key is installed.
 - The CLIs read the key file: Claude Code through `apiKeyHelper`, Codex through
   a provider `auth` command, opencode (v2 `providers` config) through
-  `{file:...}`. Their config files get only the keys in `merges/agents/`
+  `{file:...}`, grok through an `auth_provider_command` plus
+  `endpoints.models_base_url` (which replaces `grok login`). Their config files get only the keys in `merges/agents/`
   merged in; everything the apps write themselves is left alone.
 - A saved opencode login for OpenAI or Anthropic overrides the key, so
   `agents-setup` warns about one; remove it with `opencode auth logout openai`.
